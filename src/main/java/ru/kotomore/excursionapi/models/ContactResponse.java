@@ -11,7 +11,6 @@ public class ContactResponse {
     @JsonProperty("_embedded")
     private Embedded embedded;
 
-
     @Data
     public static class Embedded {
         private List<Contact> contacts;
@@ -28,7 +27,7 @@ public class ContactResponse {
         @JsonProperty("account_id")
         private int accountId;
         @JsonProperty("_embedded")
-        private Embedded embedded;
+        private Contact.Embedded embedded;
 
         @Data
         public static class CustomFieldValue {
@@ -38,6 +37,11 @@ public class ContactResponse {
             public static class Value {
                 private String value;
             }
+        }
+
+        @Data
+        public static class Embedded {
+            private List<Lead> leads;
         }
     }
 

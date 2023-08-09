@@ -13,7 +13,9 @@ import ru.kotomore.excursionapi.models.TokenResponse;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,14 +33,26 @@ public class TokenService implements TokenServiceUseCase {
     private String AMO_API_URL;
     @Value("${amocrm.token_file_path}")
     private String TOKEN_FILE_PATH;
+
+    private final RestTemplate restTemplate = new RestTemplate();
     private final ObjectMapper objectMapper = new ObjectMapper();
+
 
 
     @Override
     @Cacheable(cacheNames = "token", key = "'accessToken'")
     public TokenResponse getTokenResponse() {
         if (Files.exists(Paths.get(TOKEN_FILE_PATH))) {
-            return readTokenFromFile();
+            TokenResponse tokenResponse = readTokenFromFile();
+            int expiresIn = tokenResponse.getExpiresIn();
+            long tokenCreationTime = getTokenCreationTimeFromFile();
+            long currentTime = System.currentTimeMillis() / 1000;
+
+            if (currentTime < tokenCreationTime + expiresIn) {
+                return tokenResponse;
+            } else {
+                return refreshToken(tokenResponse);
+            }
         } else {
             TokenResponse tokenResponse = getAccessTokenFromCode();
             saveTokenToFile(tokenResponse);
@@ -56,7 +70,6 @@ public class TokenService implements TokenServiceUseCase {
         requestBody.put("refresh_token", tokenResponse.getRefreshToken());
         requestBody.put("redirect_uri", REDIRECT_URL);
 
-        RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<TokenResponse> response = restTemplate.postForEntity(AMO_API_URL + "/oauth2/access_token", requestBody, TokenResponse.class);
 
         if (response.getStatusCode() == HttpStatus.OK) {
@@ -74,7 +87,6 @@ public class TokenService implements TokenServiceUseCase {
         requestBody.put("code", ACCESS_CODE);
         requestBody.put("redirect_uri", REDIRECT_URL);
 
-        RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<TokenResponse> response = restTemplate.postForEntity(AMO_API_URL + "/oauth2/access_token",
                 requestBody, TokenResponse.class);
 
@@ -99,6 +111,18 @@ public class TokenService implements TokenServiceUseCase {
         } catch (IOException e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    private long getTokenCreationTimeFromFile() {
+        try {
+            Path filePath = Paths.get(TOKEN_FILE_PATH);
+            BasicFileAttributes attributes = Files.readAttributes(filePath, BasicFileAttributes.class);
+            long creationTimeMillis = attributes.creationTime().toMillis();
+            return creationTimeMillis / 1000;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return 0;
         }
     }
 

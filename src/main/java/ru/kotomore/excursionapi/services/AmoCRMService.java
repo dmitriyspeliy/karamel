@@ -13,7 +13,6 @@ import ru.kotomore.excursionapi.models.ContactResponse;
 import ru.kotomore.excursionapi.models.LeadResponse;
 import ru.kotomore.excursionapi.models.PipelineResponse;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -50,21 +49,18 @@ public class AmoCRMService implements AmoCRMServiceUseCase {
 
         assert leadResponse != null;
 
-        List<Lead> leadList = new ArrayList<>();
-        for (LeadResponse.Embedded.Lead lead : leadResponse.getEmbedded().getLeads()) {
-            if (pipelines.containsKey(lead.getPipelineId())) {
-                Lead leadDTO = new Lead();
-                leadDTO.setEventType(pipelines.get(lead.getPipelineId()));
-                for (LeadResponse.Embedded.Lead.CustomField customField : lead.getCustomFieldsValues()) {
-                    mapCustomFieldToLeadDTO(leadDTO, customField);
-                }
-                leadList.add(leadDTO);
-            }
-        }
-        return leadList;
+        return leadResponse.getEmbedded().getLeads().stream()
+                .filter(lead -> pipelines.containsKey(lead.getPipelineId()))
+                .map(lead -> {
+                    Lead leadDTO = new Lead();
+                    leadDTO.setEventType(pipelines.get(lead.getPipelineId()));
+                    lead.getCustomFieldsValues().forEach(customField -> mapCustomFieldToLeadDTO(leadDTO, customField));
+                    return leadDTO;
+                })
+                .collect(Collectors.toList());
     }
 
-    public List<Integer> getLeadIdsByPhone(String phone) {
+    private List<Integer> getLeadIdsByPhone(String phone) {
         String url = AMO_API_URL + "/api/v4/contacts?with=leads&query=" + phone;
 
         ContactResponse contactResponse = makeGetRequest(url, ContactResponse.class).getBody();
@@ -79,7 +75,7 @@ public class AmoCRMService implements AmoCRMServiceUseCase {
                 .collect(Collectors.toList());
     }
 
-    public Map<Integer, String> getPipelines() {
+    private Map<Integer, String> getPipelines() {
         String url = AMO_API_URL + "/api/v4/leads/pipelines";
 
         PipelineResponse pipelineResponse = makeGetRequest(url, PipelineResponse.class).getBody();
@@ -101,10 +97,10 @@ public class AmoCRMService implements AmoCRMServiceUseCase {
         String value = customField.getValues().get(0).getValue();
 
         switch (fieldName) {
-            case "Адрес мероприятия" -> leadDTO.setAddress(Arrays.toString(customField.getValues()
+            case "Адрес мероприятия" -> leadDTO.setAddress(customField.getValues()
                     .stream()
                     .map(LeadResponse.Embedded.Lead.CustomField.CustomFieldValue::getValue)
-                    .toArray()));
+                    .collect(Collectors.joining(" ")));
             case "Предоплата" -> leadDTO.setPrepayment(Integer.parseInt(value));
             case "Цена билета" -> leadDTO.setTicketPrice(Integer.parseInt(value));
             case "Количество детей" -> leadDTO.setChildCount(Integer.parseInt(value));

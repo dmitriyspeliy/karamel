@@ -14,7 +14,6 @@ spring:
       ddl-auto: validate
     open-in-view: true
 
-
   current-city: ${CURRENT_CITY}
   city-info:
     chel:

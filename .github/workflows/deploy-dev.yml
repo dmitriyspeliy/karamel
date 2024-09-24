@@ -22,3 +22,5 @@ jobs:
                 run: ssh-keyscan -H ${{ secrets.REMOTE_IP }} >> ~/.ssh/known_hosts
             -   name: Uploading this version of repository
                 run: rsync -vr ./target/ admin@${{ secrets.REMOTE_IP }}:/home/admin/excursionapi-dev/build-bitrix/
+            -   name: Launch server
+                run: ssh admin@${{ secrets.REMOTE_IP }} '/home/admin/start-bitrix.sh'

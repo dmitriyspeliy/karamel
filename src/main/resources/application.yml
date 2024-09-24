@@ -18,7 +18,7 @@ spring:
   current-city: ${CURRENT_CITY}
   city-info:
     chel:
-      city-name: ЧЕЛЯЮИНСК
+      city-name: ЧЕЛЯБИНСК
       timezone: 3
       invoice-lifetime-minutes: 15
       start-endpoint: 2023-11-30T00:00:00+00:00

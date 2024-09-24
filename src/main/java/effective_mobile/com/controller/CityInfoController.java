@@ -15,7 +15,7 @@ public class CityInfoController {
 
     private final CityProperties cityProperties;
 
-    @Value("${spring.city-info.current-city}")
+    @Value("${spring.current-city}")
     private String currentCity;
 
     /**

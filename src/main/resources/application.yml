@@ -15,8 +15,8 @@ spring:
       ddl-auto: validate
     open-in-view: true
 
+    current-city: ${CURRENT_CITY:CHEL}
     city-info:
-      current-city: ${CURRENT_CITY:CHEL}
       chel:
         city-name: ?????????
         timezone: 3

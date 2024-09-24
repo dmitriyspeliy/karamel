@@ -1,4 +1,3 @@
-
 spring:
   banner:
     location: banner.txt
@@ -18,182 +17,182 @@ spring:
   current-city: ${CURRENT_CITY:chel}
   city-info:
     chel:
-      city-name: ?????????
+      city-name: Челябинск
       timezone: 3
       invoice-lifetime-minutes: 15
       start-endpoint: 2023-11-30T00:00:00+00:00
       finish-endpoint: 2024-01-10T00:00:00+00:00
-      address: ??????????? ???????, ?????????? ?????, ???. ???????, ??. ?????????, ?.12
+      address: Челябинская область, Сосновский район, пос. Саргазы, ул. Юбилейная, д.12
       manager-contact-numbers:
         - +79587569849
       vk-link: https://vk.com/public222553186
-      offer-link: https://??????????????????.??/oferta_chel
+      offer-link: https://карамельнаяфабрика.рф/oferta_chel
       reservation-payment-amount: 5000
       maxCapacity: 36
       minCapacity: 20
       refundPeriod: 14
     ekb:
-      city-name: ????????????
+      city-name: ЕКАТЕРИНБУРГ
       timezone: 3
       invoice-lifetime-minutes: 15
       start-endpoint: 2023-11-30T00:00:00+00:00
       finish-endpoint: 2024-01-10T00:00:00+00:00
-      address: ???????????? ???????, ?. ??????? ?????, ??. ?????????, ?.15 (??? 400 ?.??.)
+      address: Свердловская область, г. Верхняя Пышма, ул. Восточная, д.15 (дом 400 м.кв.)
       manager-contact-numbers:
         - +73432264525
         - +79952228767
       vk-link: https://vk.com/public222552916
-      offer-link: https://??????????????????.??/oferta_ekat
+      offer-link: https://карамельнаяфабрика.рф/oferta_ekat
       reservation-payment-amount: 5000
       maxCapacity: 36
       minCapacity: 20
     tyumen:
-      city-name: ??????
+      city-name: ТЮМЕНЬ
       timezone: 3
       invoice-lifetime-minutes: 15
       start-endpoint: 2023-11-30T00:00:00+00:00
       finish-endpoint: 2024-01-10T00:00:00+00:00
-      address: ????????? ???????, ????????? ?????, ??????? ?????????, ??. ?????????, ?. 50/1 (??? 300 ?.??.)
+      address: Тюменская область, Тюменский район, посёлок Боровский, ул. Трактовая, д. 50/1 (дом 300 м.кв.)
       manager-contact-numbers:
         - +73452518032
       vk-link: https://vk.com/public222553329
-      offer-link: https://??????????????????.??/oferta_tumen
+      offer-link: https://карамельнаяфабрика.рф/oferta_tumen
       reservation-payment-amount: 5000
       maxCapacity: 36
       minCapacity: 20
     izh:
-      city-name: ??????
+      city-name: ИЖЕВСК
       timezone: 4
       invoice-lifetime-minutes: 15
       start-endpoint: 2023-11-30T00:00:00+00:00
       finish-endpoint: 2024-01-10T00:00:00+00:00
-      address: ?. ??????, ?????????? ??????????, ??????????????? ?????, 4
+      address: г. Ижевск, Удмуртская республика, Новоцентральная улица, 4
       manager-contact-numbers:
         - +73412650630
         - +79952229680
       vk-link: https://vk.com/public222343940
-      offer-link: https://??????????????????.??/oferta_izhevsk
+      offer-link: https://карамельнаяфабрика.рф/oferta_izhevsk
       reservation-payment-amount: 5000
       maxCapacity: 36
       minCapacity: 18
     kras:
-      city-name: ??????????
+      city-name: КРАСНОЯРСК
       timezone: 7
       invoice-lifetime-minutes: 15
       start-endpoint: 2023-11-30T00:00:00+00:00
       finish-endpoint: 2024-01-10T00:00:00+00:00
-      address: ?. ??????????, ??. ??????????, ?. 24
+      address: г. Красноярск, ул. Караульная, д. 24
       manager-contact-numbers:
         - +73919897947
         - +79952226742
       vk-link: https://vk.com/fabrikadmkrsn
       reservation-payment-amount: 5000
-      offer-link: https://??????????????????.??/oferta_kras
+      offer-link: https://карамельнаяфабрика.рф/oferta_kras
       maxCapacity: 36
       minCapacity: 18
     nsk:
-      city-name: ???????????
+      city-name: НОВОСИБИРСК
       timezone: 7
       invoice-lifetime-minutes: 15
       start-endpoint: 2023-11-30T00:00:00+00:00
       finish-endpoint: 2024-01-10T00:00:00+00:00
-      address: ?. ???, ??. ??????????, ?. 27
+      address: г. Обь, ул. Дорожников, д. 27
       manager-contact-numbers:
         - +79952229459
         - +73832427074
       vk-link: https://vk.com/karameldmnovosib
       reservation-payment-amount: 5000
-      offer-link: https://??????????????????.??/oferta_nov
+      offer-link: https://карамельнаяфабрика.рф/oferta_nov
       maxCapacity: 36
       minCapacity: 18
     samara:
-      city-name: ??????
+      city-name: САМАРА
       timezone: 3
       invoice-lifetime-minutes: 15
       start-endpoint: 2023-11-30T00:00:00+00:00
       finish-endpoint: 2024-01-10T00:00:00+00:00
-      address: ?. ??????, ?????????????? ?????, ?. ??????? ??????, ??. ?????, ?. 16
+      address: г. Самара, Красноглинский район, п. Красная Глинка, ул. Южная, д. 16
       manager-contact-numbers:
         - +79249148423
       vk-link: https://vk.com/public222553152?ysclid=lo2v8ic1nb537889983
-      offer-link: https://??????????????????.??/oferta_samara
+      offer-link: https://карамельнаяфабрика.рф/oferta_samara
       reservation-payment-amount: 5000
       maxCapacity: 36
       minCapacity: 20
       refundPeriod: 14
     volgograd:
-      city-name: ?????????
+      city-name: ВОЛГОГРАД
       timezone: 3
       invoice-lifetime-minutes: 15
       start-endpoint: 2023-11-30T00:00:00+00:00
       finish-endpoint: 2024-01-10T00:00:00+00:00
-      address: ?????????, ??. ????????? ????????, ?.65
+      address: Волгоград, ул. Маргариты Агашиной, д.65
       manager-contact-numbers:
         - +79249145265
       vk-link: https://vk.com/public222553352
-      offer-link: https://??????????????????.??/oferta_volga
+      offer-link: https://карамельнаяфабрика.рф/oferta_volga
       reservation-payment-amount: 5000
       maxCapacity: 36
       minCapacity: 20
       refundPeriod: 14
     lipetsk:
-      city-name: ??????
+      city-name: ЛИПЕЦК
       timezone: 3
       invoice-lifetime-minutes: 15
       start-endpoint: 2023-11-30T00:00:00+00:00
       finish-endpoint: 2024-01-10T00:00:00+00:00
-      address: ???????? ???????, ???????? ?????, ???? ??????, ??. ????????, 6
+      address: Липецкая область, Липецкий район, село Ленино, ул. Закатная, 6
       manager-contact-numbers:
         - +79249141709
       vk-link: https://vk.com/public222554035
-      offer-link: https://??????????????????.??/oferta_lipetsk
+      offer-link: https://карамельнаяфабрика.рф/oferta_lipetsk
       reservation-payment-amount: 5000
       maxCapacity: 36
       minCapacity: 20
       refundPeriod: 14
     perm:
-      city-name: ?????
+      city-name: ПЕРМЬ
       timezone: 3
       invoice-lifetime-minutes: 15
       start-endpoint: 2023-11-30T00:00:00+00:00
       finish-endpoint: 2024-01-10T00:00:00+00:00
-      address: ?. ?????, ??. ???????, ?. 3?
+      address: г. Пермь, ул. Невская, д. 3а
       manager-contact-numbers:
         - +79249141709
       vk-link: https://vk.com/public222554023
-      offer-link: https://??????????????????.??/oferta_perm
+      offer-link: https://карамельнаяфабрика.рф/oferta_perm
       reservation-payment-amount: 5000
       maxCapacity: 36
       minCapacity: 20
       refundPeriod: 14
     spb:
-      city-name: ?????-?????????
+      city-name: САНКТ-ПЕТЕРБУРГ
       timezone: 3
       invoice-lifetime-minutes: 15
       start-endpoint: 2023-11-30T00:00:00+00:00
       finish-endpoint: 2024-01-10T00:00:00+00:00
-      address: ?. ?????-?????????, ???. ????????, ??. ????????????, ?. 17, ????? ?
+      address: г. Санкт-Петербург, тер. Сергиево, ул. Пролетарская, д. 17, литер А
       manager-contact-numbers:
         - +78125092995
         - +79699669259
       vk-link: https://vk.com/public222337083
-      offer-link: https://??????????????????.??/oferta_spb
+      offer-link: https://карамельнаяфабрика.рф/oferta_spb
       reservation-payment-amount: 5000
       maxCapacity: 36
       minCapacity: 18
       refundPeriod: 7
     yar:
-      city-name: ?????????
+      city-name: ЯРОСЛАВЛЬ
       timezone: 3
       invoice-lifetime-minutes: 15
       start-endpoint: 2023-11-30T00:00:00+00:00
       finish-endpoint: 2024-01-10T00:00:00+00:00
-      address: ?. ?????????, ??????? ?????????, 4-? ????????? ?????, 16
+      address: г. Ярославль, посёлок Пятовское, 4-я Пятовская улица, 16
       manager-contact-numbers:
         - +74852607104
         - +79675559726
       vk-link: https://vk.com/public222343606
-      offer-link: https://??????????????????.??/oferta_yarosl
+      offer-link: https://карамельнаяфабрика.рф/oferta_yarosl
       reservation-payment-amount: 5000
       maxCapacity: 36
       minCapacity: 18

@@ -1,0 +1,9 @@
+-- create table if not exists public."user"
+-- (
+--     id       bigint generated always as identity primary key,
+--     email    varchar(100) unique not null default 'UNKNOWN',
+--     password varchar(100)        not null,
+--     login    varchar(100)        not null
+-- );
+--
+-- create index if not exists email_index ON "user" (email);

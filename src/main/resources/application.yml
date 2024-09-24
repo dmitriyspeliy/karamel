@@ -14,7 +14,7 @@ spring:
       ddl-auto: validate
     open-in-view: true
 
-  current-city: ${CURRENT_CITY:chel}
+  current-city: ${CURRENT_CITY}
   city-info:
     chel:
       city-name: Челябинск
@@ -197,7 +197,7 @@ spring:
       maxCapacity: 36
       minCapacity: 18
 server:
-  port: ${APP_PORT:8090}
+  port: ${APP_PORT}
 
 
 

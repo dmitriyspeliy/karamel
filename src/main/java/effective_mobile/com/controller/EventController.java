@@ -1,19 +1,23 @@
 package effective_mobile.com.controller;
 
 import effective_mobile.com.model.dto.Event;
+import effective_mobile.com.model.dto.GetEventsResponse;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/events")
 public class EventController {
 
     @GetMapping("/group")
-    public Event getUpcomingGroupEvents() {
+    public ResponseEntity<GetEventsResponse> getUpcomingGroupEvents() {
 
         Event event = Event.builder()
                 .id(1L)
@@ -36,12 +40,14 @@ public class EventController {
                 .kidSlotsLeft(10L)
                 .gatheringType("type")
                 .build();
-
-        return event;
+        List<Event> eventList = new ArrayList<>();
+        eventList.add(event);
+        return ResponseEntity.ok(new GetEventsResponse(new GetEventsResponse.EventsField(
+                eventList)));
     }
 
     @GetMapping("/mixed")
-    public Event getUpcomingMixedEvents() {
+    public ResponseEntity<GetEventsResponse> getUpcomingMixedEvents() {
         Event event = Event.builder()
                 .id(1L)
                 .name("name")
@@ -63,8 +69,10 @@ public class EventController {
                 .kidSlotsLeft(10L)
                 .gatheringType("type")
                 .build();
-
-        return event;
+        List<Event> eventList = new ArrayList<>();
+        eventList.add(event);
+        return ResponseEntity.ok(new GetEventsResponse(new GetEventsResponse.EventsField(
+                eventList)));
     }
 
 }

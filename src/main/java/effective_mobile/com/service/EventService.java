@@ -43,7 +43,7 @@ public class EventService {
                     .time(formatData(getValueFromProperty(element, "PROPERTY_113")))
                     .adultPrice(Integer.parseInt(getValueFromProperty(element, "PROPERTY_135")))
                     .kidPrice(Integer.parseInt(getValueFromProperty(element, "PROPERTY_129")))
-                    .childAge(Integer.parseInt(getValueFromProperty(element, "PROPERTY_133")))
+                    .childAge(getValueFromProperty(element, "PROPERTY_133"))
                     .capacity(Integer.parseInt(getValueFromProperty(element, "PROPERTY_131")))
                     .adultCapacity(Integer.parseInt(getValueFromProperty(element, "PROPERTY_111")))
                     .kidCapacity(Integer.parseInt(getValueFromProperty(element, "PROPERTY_109")))

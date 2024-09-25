@@ -16,7 +16,7 @@ public class Event implements Serializable {
     private String time;
     private Integer adultPrice;
     private Integer kidPrice;
-    private Integer childAge;
+    private String childAge;
     private Integer capacity;
     private Integer adultCapacity;
     private Integer kidCapacity;

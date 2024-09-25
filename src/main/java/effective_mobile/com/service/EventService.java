@@ -38,7 +38,7 @@ public class EventService {
         for (var element : elements) {
             var slot = Event.builder()
                     .id(element.path("ID").asLong())
-                    .type("test")
+                    .type("Школьные")
                     .name(element.path("NAME").asText())
                     .time(formatData(getValueFromProperty(element, "PROPERTY_113")))
                     .adultPrice(Integer.parseInt(getValueFromProperty(element, "PROPERTY_135")))
@@ -50,7 +50,8 @@ public class EventService {
                     .slotsLeft(Integer.parseInt(getValueFromProperty(element, "PROPERTY_131")))
                     .adultSlotsLeft(Integer.parseInt(getValueFromProperty(element, "PROPERTY_111")))
                     .kidSlotsLeft(Integer.parseInt(getValueFromProperty(element, "PROPERTY_129")))
-                    .gatheringType(SlotType.typeFromValue(Integer.parseInt(getValueFromProperty(element, "PROPERTY_125"))))
+                    .gatheringType("Школьные")
+//                    .gatheringType(SlotType.typeFromValue(Integer.parseInt(getValueFromProperty(element, "PROPERTY_125"))))
                     //в слотах не передается этот параметр
                     .adultRequired(true)
                     .city(city)

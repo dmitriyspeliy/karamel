@@ -87,7 +87,7 @@ public class EventService {
                 event.setTime(time);
                 event.setAdultPrice(adultPrice);
                 event.setKidPrice(kidPrice);
-                event.setChildAge(Integer.valueOf(childAge));
+                event.setChildAge(Integer.valueOf(childAge.split("")[0]));
                 event.setCapacity(capacity);
                 event.setAdultCapacity(adultCapacity);
                 event.setKidCapacity(kidCapacity);

@@ -39,7 +39,7 @@ public class BookingService {
         Contact contact = addContact.addContact(requestBody.getContactName(), requestBody.getCity(),
                 requestBody.getNumber(), requestBody.getSource());
         Deal deal = addDeal.addDeal(requestBody, contact, payment.pay());
-        return new GetPaymentLinkResponse(UUID.randomUUID(), new URL(pay).toURI().toURL(), Instant.now());
+        return new GetPaymentLinkResponse(UUID.randomUUID(), new URL("https://www.baeldung.com/"), Instant.now());
     }
 
 

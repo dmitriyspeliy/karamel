@@ -55,6 +55,7 @@ public class EventService {
             type = SlotType.typeFromValue(Integer.parseInt(getValueFromProperty(element, "PROPERTY_125")));
             Long extId = element.path("ID").asLong();
             String name = element.path("NAME").asText();
+            String time = formatData(getValueFromProperty(element, "PROPERTY_113"));
 
             var slot = Event.builder()
                     .id(element.path("ID").asLong())
@@ -80,9 +81,20 @@ public class EventService {
             Optional<effective_mobile.com.model.entity.Event> optionalEvent = eventRepository.findByExtEventId(extId);
             if (optionalEvent.isEmpty()) {
                 effective_mobile.com.model.entity.Event event = new effective_mobile.com.model.entity.Event();
-                event.setName(name);
                 event.setExtEventId(extId);
+                event.setName(name);
                 event.setType(type);
+                event.setTime(time);
+                event.setAdultPrice(adultPrice);
+                event.setKidPrice(kidPrice);
+                event.setChildAge(Integer.valueOf(childAge));
+                event.setCapacity(capacity);
+                event.setAdultCapacity(adultCapacity);
+                event.setKidCapacity(kidCapacity);
+                event.setSlotsLeft(slotsLeft);
+                event.setAdultSlotsLeft(adultSlotsLeft);
+                event.setGatheringType(type);
+                event.setAdultRequired(true);
                 event.setCity(city);
                 eventRepository.save(event);
                 log.info("Save event in db");

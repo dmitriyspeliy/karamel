@@ -10,6 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -37,7 +40,7 @@ public class EventService {
                     .id(element.path("ID").asLong())
                     .type("test")
                     .name(element.path("NAME").asText())
-                    .time(getValueFromProperty(element, "PROPERTY_113"))
+                    .time(formatData(getValueFromProperty(element, "PROPERTY_113")))
                     .adultPrice(Integer.parseInt(getValueFromProperty(element, "PROPERTY_135")))
                     .kidPrice(Integer.parseInt(getValueFromProperty(element, "PROPERTY_129")))
                     .childAge(Integer.parseInt(getValueFromProperty(element, "PROPERTY_133")))
@@ -85,5 +88,15 @@ public class EventService {
         } catch (NoSuchElementException e) {
             return "0";
         }
+    }
+
+    private String formatData(String time) {
+        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
+        LocalDateTime localDateTime = LocalDateTime.parse(time, inputFormatter);
+        OffsetDateTime offsetDateTime = localDateTime.atOffset(ZoneOffset.UTC);
+        String formattedDateTime = offsetDateTime.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+        formattedDateTime = formattedDateTime.replace("+00:00", "Z");
+
+        return formattedDateTime;
     }
 }

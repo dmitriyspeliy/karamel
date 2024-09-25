@@ -22,7 +22,7 @@ public class EventController {
     @GetMapping("/group")
     public EventResponse getUpcomingGroupEvents() {
         var cityName = cityProperties.getCityInfo().get(currentCity).getCityName();
-        var events = eventService.getUpcomingEvents(cityName, "Школьный");
+        var events = eventService.getUpcomingEvents(cityName, "Школьные");
         var response = new EventResponse();
         var eventsWrapper = new EventResponse.EventsWrapper();
         eventsWrapper.setEvents(events);

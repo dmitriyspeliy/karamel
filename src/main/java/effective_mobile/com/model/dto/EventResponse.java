@@ -10,5 +10,12 @@ import java.util.List;
 @Setter
 public class EventResponse {
     @JsonProperty("events")
-    private List<Event> events;
+    private EventsWrapper events;
+
+    @Getter
+    @Setter
+    public static class EventsWrapper {
+        @JsonProperty("events")
+        private List<Event> events;
+    }
 }

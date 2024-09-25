@@ -23,7 +23,10 @@ public class EventController {
         var cityName = cityProperties.getCityInfo().get(currentCity).getCityName();
         var events = eventService.getUpcomingEvents(cityName, "Школьный");
         var response = new EventResponse();
-        response.setEvents(events);
+        var eventsWrapper = new EventResponse.EventsWrapper();
+        eventsWrapper.setEvents(events);
+
+        response.setEvents(eventsWrapper);
         return response;
     }
 
@@ -32,7 +35,10 @@ public class EventController {
         var cityName = cityProperties.getCityInfo().get(currentCity).getCityName();
         var events = eventService.getUpcomingEvents(cityName, "Сборная");
         var response = new EventResponse();
-        response.setEvents(events);
+        var eventsWrapper = new EventResponse.EventsWrapper();
+        eventsWrapper.setEvents(events);
+
+        response.setEvents(eventsWrapper);
         return response;
     }
 

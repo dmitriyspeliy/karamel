@@ -2,8 +2,8 @@ package effective_mobile.com.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import effective_mobile.com.model.dto.Event;
-import effective_mobile.com.model.dto.enums.City;
-import effective_mobile.com.model.dto.enums.SlotType;
+import effective_mobile.com.utils.enums.City;
+import effective_mobile.com.utils.enums.SlotType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

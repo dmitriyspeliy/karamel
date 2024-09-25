@@ -1,4 +1,4 @@
-package effective_mobile.com.model.dto.enums;
+package effective_mobile.com.utils.enums;
 
 public enum Activity {
     YES(93, true),

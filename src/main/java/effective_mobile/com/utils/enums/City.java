@@ -1,4 +1,4 @@
-package effective_mobile.com.model.dto.enums;
+package effective_mobile.com.utils.enums;
 
 public enum City {
     MOSCOW(97, "Москва"),

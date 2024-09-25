@@ -3,8 +3,6 @@ package effective_mobile.com.model.dto;
 import lombok.*;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.time.Instant;
 
 @Getter
 @Setter

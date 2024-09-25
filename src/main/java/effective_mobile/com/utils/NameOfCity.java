@@ -2,6 +2,8 @@ package effective_mobile.com.utils;
 
 import lombok.Getter;
 
+@Getter
+
 public enum NameOfCity {
 
     CHEL("ЧЕЛЯБИНСК", "https://chelyabinsk.exkursiacaramel.ru", 8090),
@@ -18,7 +20,6 @@ public enum NameOfCity {
     YAR("ЯРОСЛАВЛЬ", "https://yar.exkursiacaramel.ru", 8082),
     MSK("МОСКВА", "https://msk.exkursiacaramel.ru", 8091);
 
-    @Getter
     final String name;
     final Integer port;
     final String hostName;

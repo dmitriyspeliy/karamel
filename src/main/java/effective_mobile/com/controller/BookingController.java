@@ -17,8 +17,9 @@ import java.net.URISyntaxException;
 import java.time.Instant;
 
 @RestController
-@RequestMapping("/api/booking")
+@RequestMapping("/booking")
 @RequiredArgsConstructor
+
 public class BookingController {
 
     private final BookingService bookingService;

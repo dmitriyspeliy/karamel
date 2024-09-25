@@ -51,7 +51,7 @@ public class EventService {
             Integer kidCapacity = Integer.parseInt(getValueFromProperty(element, "PROPERTY_109"));
             Integer slotsLeft = Integer.parseInt(getValueFromProperty(element, "PROPERTY_131"));
             Integer adultSlotsLeft = Integer.parseInt(getValueFromProperty(element, "PROPERTY_111"));
-            Integer kidSlotLeft = Integer.parseInt(getValueFromProperty(element, "PROPERTY_109"));
+            Integer kidSlotLeft = Integer.parseInt(getValueFromProperty(element, "PROPERTY_111"));
             type = SlotType.typeFromValue(Integer.parseInt(getValueFromProperty(element, "PROPERTY_125")));
             Long extId = element.path("ID").asLong();
             String name = element.path("NAME").asText();
@@ -96,6 +96,7 @@ public class EventService {
                 event.setGatheringType(type);
                 event.setAdultRequired(true);
                 event.setCity(city);
+                event.setKidSlotsLeft(kidSlotLeft);
                 eventRepository.save(event);
                 log.info("Save event in db");
             }

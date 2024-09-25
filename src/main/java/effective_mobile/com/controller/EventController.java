@@ -24,17 +24,15 @@ public class EventController {
     private final CityProperties cityProperties;
 
     @GetMapping("/group")
-    public GetEventResponse getUpcomingGroupEvents() {
+    public EventResponse getUpcomingGroupEvents() {
         var cityName = cityProperties.getCityInfo().get(currentCity).getCityName();
         var events = eventService.getUpcomingEvents(cityName, "Школьный");
         var response = new EventResponse();
         var eventsWrapper = new EventResponse.EventsWrapper();
         eventsWrapper.setEvents(events);
 
-        var eventFields = new GetEventResponse.EventsField(toEvent(events));
-
         response.setEvents(eventsWrapper);
-        return new GetEventResponse(eventFields);
+        return response;
     }
 
     @GetMapping("/mixed")
@@ -47,32 +45,6 @@ public class EventController {
 
         response.setEvents(eventsWrapper);
         return response;
-    }
-
-    private List<GetEventResponse.Event> toEvent(List<Event> events) {
-        var list = new ArrayList<GetEventResponse.Event>();
-        for (var event : events) {
-            var newEvent = new GetEventResponse.Event(
-                    event.getId(),
-                    event.getName(),
-                    event.getType(),
-                    event.getTime(),
-                    event.getAdultPrice(),
-                    event.getKidPrice(),
-                    event.getChildAge(),
-                    event.getCapacity(),
-                    event.getAdultCapacity(),
-                    event.getKidCapacity(),
-                    event.getSlotsLeft(),
-                    event.getAdultSlotsLeft(),
-                    event.getKidSlotsLeft(),
-                    event.getGatheringType(),
-                    event.getAdultRequired(),
-                    event.getCity()
-            );
-            list.add(newEvent);
-        }
-        return list;
     }
 
 }

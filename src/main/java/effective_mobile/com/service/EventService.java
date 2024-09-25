@@ -50,8 +50,7 @@ public class EventService {
                     .slotsLeft(Integer.parseInt(getValueFromProperty(element, "PROPERTY_131")))
                     .adultSlotsLeft(Integer.parseInt(getValueFromProperty(element, "PROPERTY_111")))
                     .kidSlotsLeft(Integer.parseInt(getValueFromProperty(element, "PROPERTY_129")))
-                    .gatheringType("type")
-//                    .gatheringType(SlotType.typeFromValue(Integer.parseInt(getValueFromProperty(element, "PROPERTY_125"))))
+                    .gatheringType(SlotType.typeFromValue(Integer.parseInt(getValueFromProperty(element, "PROPERTY_125"))))
                     //в слотах не передается этот параметр
                     .adultRequired(true)
                     .city(city)

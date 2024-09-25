@@ -34,7 +34,7 @@ public class EventController {
     @GetMapping("/mixed")
     public EventResponse getUpcomingMixedEvents() {
         var cityName = cityProperties.getCityInfo().get(currentCity).getCityName();
-        var events = eventService.getUpcomingEvents(cityName, "Сборная");
+        var events = eventService.getUpcomingEvents(cityName, "Сборные");
         var response = new EventResponse();
         var eventsWrapper = new EventResponse.EventsWrapper();
         eventsWrapper.setEvents(events);

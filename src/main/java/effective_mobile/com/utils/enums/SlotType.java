@@ -2,7 +2,7 @@ package effective_mobile.com.utils.enums;
 
 public enum SlotType {
     SCHOOL(117, "Школьные"),
-    MIXED(119, "Сборная");
+    MIXED(119, "Сборные");
 
     private final int code;
     private final String description;

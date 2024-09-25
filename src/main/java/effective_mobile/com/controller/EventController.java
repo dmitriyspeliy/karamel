@@ -1,9 +1,7 @@
 package effective_mobile.com.controller;
 
 import effective_mobile.com.configuration.properties.CityProperties;
-import effective_mobile.com.model.dto.Event;
 import effective_mobile.com.model.dto.EventResponse;
-import effective_mobile.com.model.dto.rs.GetEventResponse;
 import effective_mobile.com.service.EventService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,8 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 @RequestMapping("/events")

@@ -1,4 +1,4 @@
-package effective_mobile.com.utils;
+package effective_mobile.com.utils.enums;
 
 import lombok.Getter;
 

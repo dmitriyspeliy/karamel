@@ -2,6 +2,7 @@ package effective_mobile.com.service.api.event;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import effective_mobile.com.model.dto.Event;
+import effective_mobile.com.repository.EventRepository;
 import effective_mobile.com.utils.enums.City;
 import effective_mobile.com.utils.enums.SlotType;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -26,6 +28,7 @@ public class EventService {
     private String baseUrl;
     @Value("${bitrix.endpoints.getEvents}")
     private String endpoint;
+    private final EventRepository eventRepository;
 
     private static final String IBLOCK_TYPE_ID = "lists";
     private static final String IBLOCK_ID = "29";
@@ -40,27 +43,52 @@ public class EventService {
         var slots = new ArrayList<Event>();
 
         for (var element : elements) {
+            Integer adultPrice = Integer.parseInt(getValueFromProperty(element, "PROPERTY_135"));
+            Integer kidPrice = Integer.parseInt(getValueFromProperty(element, "PROPERTY_129"));
+            String childAge = getValueFromProperty(element, "PROPERTY_133");
+            Integer capacity = Integer.parseInt(getValueFromProperty(element, "PROPERTY_131"));
+            Integer adultCapacity = Integer.parseInt(getValueFromProperty(element, "PROPERTY_111"));
+            Integer kidCapacity = Integer.parseInt(getValueFromProperty(element, "PROPERTY_109"));
+            Integer slotsLeft = Integer.parseInt(getValueFromProperty(element, "PROPERTY_131"));
+            Integer adultSlotsLeft = Integer.parseInt(getValueFromProperty(element, "PROPERTY_111"));
+            Integer kidSlotLeft = Integer.parseInt(getValueFromProperty(element, "PROPERTY_109"));
+            type = SlotType.typeFromValue(Integer.parseInt(getValueFromProperty(element, "PROPERTY_125")));
+            Long extId = element.path("ID").asLong();
+            String name = element.path("NAME").asText();
+
             var slot = Event.builder()
                     .id(element.path("ID").asLong())
-                    .type(SlotType.typeFromValue(Integer.parseInt(getValueFromProperty(element, "PROPERTY_125"))))
+                    .type(type)
                     .name(element.path("NAME").asText())
                     .time(formatData(getValueFromProperty(element, "PROPERTY_113")))
-                    .adultPrice(Integer.parseInt(getValueFromProperty(element, "PROPERTY_135")))
-                    .kidPrice(Integer.parseInt(getValueFromProperty(element, "PROPERTY_129")))
-                    .childAge(getValueFromProperty(element, "PROPERTY_133"))
-                    .capacity(Integer.parseInt(getValueFromProperty(element, "PROPERTY_131")))
-                    .adultCapacity(Integer.parseInt(getValueFromProperty(element, "PROPERTY_111")))
-                    .kidCapacity(Integer.parseInt(getValueFromProperty(element, "PROPERTY_109")))
-                    .slotsLeft(Integer.parseInt(getValueFromProperty(element, "PROPERTY_131")))
-                    .adultSlotsLeft(Integer.parseInt(getValueFromProperty(element, "PROPERTY_111")))
-                    .kidSlotsLeft(Integer.parseInt(getValueFromProperty(element, "PROPERTY_109")))
-                    .gatheringType(SlotType.typeFromValue(Integer.parseInt(getValueFromProperty(element, "PROPERTY_125"))))
+                    .adultPrice(adultPrice)
+                    .kidPrice(kidPrice)
+                    .childAge(childAge)
+                    .capacity(capacity)
+                    .adultCapacity(adultCapacity)
+                    .kidCapacity(kidCapacity)
+                    .slotsLeft(slotsLeft)
+                    .adultSlotsLeft(adultSlotsLeft)
+                    .kidSlotsLeft(kidSlotLeft)
+                    .gatheringType(type)
                     //в слотах не передается этот параметр
                     .adultRequired(true)
                     .city(city)
                     .build();
             slots.add(slot);
+
+            Optional<effective_mobile.com.model.entity.Event> optionalEvent = eventRepository.findByExtEventId(extId);
+            if (optionalEvent.isEmpty()) {
+                effective_mobile.com.model.entity.Event event = new effective_mobile.com.model.entity.Event();
+                event.setName(name);
+                event.setExtEventId(extId);
+                event.setType(type);
+                event.setCity(city);
+                eventRepository.save(event);
+                log.info("Save event in db");
+            }
         }
+
         log.info("Found {} upcoming events for city: {}", slots.size(), city);
 
         return slots;

@@ -10,7 +10,7 @@ import java.util.Date;
 @Getter
 @Setter
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-public class ContactAddResponse {
+public class DealAddResponse {
     private Integer result;
     @JsonProperty("time")
     private Time time;

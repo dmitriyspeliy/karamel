@@ -28,6 +28,9 @@ public class Deal {
     @Column(name = "add_info")
     private String addInfo;
 
+    @Column(name = "paid")
+    Boolean paid;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "contact_id")
     Contact contact;

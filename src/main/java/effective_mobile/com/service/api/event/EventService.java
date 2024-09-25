@@ -1,10 +1,11 @@
-package effective_mobile.com.service;
+package effective_mobile.com.service.api.event;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import effective_mobile.com.model.dto.Event;
 import effective_mobile.com.utils.enums.City;
 import effective_mobile.com.utils.enums.SlotType;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class EventService {
@@ -31,6 +33,8 @@ public class EventService {
     private static final String ELEMENT_ORDER_PROPERTY_113 = "ASC";
 
     public List<Event> getUpcomingEvents(String city, String type) {
+        log.info("Fetching upcoming events for city: {} and type: {}", city, type);
+
         var response = sentRequest(city, type);
         var elements = response.path("result");
         var slots = new ArrayList<Event>();
@@ -57,11 +61,15 @@ public class EventService {
                     .build();
             slots.add(slot);
         }
+        log.info("Found {} upcoming events for city: {}", slots.size(), city);
+
         return slots;
     }
 
 
     private JsonNode sentRequest(String city, String type) {
+        log.info("Sending request to Bitrix API for city: {} and type: {}", city, type);
+
         var restTemplate = new RestTemplate();
         var codeOfCity = City.getCodeOfCity(city);
         var codeOfType = SlotType.getCodeOfType(type);
@@ -85,6 +93,7 @@ public class EventService {
             var key = entrySet.fieldNames().next();
             return entrySet.path(key).asText();
         } catch (NoSuchElementException e) {
+            log.warn("Property {} not found in node, returning default value '0'", property);
             return "0";
         }
     }

@@ -1,6 +1,7 @@
-package effective_mobile.com.model.dto;
+package effective_mobile.com.model.dto.rs;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import effective_mobile.com.model.dto.Event;
 import lombok.Getter;
 import lombok.Setter;
 

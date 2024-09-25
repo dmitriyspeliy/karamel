@@ -1,9 +1,10 @@
 package effective_mobile.com.controller;
 
 import effective_mobile.com.configuration.properties.CityProperties;
-import effective_mobile.com.model.dto.EventResponse;
-import effective_mobile.com.service.EventService;
+import effective_mobile.com.model.dto.rs.EventResponse;
+import effective_mobile.com.service.api.event.EventService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/events")
 @RequiredArgsConstructor
+@Slf4j
 public class EventController {
     @Value("${spring.current-city}")
     private String currentCity;
@@ -21,6 +23,7 @@ public class EventController {
 
     @GetMapping("/group")
     public EventResponse getUpcomingGroupEvents() {
+        log.info("Request received for upcoming group events");
         var cityName = cityProperties.getCityInfo().get(currentCity).getCityName();
         var events = eventService.getUpcomingEvents(cityName, "Школьные");
         var response = new EventResponse();
@@ -33,6 +36,7 @@ public class EventController {
 
     @GetMapping("/mixed")
     public EventResponse getUpcomingMixedEvents() {
+        log.info("Request received for upcoming mixed events");
         var cityName = cityProperties.getCityInfo().get(currentCity).getCityName();
         var events = eventService.getUpcomingEvents(cityName, "Сборные");
         var response = new EventResponse();

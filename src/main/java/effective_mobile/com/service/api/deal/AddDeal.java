@@ -1,31 +1,8 @@
 package effective_mobile.com.service.api.deal;
 
-import com.google.gson.Gson;
-import effective_mobile.com.model.dto.rq.RequestToBookingEvent;
-import effective_mobile.com.model.dto.rs.ContactAddResponse;
-import effective_mobile.com.model.entity.Contact;
-import effective_mobile.com.model.entity.Deal;
-import effective_mobile.com.repository.ContactRepository;
-import effective_mobile.com.service.EventService;
-import effective_mobile.com.utils.CommonVar;
-import effective_mobile.com.utils.NameOfCity;
-import effective_mobile.com.utils.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
-
-import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.time.Duration;
-import java.time.temporal.ChronoUnit;
-import java.util.List;
-
-import static effective_mobile.com.utils.UtilsMethods.checkVar;
 
 @Component
 @RequiredArgsConstructor

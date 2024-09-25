@@ -199,6 +199,10 @@ spring:
 server:
   port: ${APP_PORT}
 
+bitrix:
+  baseUrl: "https://caramelka.bitrix24.ru/rest/55/52y4wtim201qylus/"
+  endpoints:
+    getEvents: "lists.element.get.json?"
 
 
 

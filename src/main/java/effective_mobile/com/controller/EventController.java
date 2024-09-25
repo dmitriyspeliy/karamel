@@ -1,78 +1,39 @@
 package effective_mobile.com.controller;
 
-import effective_mobile.com.model.dto.Event;
-import effective_mobile.com.model.dto.GetEventsResponse;
-import org.springframework.http.ResponseEntity;
+import effective_mobile.com.configuration.properties.CityProperties;
+import effective_mobile.com.model.dto.EventResponse;
+import effective_mobile.com.service.EventService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.math.BigDecimal;
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-
 @RestController
 @RequestMapping("/events")
+@RequiredArgsConstructor
 public class EventController {
+    @Value("${spring.current-city}")
+    private String currentCity;
+    private final EventService eventService;
+    private final CityProperties cityProperties;
 
     @GetMapping("/group")
-    public ResponseEntity<GetEventsResponse> getUpcomingGroupEvents() {
-
-        Event event = Event.builder()
-                .id(1L)
-                .name("name")
-                .type("type")
-                .city("city")
-                .time(Instant.now())
-                .adultPrice(BigDecimal.ONE)
-                .kidPrice(BigDecimal.ONE)
-                .adultRequired(true)
-                .curators("curators")
-                .meetingAddress("adress")
-                .ageRestriction("10")
-                .childAge("10")
-                .capacity(10L)
-                .adultCapacity(10L)
-                .kidCapacity(10L)
-                .slotsLeft(10L)
-                .adultSlotsLeft(10L)
-                .kidSlotsLeft(10L)
-                .gatheringType("type")
-                .build();
-        List<Event> eventList = new ArrayList<>();
-        eventList.add(event);
-        return ResponseEntity.ok(new GetEventsResponse(new GetEventsResponse.EventsField(
-                eventList)));
+    public EventResponse getUpcomingGroupEvents() {
+        var cityName = cityProperties.getCityInfo().get(currentCity).getCityName();
+        var events = eventService.getUpcomingEvents(cityName, "Школьный");
+        var response = new EventResponse();
+        response.setEvents(events);
+        return response;
     }
 
     @GetMapping("/mixed")
-    public ResponseEntity<GetEventsResponse> getUpcomingMixedEvents() {
-        Event event = Event.builder()
-                .id(1L)
-                .name("name")
-                .type("type")
-                .city("city")
-                .time(Instant.now())
-                .adultPrice(BigDecimal.ONE)
-                .kidPrice(BigDecimal.ONE)
-                .adultRequired(true)
-                .curators("curators")
-                .meetingAddress("adress")
-                .ageRestriction("10")
-                .childAge("10")
-                .capacity(10L)
-                .adultCapacity(10L)
-                .kidCapacity(10L)
-                .slotsLeft(10L)
-                .adultSlotsLeft(10L)
-                .kidSlotsLeft(10L)
-                .gatheringType("type")
-                .build();
-        List<Event> eventList = new ArrayList<>();
-        eventList.add(event);
-        return ResponseEntity.ok(new GetEventsResponse(new GetEventsResponse.EventsField(
-                eventList)));
+    public EventResponse getUpcomingMixedEvents() {
+        var cityName = cityProperties.getCityInfo().get(currentCity).getCityName();
+        var events = eventService.getUpcomingEvents(cityName, "Сборная");
+        var response = new EventResponse();
+        response.setEvents(events);
+        return response;
     }
 
 }

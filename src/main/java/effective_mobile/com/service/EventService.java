@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -91,7 +92,8 @@ public class EventService {
                 .id(id)
                 .type(type)
                 .name(name)
-                .time(Instant.parse(time))
+                .time(LocalDateTime.parse("29.11.2024 16:20:00",
+                        DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss")).toInstant(ZoneOffset.of("+00:00")))
                 .adultPrice(adultPrice)
                 .kidPrice(kidPrice)
                 .childAge(childAge.split("")[0])

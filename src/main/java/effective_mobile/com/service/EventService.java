@@ -9,9 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -38,7 +36,7 @@ public class EventService {
     private Long adultSlotsLeft;
     private Long kidSlotLeft;
     private Long extId;
-    private String time;
+    private LocalDateTime time;
     private String name;
     private String type;
     private String city;
@@ -55,7 +53,7 @@ public class EventService {
 
         for (var element : elements) {
 
-            exctractValue(element);
+            extractValue(element);
 
             slots.add(makeEvent());
 
@@ -67,7 +65,7 @@ public class EventService {
         return slots;
     }
 
-    private void exctractValue(JsonNode element) {
+    private void extractValue(JsonNode element) {
         adultPrice =
                 BigDecimal.valueOf(Long.parseLong(getValueFromProperty(element, "PROPERTY_135")));
         kidPrice =
@@ -82,8 +80,8 @@ public class EventService {
         extId = element.path("ID").asLong();
         name = element.path("NAME").asText();
         time =
-                LocalDateTime.parse(getValueFromProperty(element, "PROPERTY_113"), DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss"))
-                        .toString();
+                LocalDateTime.parse(getValueFromProperty(element, "PROPERTY_113"),
+                        DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss"));
         id = element.path("ID").asLong();
     }
 
@@ -92,8 +90,7 @@ public class EventService {
                 .id(id)
                 .type(type)
                 .name(name)
-                .time(LocalDateTime.parse("29.11.2024 16:20:00",
-                        DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss")).toInstant(ZoneOffset.of("+00:00")))
+                .time(time.toInstant(ZoneOffset.of("+00:00")))
                 .adultPrice(adultPrice)
                 .kidPrice(kidPrice)
                 .childAge(childAge.split("")[0])
@@ -117,7 +114,7 @@ public class EventService {
             event.setExtEventId(extId);
             event.setName(name);
             event.setType(type);
-            event.setTime(LocalDateTime.ofInstant(Instant.parse(time), ZoneId.of("GMT+0")));
+            event.setTime(time);
             event.setAdultPrice(adultPrice);
             event.setKidPrice(kidPrice);
             event.setChildAge(Long.parseLong(childAge.split("")[0]));

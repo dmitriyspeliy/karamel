@@ -63,9 +63,9 @@ public class AddDeal {
             Integer sum = 0;
             String extId = "0";
             if (eventOptional.isPresent()) {
-                Integer adultPrice = eventOptional.get().getAdultPrice();
-                Integer kidPrice = eventOptional.get().getKidPrice();
-                sum = (adultPrice * requestToBookingEvent.getPaidAdultCount()) + (kidPrice * requestToBookingEvent.getChildrenCount());
+                BigDecimal adultPrice = eventOptional.get().getAdultPrice();
+                BigDecimal kidPrice = eventOptional.get().getKidPrice();
+                sum = (adultPrice.intValue() * requestToBookingEvent.getPaidAdultCount()) + (kidPrice.intValue() * requestToBookingEvent.getChildrenCount());
                 extId = String.valueOf(eventOptional.get().getExtEventId());
             }
             contactResponse

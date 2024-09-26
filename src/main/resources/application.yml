@@ -35,8 +35,8 @@ spring:
       city-name: ЕКАТЕРИНБУРГ
       timezone: 3
       invoice-lifetime-minutes: 15
-      start-endpoint: 2023-11-30T00:00:00+00:00
-      finish-endpoint: 2024-01-10T00:00:00+00:00
+      start-endpoint: 2024-11-01T00:00:00+00:00
+      finish-endpoint: 2025-01-11T00:00:00+00:00
       address: Свердловская область, г. Верхняя Пышма, ул. Восточная, д.15 (дом 400 м.кв.)
       manager-contact-numbers:
         - +73432264525
@@ -50,8 +50,8 @@ spring:
       city-name: ТЮМЕНЬ
       timezone: 3
       invoice-lifetime-minutes: 15
-      start-endpoint: 2023-11-30T00:00:00+00:00
-      finish-endpoint: 2024-01-10T00:00:00+00:00
+      start-endpoint: 2024-11-01T00:00:00+00:00
+      finish-endpoint: 2025-01-11T00:00:00+00:00
       address: Тюменская область, Тюменский район, посёлок Боровский, ул. Трактовая, д. 50/1 (дом 300 м.кв.)
       manager-contact-numbers:
         - +73452518032
@@ -64,8 +64,8 @@ spring:
       city-name: ИЖЕВСК
       timezone: 4
       invoice-lifetime-minutes: 15
-      start-endpoint: 2023-11-30T00:00:00+00:00
-      finish-endpoint: 2024-01-10T00:00:00+00:00
+      start-endpoint: 2024-11-01T00:00:00+00:00
+      finish-endpoint: 2025-01-11T00:00:00+00:00
       address: г. Ижевск, Удмуртская республика, Новоцентральная улица, 4
       manager-contact-numbers:
         - +73412650630
@@ -79,8 +79,8 @@ spring:
       city-name: КРАСНОЯРСК
       timezone: 7
       invoice-lifetime-minutes: 15
-      start-endpoint: 2023-11-30T00:00:00+00:00
-      finish-endpoint: 2024-01-10T00:00:00+00:00
+      start-endpoint: 2024-11-01T00:00:00+00:00
+      finish-endpoint: 2025-01-11T00:00:00+00:00
       address: г. Красноярск, ул. Караульная, д. 24
       manager-contact-numbers:
         - +73919897947
@@ -94,8 +94,8 @@ spring:
       city-name: НОВОСИБИРСК
       timezone: 7
       invoice-lifetime-minutes: 15
-      start-endpoint: 2023-11-30T00:00:00+00:00
-      finish-endpoint: 2024-01-10T00:00:00+00:00
+      start-endpoint: 2024-11-01T00:00:00+00:00
+      finish-endpoint: 2025-01-11T00:00:00+00:00
       address: г. Обь, ул. Дорожников, д. 27
       manager-contact-numbers:
         - +79952229459
@@ -109,8 +109,8 @@ spring:
       city-name: САМАРА
       timezone: 3
       invoice-lifetime-minutes: 15
-      start-endpoint: 2023-11-30T00:00:00+00:00
-      finish-endpoint: 2024-01-10T00:00:00+00:00
+      start-endpoint: 2024-11-01T00:00:00+00:00
+      finish-endpoint: 2025-01-11T00:00:00+00:00
       address: г. Самара, Красноглинский район, п. Красная Глинка, ул. Южная, д. 16
       manager-contact-numbers:
         - +79249148423
@@ -124,8 +124,8 @@ spring:
       city-name: ВОЛГОГРАД
       timezone: 3
       invoice-lifetime-minutes: 15
-      start-endpoint: 2023-11-30T00:00:00+00:00
-      finish-endpoint: 2024-01-10T00:00:00+00:00
+      start-endpoint: 2024-11-01T00:00:00+00:00
+      finish-endpoint: 2025-01-11T00:00:00+00:00
       address: Волгоград, ул. Маргариты Агашиной, д.65
       manager-contact-numbers:
         - +79249145265
@@ -139,8 +139,8 @@ spring:
       city-name: ЛИПЕЦК
       timezone: 3
       invoice-lifetime-minutes: 15
-      start-endpoint: 2023-11-30T00:00:00+00:00
-      finish-endpoint: 2024-01-10T00:00:00+00:00
+      start-endpoint: 2024-11-01T00:00:00+00:00
+      finish-endpoint: 2025-01-11T00:00:00+00:00
       address: Липецкая область, Липецкий район, село Ленино, ул. Закатная, 6
       manager-contact-numbers:
         - +79249141709
@@ -154,8 +154,8 @@ spring:
       city-name: ПЕРМЬ
       timezone: 3
       invoice-lifetime-minutes: 15
-      start-endpoint: 2023-11-30T00:00:00+00:00
-      finish-endpoint: 2024-01-10T00:00:00+00:00
+      start-endpoint: 2024-11-01T00:00:00+00:00
+      finish-endpoint: 2025-01-11T00:00:00+00:00
       address: г. Пермь, ул. Невская, д. 3а
       manager-contact-numbers:
         - +79249141709
@@ -169,8 +169,8 @@ spring:
       city-name: САНКТ-ПЕТЕРБУРГ
       timezone: 3
       invoice-lifetime-minutes: 15
-      start-endpoint: 2023-11-30T00:00:00+00:00
-      finish-endpoint: 2024-01-10T00:00:00+00:00
+      start-endpoint: 2024-11-01T00:00:00+00:00
+      finish-endpoint: 2025-01-11T00:00:00+00:00
       address: г. Санкт-Петербург, тер. Сергиево, ул. Пролетарская, д. 17, литер А
       manager-contact-numbers:
         - +78125092995
@@ -185,8 +185,8 @@ spring:
       city-name: ЯРОСЛАВЛЬ
       timezone: 3
       invoice-lifetime-minutes: 15
-      start-endpoint: 2023-11-30T00:00:00+00:00
-      finish-endpoint: 2024-01-10T00:00:00+00:00
+      start-endpoint: 2024-11-01T00:00:00+00:00
+      finish-endpoint: 2025-01-11T00:00:00+00:00
       address: г. Ярославль, посёлок Пятовское, 4-я Пятовская улица, 16
       manager-contact-numbers:
         - +74852607104

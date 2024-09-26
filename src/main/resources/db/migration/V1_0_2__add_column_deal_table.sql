@@ -1,1 +1,0 @@
-alter table if exists deal add column paid bool not null default false;

@@ -11,9 +11,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
+import java.math.BigDecimal;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,16 +42,17 @@ public class EventService {
         var slots = new ArrayList<Event>();
 
         for (var element : elements) {
-            Integer adultPrice = Integer.parseInt(getValueFromProperty(element, "PROPERTY_135"));
-            Integer kidPrice = Integer.parseInt(getValueFromProperty(element, "PROPERTY_129"));
+            BigDecimal adultPrice =
+                    BigDecimal.valueOf(Long.parseLong(getValueFromProperty(element, "PROPERTY_135")));
+            BigDecimal kidPrice =
+                    BigDecimal.valueOf(Long.parseLong(getValueFromProperty(element, "PROPERTY_129")));
             String childAge = getValueFromProperty(element, "PROPERTY_133");
-            Integer capacity = Integer.parseInt(getValueFromProperty(element, "PROPERTY_131"));
-            Integer adultCapacity = Integer.parseInt(getValueFromProperty(element, "PROPERTY_111"));
-            Integer kidCapacity = Integer.parseInt(getValueFromProperty(element, "PROPERTY_109"));
-            Integer slotsLeft = Integer.parseInt(getValueFromProperty(element, "PROPERTY_131"));
-            Integer adultSlotsLeft = Integer.parseInt(getValueFromProperty(element, "PROPERTY_111"));
-            Integer kidSlotLeft = Integer.parseInt(getValueFromProperty(element, "PROPERTY_111"));
-            type = SlotType.typeFromValue(Integer.parseInt(getValueFromProperty(element, "PROPERTY_125")));
+            Long capacity = Long.parseLong(getValueFromProperty(element, "PROPERTY_131"));
+            Long adultCapacity = Long.parseLong(getValueFromProperty(element, "PROPERTY_111"));
+            Long kidCapacity = Long.parseLong(getValueFromProperty(element, "PROPERTY_109"));
+            Long slotsLeft = Long.parseLong(getValueFromProperty(element, "PROPERTY_131"));
+            Long adultSlotsLeft = Long.parseLong(getValueFromProperty(element, "PROPERTY_111"));
+            Long kidSlotLeft = Long.parseLong(getValueFromProperty(element, "PROPERTY_111"));
             Long extId = element.path("ID").asLong();
             String name = element.path("NAME").asText();
             String time = formatData(getValueFromProperty(element, "PROPERTY_113"));
@@ -61,10 +61,10 @@ public class EventService {
                     .id(element.path("ID").asLong())
                     .type(type)
                     .name(element.path("NAME").asText())
-                    .time(formatData(getValueFromProperty(element, "PROPERTY_113")))
+                    .time(Instant.parse(time))
                     .adultPrice(adultPrice)
                     .kidPrice(kidPrice)
-                    .childAge(childAge)
+                    .childAge(childAge.split("")[0])
                     .capacity(capacity)
                     .adultCapacity(adultCapacity)
                     .kidCapacity(kidCapacity)
@@ -84,10 +84,10 @@ public class EventService {
                 event.setExtEventId(extId);
                 event.setName(name);
                 event.setType(type);
-                event.setTime(time);
+                event.setTime(LocalDateTime.ofInstant(Instant.parse(time), ZoneId.of("GMT+0")));
                 event.setAdultPrice(adultPrice);
                 event.setKidPrice(kidPrice);
-                event.setChildAge(Integer.valueOf(childAge.split("")[0]));
+                event.setChildAge(Long.parseLong(childAge.split("")[0]));
                 event.setCapacity(capacity);
                 event.setAdultCapacity(adultCapacity);
                 event.setKidCapacity(kidCapacity);

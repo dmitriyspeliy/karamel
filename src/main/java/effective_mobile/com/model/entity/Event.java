@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -21,25 +23,25 @@ public class Event implements Serializable {
     @Column(name = "type")
     private String type;
     @Column(name = "time")
-    private String time;
+    private LocalDateTime time;
     @Column(name = "adult_price")
-    private Integer adultPrice;
+    private BigDecimal adultPrice;
     @Column(name = "kid_price")
-    private Integer kidPrice;
+    private BigDecimal kidPrice;
     @Column(name = "child_age")
-    private Integer childAge;
+    private Long childAge;
     @Column(name = "capacity")
-    private Integer capacity;
+    private Long capacity;
     @Column(name = "adult_capacity")
-    private Integer adultCapacity;
+    private Long adultCapacity;
     @Column(name = "kid_capacity")
-    private Integer kidCapacity;
+    private Long kidCapacity;
     @Column(name = "slots_left")
-    private Integer slotsLeft;
+    private Long slotsLeft;
     @Column(name = "adult_slots_left")
-    private Integer adultSlotsLeft;
+    private Long adultSlotsLeft;
     @Column(name = "kid_slots_left")
-    private Integer kidSlotsLeft;
+    private Long kidSlotsLeft;
     @Column(name = "gathering_type")
     private String gatheringType;
     @Column(name = "adult_required")

@@ -3,6 +3,8 @@ package effective_mobile.com.model.dto;
 import lombok.*;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.time.Instant;
 
 @Getter
 @Setter
@@ -13,16 +15,16 @@ public class Event implements Serializable {
     private Long id;
     private String name;
     private String type;
-    private String time;
-    private Integer adultPrice;
-    private Integer kidPrice;
+    private Instant time;
+    private BigDecimal adultPrice;
+    private BigDecimal kidPrice;
     private String childAge;
-    private Integer capacity;
-    private Integer adultCapacity;
-    private Integer kidCapacity;
-    private Integer slotsLeft;
-    private Integer adultSlotsLeft;
-    private Integer kidSlotsLeft;
+    private Long capacity;
+    private Long adultCapacity;
+    private Long kidCapacity;
+    private Long slotsLeft;
+    private Long adultSlotsLeft;
+    private Long kidSlotsLeft;
     private String gatheringType;
     private Boolean adultRequired;
     private String city;

@@ -69,7 +69,7 @@ public class EventService {
                 Instant.now(),
                 BigDecimal.ONE,
                 BigDecimal.ONE,
-                "23",
+                "4-6 лет",
                 1L,
                 1L,
                 1L,

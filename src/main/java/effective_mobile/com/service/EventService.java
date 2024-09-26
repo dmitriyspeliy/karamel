@@ -2,10 +2,12 @@ package effective_mobile.com.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import effective_mobile.com.model.dto.Event;
+import effective_mobile.com.model.dto.GetEventsResponse;
 import effective_mobile.com.repository.EventRepository;
 import effective_mobile.com.service.api.event.FetchAllSlot;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -42,7 +44,7 @@ public class EventService {
     private String city;
     private Long id;
 
-    public List<Event> getUpcomingEvents(String city, String type) {
+    public ResponseEntity<GetEventsResponse> getUpcomingEvents(String city, String type) {
         this.type = type;
         this.city = city;
         log.info("Fetching upcoming events for city: {} and type: {}", city, type);
@@ -69,18 +71,18 @@ public class EventService {
                 Instant.now(),
                 BigDecimal.ONE,
                 BigDecimal.ONE,
-                "4-6 лет",
+                "4-6",
                 1L,
                 1L,
                 1L,
                 1L,
                 1L,
                 1L,
-                "type",
+                "СБОРНЫЕ ГРУППЫ",
                 true
         );
 
-        return List.of(event);
+        return ResponseEntity.ok(new GetEventsResponse(new GetEventsResponse.EventsField(List.of(event))));
     }
 
     private void extractValue(JsonNode element) {

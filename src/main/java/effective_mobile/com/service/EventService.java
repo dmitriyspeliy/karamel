@@ -50,7 +50,7 @@ public class EventService {
 
         var response = fetchAllSlot.fetchAllSlotByCityAndType(city, type);
         var elements = response.path("result");
-        this.type = type.equals("Школьные") ? "ШКОЛЬНЫЕ ГРУППЫ" : "СБОРНЫЕ ГРУППЫ";
+        this.type = type.equals("Школьные") ? "Школьные" : "СБОРНЫЕ ГРУППЫ";
         var slots = new ArrayList<Event>();
 
         for (var element : elements) {
@@ -96,7 +96,7 @@ public class EventService {
                 .time(time.toInstant(ZoneOffset.of("+00:00")))
                 .adultPrice(adultPrice)
                 .kidPrice(kidPrice)
-                .childAge(childAge)
+                .childAge(childAge + " лет")
                 .capacity(capacity)
                 .adultCapacity(adultCapacity)
                 .kidCapacity(kidCapacity)

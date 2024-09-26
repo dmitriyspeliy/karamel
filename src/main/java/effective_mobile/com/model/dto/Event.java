@@ -27,5 +27,4 @@ public class Event implements Serializable {
     private Long kidSlotsLeft;
     private String gatheringType;
     private Boolean adultRequired;
-    private String city;
 }

@@ -9,10 +9,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,22 +47,40 @@ public class EventService {
         this.city = city;
         log.info("Fetching upcoming events for city: {} and type: {}", city, type);
 
-        var response = fetchAllSlot.fetchAllSlotByCityAndType(city, type);
-        var elements = response.path("result");
-        var slots = new ArrayList<Event>();
+//        var response = fetchAllSlot.fetchAllSlotByCityAndType(city, type);
+//        var elements = response.path("result");
+//        var slots = new ArrayList<Event>();
+//
+//        for (var element : elements) {
+//
+//            extractValue(element);
+//
+//            slots.add(makeEvent());
+//
+//            saveToDb();
+//        }
 
-        for (var element : elements) {
+        //      log.info("Found {} upcoming events for city: {}", slots.size(), city);
+//
+        Event event = new Event(
+                1L,
+                "test",
+                "test",
+                Instant.now(),
+                BigDecimal.ONE,
+                BigDecimal.ONE,
+                "23",
+                1L,
+                1L,
+                1L,
+                1L,
+                1L,
+                1L,
+                "type",
+                true
+        );
 
-            extractValue(element);
-
-            slots.add(makeEvent());
-
-            saveToDb();
-        }
-
-        log.info("Found {} upcoming events for city: {}", slots.size(), city);
-
-        return slots;
+        return List.of(event);
     }
 
     private void extractValue(JsonNode element) {
@@ -103,7 +121,6 @@ public class EventService {
                 .gatheringType(type)
                 //в слотах не передается этот параметр
                 .adultRequired(true)
-                .city(city)
                 .build();
     }
 

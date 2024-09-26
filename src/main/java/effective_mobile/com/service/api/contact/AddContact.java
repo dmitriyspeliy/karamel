@@ -1,7 +1,7 @@
 package effective_mobile.com.service.api.contact;
 
 import com.google.gson.Gson;
-import effective_mobile.com.model.dto.rs.ContactAddResponse;
+import effective_mobile.com.model.dto.rs.BitrixCommonResponse;
 import effective_mobile.com.model.entity.Contact;
 import effective_mobile.com.repository.ContactRepository;
 import effective_mobile.com.utils.CommonVar;
@@ -29,7 +29,7 @@ public class AddContact {
     private String comment;
     private Contact contact;
     private Optional<Contact> optionalContact;
-    private ContactAddResponse contactAddResponse;
+    private BitrixCommonResponse bitrixCommonResponse;
     private HttpResponse<JsonNode> contactResponse;
     private final ContactRepository contactRepository;
     private final FindById findById;
@@ -68,14 +68,14 @@ public class AddContact {
 
     private void getResult() {
         Gson gson = new Gson();
-        contactAddResponse = gson.fromJson(contactResponse.getBody().toString(), ContactAddResponse.class);
+        bitrixCommonResponse = gson.fromJson(contactResponse.getBody().toString(), BitrixCommonResponse.class);
     }
 
     public void answer() throws BadRequestException {
         if (contactResponse.getStatus() == 200) {
             getResult();
             contact = new Contact();
-            contact.setExtContactId(Long.parseLong(String.valueOf(contactAddResponse.getResult())));
+            contact.setExtContactId(Long.parseLong(String.valueOf(bitrixCommonResponse.getResult())));
             saveToDb();
             log.info("Контакт успешно добавлен в битрикс систему и сохранен в бд");
         } else {

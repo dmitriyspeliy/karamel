@@ -2,7 +2,7 @@ package effective_mobile.com.controller;
 
 import effective_mobile.com.configuration.properties.CityProperties;
 import effective_mobile.com.model.dto.rs.EventResponse;
-import effective_mobile.com.service.api.event.EventService;
+import effective_mobile.com.service.EventService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

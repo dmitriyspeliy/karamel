@@ -1,7 +1,7 @@
 package effective_mobile.com.controller;
 
 import effective_mobile.com.configuration.properties.CityProperties;
-import effective_mobile.com.model.dto.CityInfoResponse;
+import effective_mobile.com.model.dto.rs.CityInfoResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;

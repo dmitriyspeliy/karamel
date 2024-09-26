@@ -2,7 +2,7 @@ package effective_mobile.com.service.api.deal;
 
 import com.google.gson.Gson;
 import effective_mobile.com.model.dto.rq.RequestToBookingEvent;
-import effective_mobile.com.model.dto.rs.DealAddResponse;
+import effective_mobile.com.model.dto.rs.BitrixCommonResponse;
 import effective_mobile.com.model.entity.Contact;
 import effective_mobile.com.model.entity.Deal;
 import effective_mobile.com.model.entity.Event;
@@ -36,7 +36,7 @@ public class AddDeal {
 
     @Value("${spring.current-city}")
     private String currentCity;
-    private DealAddResponse dealAddResponse;
+    private BitrixCommonResponse bitrixCommonResponse;
     private RequestToBookingEvent requestToBookingEvent;
     private HttpResponse<JsonNode> contactResponse;
     private Deal deal;
@@ -86,14 +86,14 @@ public class AddDeal {
 
     private void getResult() {
         Gson gson = new Gson();
-        dealAddResponse = gson.fromJson(contactResponse.getBody().toString(), DealAddResponse.class);
+        bitrixCommonResponse = gson.fromJson(contactResponse.getBody().toString(), BitrixCommonResponse.class);
     }
 
     public void answer() throws BadRequestException {
         if (contactResponse.getStatus() == 200) {
             getResult();
             deal = new Deal();
-            deal.setExtDealId(Long.parseLong(String.valueOf(dealAddResponse.getResult())));
+            deal.setExtDealId(Long.parseLong(String.valueOf(bitrixCommonResponse.getResult())));
             saveToDb();
             log.info("Сделка успешно добавлена в битрикс систему и сохранена в бд");
         } else {

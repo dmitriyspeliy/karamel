@@ -1,4 +1,4 @@
-package effective_mobile.com.model.dto;
+package effective_mobile.com.model.dto.rs;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,6 +1,6 @@
 package effective_mobile.com.controller;
 
-import effective_mobile.com.model.dto.GetPaymentLinkResponse;
+import effective_mobile.com.model.dto.rs.GetPaymentLinkResponse;
 import effective_mobile.com.model.dto.rq.RequestToBookingEvent;
 import effective_mobile.com.service.BookingService;
 import effective_mobile.com.utils.exception.BadRequestException;
@@ -11,10 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
-import java.time.Instant;
 
 @RestController
 @RequestMapping("/booking")

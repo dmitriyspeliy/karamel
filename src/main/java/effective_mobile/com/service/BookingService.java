@@ -1,6 +1,6 @@
 package effective_mobile.com.service;
 
-import effective_mobile.com.model.dto.GetPaymentLinkResponse;
+import effective_mobile.com.model.dto.rs.GetPaymentLinkResponse;
 import effective_mobile.com.model.dto.rq.RequestToBookingEvent;
 import effective_mobile.com.model.entity.Contact;
 import effective_mobile.com.model.entity.Deal;

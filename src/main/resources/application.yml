@@ -196,13 +196,9 @@ spring:
       reservation-payment-amount: 5000
       maxCapacity: 36
       minCapacity: 18
+
 server:
   port: ${APP_PORT}
-
-bitrix:
-  baseUrl: "https://caramelka.bitrix24.ru/rest/55/52y4wtim201qylus/"
-  endpoints:
-    getEvents: "lists.element.get.json?"
 
 
 

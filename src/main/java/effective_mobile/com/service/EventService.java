@@ -2,7 +2,7 @@ package effective_mobile.com.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import effective_mobile.com.model.dto.Event;
-import effective_mobile.com.model.dto.GetEventsResponse;
+import effective_mobile.com.model.dto.rs.GetEventsResponse;
 import effective_mobile.com.repository.EventRepository;
 import effective_mobile.com.service.api.event.FetchAllSlot;
 import lombok.RequiredArgsConstructor;
@@ -11,11 +11,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
+import java.util.ArrayList;
 import java.util.Optional;
 
 import static effective_mobile.com.utils.UtilsMethods.getValueFromProperty;
@@ -49,40 +48,24 @@ public class EventService {
         this.city = city;
         log.info("Fetching upcoming events for city: {} and type: {}", city, type);
 
-//        var response = fetchAllSlot.fetchAllSlotByCityAndType(city, type);
-//        var elements = response.path("result");
-//        var slots = new ArrayList<Event>();
-//
-//        for (var element : elements) {
-//
-//            extractValue(element);
-//
-//            slots.add(makeEvent());
-//
-//            saveToDb();
-//        }
+        var response = fetchAllSlot.fetchAllSlotByCityAndType(city, type);
+        var elements = response.path("result");
+        this.type = type.equals("Школьные") ? "ШКОЛЬНЫЕ ГРУППЫ" : "СБОРНЫЕ ГРУППЫ";
+        var slots = new ArrayList<Event>();
 
-        //      log.info("Found {} upcoming events for city: {}", slots.size(), city);
-//
-        Event event = new Event(
-                1L,
-                "test",
-                "test",
-                Instant.now(),
-                BigDecimal.ONE,
-                BigDecimal.ONE,
-                "4-6",
-                1L,
-                1L,
-                1L,
-                1L,
-                1L,
-                1L,
-                "СБОРНЫЕ ГРУППЫ",
-                true
-        );
+        for (var element : elements) {
 
-        return ResponseEntity.ok(new GetEventsResponse(new GetEventsResponse.EventsField(List.of(event))));
+            extractValue(element);
+
+            slots.add(makeEvent());
+
+            saveToDb();
+        }
+
+        log.info("Found {} upcoming events for city: {}", slots.size(), city);
+
+
+        return ResponseEntity.ok(new GetEventsResponse(new GetEventsResponse.EventsField(slots)));
     }
 
     private void extractValue(JsonNode element) {

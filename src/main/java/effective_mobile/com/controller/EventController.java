@@ -1,8 +1,7 @@
 package effective_mobile.com.controller;
 
 import effective_mobile.com.configuration.properties.CityProperties;
-import effective_mobile.com.model.dto.GetEventsResponse;
-import effective_mobile.com.model.dto.rs.EventResponse;
+import effective_mobile.com.model.dto.rs.GetEventsResponse;
 import effective_mobile.com.service.EventService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,12 +27,6 @@ public class EventController {
         log.info("Request received for upcoming group events");
         var cityName = cityProperties.getCityInfo().get(currentCity).getCityName();
         return eventService.getUpcomingEvents(cityName, "Школьные");
-//        var response = new EventResponse();
-//        var eventsWrapper = new EventResponse.EventsWrapper();
-//        eventsWrapper.setEvents(events);
-//
-//        response.setEvents(eventsWrapper);
-//        return response;
     }
 
     @GetMapping("/mixed")
@@ -41,12 +34,6 @@ public class EventController {
         log.info("Request received for upcoming mixed events");
         var cityName = cityProperties.getCityInfo().get(currentCity).getCityName();
         return eventService.getUpcomingEvents(cityName, "Сборные");
-//        var response = new EventResponse();
-//        var eventsWrapper = new EventResponse.EventsWrapper();
-//        eventsWrapper.setEvents(events);
-//
-//        response.setEvents(eventsWrapper);
-//        return response;
     }
 
 }

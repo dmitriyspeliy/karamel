@@ -50,7 +50,6 @@ public class EventService {
 
         var response = fetchAllSlot.fetchAllSlotByCityAndType(city, type);
         var elements = response.path("result");
-        this.type = type.equals("Школьные") ? "Школьные" : "СБОРНЫЕ ГРУППЫ";
         var slots = new ArrayList<Event>();
 
         for (var element : elements) {
@@ -82,6 +81,7 @@ public class EventService {
         kidSlotLeft = Long.parseLong(getValueFromProperty(element, "PROPERTY_111"));
         extId = element.path("ID").asLong();
         name = element.path("NAME").asText();
+        type = type.equals("Школьныe") ? "ШКОЛЬНЫЕ ГРУППЫ" : "СБОРНЫЕ ГРУППЫ";
         time =
                 LocalDateTime.parse(getValueFromProperty(element, "PROPERTY_113"),
                         DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss"));
@@ -96,7 +96,7 @@ public class EventService {
                 .time(time.toInstant(ZoneOffset.of("+00:00")))
                 .adultPrice(adultPrice)
                 .kidPrice(kidPrice)
-                .childAge(childAge + " лет")
+                .childAge(childAge)
                 .capacity(capacity)
                 .adultCapacity(adultCapacity)
                 .kidCapacity(kidCapacity)

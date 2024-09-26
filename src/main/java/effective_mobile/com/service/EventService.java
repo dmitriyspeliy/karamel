@@ -81,7 +81,7 @@ public class EventService {
         kidSlotLeft = Long.parseLong(getValueFromProperty(element, "PROPERTY_111"));
         extId = element.path("ID").asLong();
         name = element.path("NAME").asText();
-        type = type.equals("Школьныe") ? "ШКОЛЬНЫЕ ГРУППЫ" : "СБОРНЫЕ ГРУППЫ";
+        type = defineType(element);
         time =
                 LocalDateTime.parse(getValueFromProperty(element, "PROPERTY_113"),
                         DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss"));
@@ -131,6 +131,19 @@ public class EventService {
             event.setKidSlotsLeft(kidSlotLeft);
             eventRepository.save(event);
             log.info("Save event in db");
+        }
+    }
+
+    private String defineType(JsonNode element) {
+        String type = getValueFromProperty(element, "PROPERTY_125");
+        if (type == null || type.equals("")) {
+            return "ШКОЛЬНЫЕ ГРУППЫ";
+        } else if (type.equals("117")) {
+            return "ШКОЛЬНЫЕ ГРУППЫ";
+        } else if (type.equals("119")) {
+            return "СБОРНЫЕ ГРУППЫ";
+        } else {
+            return "ШКОЛЬНЫЕ ГРУППЫ";
         }
     }
 }

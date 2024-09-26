@@ -29,7 +29,7 @@ public class Event implements Serializable {
     @Column(name = "kid_price")
     private BigDecimal kidPrice;
     @Column(name = "child_age")
-    private Long childAge;
+    private String childAge;
     @Column(name = "capacity")
     private Long capacity;
     @Column(name = "adult_capacity")

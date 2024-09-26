@@ -93,7 +93,7 @@ public class EventService {
                 .time(time.toInstant(ZoneOffset.of("+00:00")))
                 .adultPrice(adultPrice)
                 .kidPrice(kidPrice)
-                .childAge(childAge.split("")[0])
+                .childAge(childAge)
                 .capacity(capacity)
                 .adultCapacity(adultCapacity)
                 .kidCapacity(kidCapacity)
@@ -117,7 +117,7 @@ public class EventService {
             event.setTime(time);
             event.setAdultPrice(adultPrice);
             event.setKidPrice(kidPrice);
-            event.setChildAge(Long.parseLong(childAge.split("")[0]));
+            event.setChildAge(childAge);
             event.setCapacity(capacity);
             event.setAdultCapacity(adultCapacity);
             event.setKidCapacity(kidCapacity);

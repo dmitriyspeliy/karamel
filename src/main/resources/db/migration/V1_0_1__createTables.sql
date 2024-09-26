@@ -39,7 +39,7 @@ create table if not exists event
     time             timestamp           not null,
     adult_price      numeric             not null CHECK (adult_price >= 0)      default 0,
     kid_price        numeric             not null CHECK (kid_price >= 0)        default 0,
-    child_age        bigint              not null CHECK (child_age >= 0)        default 0,
+    child_age        varchar(10)         not null,
     capacity         bigint              not null CHECK (capacity >= 0)         default 0,
     adult_capacity   bigint              not null CHECK (adult_capacity >= 0)   default 0,
     kid_capacity     bigint              not null CHECK (kid_capacity >= 0)     default 0,

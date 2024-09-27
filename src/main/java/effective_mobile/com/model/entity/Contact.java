@@ -12,11 +12,11 @@ import java.util.List;
 @Table(name = "contact")
 public class Contact {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "deal_id")
+    private Long dealId;
 
     @Column(name = "ext_contact_id")
-    private Long extContactId;
+    private String extContactId;
 
     @Column(name = "full_name")
     private String fullName;
@@ -27,9 +27,11 @@ public class Contact {
     @Column(name = "phone")
     private String phone;
 
-    @Column(name = "comment")
-    private String comment;
+    @Column(name = "add_info")
+    private String addInfo;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "contact")
-    private List<Deal> deal;
+    @OneToOne(fetch = FetchType.LAZY)
+    @MapsId
+    @JoinColumn(name = "deal_id")
+    private Deal deal;
 }

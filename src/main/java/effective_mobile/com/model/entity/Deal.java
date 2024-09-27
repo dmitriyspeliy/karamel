@@ -17,7 +17,7 @@ public class Deal {
     private Long id;
 
     @Column(name = "ext_deal_id")
-    private Long extDealId;
+    private String extDealId;
 
     @Column(name = "title")
     private String title;
@@ -29,13 +29,18 @@ public class Deal {
     private String addInfo;
 
     @Column(name = "paid")
-    Boolean paid;
+    private Boolean paid;
+
+    @OneToOne(mappedBy = "deal", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @PrimaryKeyJoinColumn
+    private Contact contact;
+
+    @OneToOne(mappedBy = "deal", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @PrimaryKeyJoinColumn
+    private Invoice invoice;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "contact_id")
-    Contact contact;
+    @JoinColumn(name = "event_id")
+    private Event event;
 
-    @OneToOne(mappedBy = "deal", cascade = CascadeType.ALL,  fetch = FetchType.LAZY)
-    @PrimaryKeyJoinColumn
-    private Receipt receipt;
 }

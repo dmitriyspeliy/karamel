@@ -7,6 +7,7 @@ import lombok.Setter;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -17,7 +18,7 @@ public class Event implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "ext_event_id")
-    private Long extEventId;
+    private String extEventId;
     @Column(name = "name")
     private String name;
     @Column(name = "type")
@@ -48,5 +49,6 @@ public class Event implements Serializable {
     private Boolean adultRequired;
     @Column(name = "city")
     private String city;
-
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "event")
+    List<Deal> dealList;
 }

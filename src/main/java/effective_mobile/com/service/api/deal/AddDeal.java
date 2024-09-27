@@ -6,10 +6,8 @@ import effective_mobile.com.model.dto.rs.BitrixCommonResponse;
 import effective_mobile.com.model.entity.Contact;
 import effective_mobile.com.model.entity.Deal;
 import effective_mobile.com.model.entity.Event;
-import effective_mobile.com.model.entity.Receipt;
 import effective_mobile.com.repository.DealRepository;
 import effective_mobile.com.repository.EventRepository;
-import effective_mobile.com.repository.ReceiptRepository;
 import effective_mobile.com.utils.CommonVar;
 import effective_mobile.com.utils.UtilsMethods;
 import effective_mobile.com.utils.enums.NameOfCity;
@@ -23,7 +21,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,16 +38,13 @@ public class AddDeal {
     private HttpResponse<JsonNode> contactResponse;
     private Deal deal;
     private Contact contact;
-    private String link;
     private final DealRepository dealRepository;
     private final EventRepository eventRepository;
-    private final ReceiptRepository receiptRepository;
 
-    public Deal addDeal(RequestToBookingEvent requestToBookingEvent, Contact contact, String link) throws BadRequestException {
+    public Deal addDeal(RequestToBookingEvent requestToBookingEvent, Contact contact) throws BadRequestException {
         log.info("Запрос на добавление cделки \n" + requestToBookingEvent.toString());
         this.requestToBookingEvent = requestToBookingEvent;
         this.contact = contact;
-        this.link = link;
         checkVar(List.of(requestToBookingEvent.getNumber(), requestToBookingEvent.getContactName()));
         makeRequest();
         answer();
@@ -74,7 +68,7 @@ public class AddDeal {
                     .queryString("fields[OPPORTUNITY]", String.valueOf(sum))
                     .queryString("fields[TITLE]", "Сделка с сайта " + NameOfCity.valueOf(currentCity.toUpperCase()).getHostName())
                     .queryString("fields[STAGE_ID]", "NEW")
-                    .queryString("fields[UF_CRM_66A35EF77437E]", link)
+                    .queryString("fields[UF_CRM_66A35EF77437E]", "link")
                     .queryString("fields[UF_CRM_66A35EF7571B0]", "119") //117 yes 119 no
                     .queryString("fields[UF_CRM_1723104093]", extId)
                     .queryString("fields[COMMENTS]", requestToBookingEvent)
@@ -93,7 +87,7 @@ public class AddDeal {
         if (contactResponse.getStatus() == 200) {
             getResult();
             deal = new Deal();
-            deal.setExtDealId(Long.parseLong(String.valueOf(bitrixCommonResponse.getResult())));
+            deal.setExtDealId(String.valueOf(bitrixCommonResponse.getResult()));
             saveToDb();
             log.info("Сделка успешно добавлена в битрикс систему и сохранена в бд");
         } else {
@@ -103,25 +97,12 @@ public class AddDeal {
     }
 
     private void saveToDb() {
-
-
         deal.setAddInfo(requestToBookingEvent.getSource());
         deal.setCreateDate(UtilsMethods.parseLocalDataTimeFromInstant(requestToBookingEvent.getDate()));
         deal.setContact(contact);
         deal.setTitle("Сделка с сайта " + NameOfCity.valueOf(currentCity.toUpperCase()).getHostName());
         deal.setPaid(false);
-        Deal save = dealRepository.save(deal);
-
-        // TODO delete receipt
-        Receipt receipt = new Receipt();
-        receipt.setAdd_info("Чек по сделке " + requestToBookingEvent.getCity());
-        receipt.setCurrency("RUB");
-        receipt.setLink(link);
-        receipt.setDeal(save);
-        receipt.setLocalDateTime(LocalDateTime.now());
-        receipt.setBigDecimal(BigDecimal.ONE);
-        receipt.setExt_receipt_id("UUUUU-iIIIIIAsdad");
-        receiptRepository.save(receipt);
+        dealRepository.save(deal);
     }
 
 }

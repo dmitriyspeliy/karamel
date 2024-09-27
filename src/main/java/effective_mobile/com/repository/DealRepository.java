@@ -6,5 +6,5 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.Optional;
 
 public interface DealRepository extends CrudRepository<Deal, Long> {
-    Optional<Deal> findByExtDealId(Long extId);
+    Optional<Deal> findByExtDealId(String extId);
 }

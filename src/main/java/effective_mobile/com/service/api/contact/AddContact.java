@@ -1,6 +1,7 @@
 package effective_mobile.com.service.api.contact;
 
 import com.google.gson.Gson;
+import effective_mobile.com.model.dto.rq.RequestToBookingEvent;
 import effective_mobile.com.model.dto.rs.BitrixCommonResponse;
 import effective_mobile.com.model.entity.Contact;
 import effective_mobile.com.repository.ContactRepository;
@@ -26,7 +27,7 @@ public class AddContact {
     private String fullname;
     private String phone;
     private String city;
-    private String comment;
+    private String addInfo;
     private Contact contact;
     private Optional<Contact> optionalContact;
     private BitrixCommonResponse bitrixCommonResponse;
@@ -34,14 +35,14 @@ public class AddContact {
     private final ContactRepository contactRepository;
     private final FindById findById;
 
-    public Contact addContact(String fullName, String city, String phone, String comment) throws BadRequestException {
-        log.info("Запрос на добавление контакта по имени ( " + fullName +
-                " ), городу ( " + city + " ), телефону ( " + phone + " ), с комментарием ( " + comment + " ).");
-        checkVar(List.of(fullName, city, phone, comment));
-        this.fullname = fullName;
-        this.comment = comment;
-        this.city = city;
-        this.phone = phone;
+    public Contact addContact(RequestToBookingEvent requestToBookingEvent) throws BadRequestException {
+        log.info("Запрос на добавление контакта по имени ( " + requestToBookingEvent.getContactName() +
+                " ), городу ( " + city + " ), телефону ( " + phone + " ), с комментарием ( " + addInfo + " ).");
+        checkVar(List.of(requestToBookingEvent.getContactName(), city, phone, addInfo));
+        this.fullname = requestToBookingEvent.getContactName();
+        this.addInfo = requestToBookingEvent.getSource();
+        this.city = requestToBookingEvent.getCity();
+        this.phone = requestToBookingEvent.getNumber();
         if (checkExistContact()) {
             return contact;
         }
@@ -57,7 +58,7 @@ public class AddContact {
                     .queryString("fields[PHONE][0][VALUE]", phone)
                     .queryString("fields[PHONE][0][VALUE_TYPE]", "WORK")
                     .queryString("fields[ADDRESS_CITY]", city)
-                    .queryString("fields[COMMENTS]", comment)
+                    .queryString("fields[COMMENTS]", addInfo)
                     .queryString("fields[NAME]", fullname)
                     .queryString("fields[TYPE_ID]", "CLIENT")
                     .asJson();
@@ -75,7 +76,7 @@ public class AddContact {
         if (contactResponse.getStatus() == 200) {
             getResult();
             contact = new Contact();
-            contact.setExtContactId(Long.parseLong(String.valueOf(bitrixCommonResponse.getResult())));
+            contact.setExtContactId(String.valueOf(bitrixCommonResponse.getResult()));
             saveToDb();
             log.info("Контакт успешно добавлен в битрикс систему и сохранен в бд");
         } else {
@@ -88,13 +89,13 @@ public class AddContact {
         if (optionalContact.isPresent()) {
             optionalContact.get().setCity(city);
             optionalContact.get().setPhone(phone);
-            optionalContact.get().setComment(comment);
+            optionalContact.get().setAddInfo(addInfo);
             optionalContact.get().setFullName(fullname);
             contact = contactRepository.save(optionalContact.get());
         } else {
             contact.setCity(city);
             contact.setPhone(phone);
-            contact.setComment(comment);
+            contact.setAddInfo(addInfo);
             contact.setFullName(fullname);
             contact = contactRepository.save(contact);
         }
@@ -105,8 +106,8 @@ public class AddContact {
         boolean res = false;
         optionalContact = contactRepository.findByPhone(phone);
         if (optionalContact.isPresent()) {
-            Long extId = optionalContact.get().getExtContactId();
-            boolean exist = findById.existInBitrix(String.valueOf(extId));
+            String extId = optionalContact.get().getExtContactId();
+            boolean exist = findById.existInBitrix(extId);
             if (exist) {
                 contact = optionalContact.get();
                 res = true;

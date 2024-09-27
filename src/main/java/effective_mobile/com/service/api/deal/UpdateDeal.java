@@ -50,7 +50,7 @@ public class UpdateDeal {
 
     public void answer() throws BadRequestException {
         if (contactResponse.getStatus() == 200) {
-            Optional<Deal> dealOptional = dealRepository.findByExtDealId(Long.parseLong(extId));
+            Optional<Deal> dealOptional = dealRepository.findByExtDealId(extId);
             if (dealOptional.isPresent()) {
                 dealOptional.get().setPaid(extId.equals("117"));
                 dealRepository.save(dealOptional.get());

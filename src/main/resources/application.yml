@@ -14,6 +14,19 @@ spring:
       ddl-auto: validate
     open-in-view: true
 
+  payment-service:
+    acquiring-service-name: ${ACQUIRING_SERVICE_NAME:robokassa}
+    password: ${robokassa.password}
+    password2: ${robokassa.password2}
+    merchant-name: ${ROBOKASSA_MERCHANT_LOGIN:Karamel_EKB}
+    acquiring-service-host: ${ACQUIRING_SERVICE_HOST:auth.robokassa.ru}
+    acquiring-service-payment-base-url: ${ACQUIRING_SERVICE_PAYMENT_BASE_URL:/Merchant/Indexjson.aspx}
+    sno: osn
+    tax: none
+    location: г. ${CURRENT_CITY}
+    payment-method: full_prepayment
+    payment-object: service
+
   current-city: ${CURRENT_CITY}
   city-info:
     chel:

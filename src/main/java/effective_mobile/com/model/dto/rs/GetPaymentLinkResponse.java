@@ -5,5 +5,5 @@ import java.net.URL;
 import java.time.Instant;
 import java.util.UUID;
 
-public record GetPaymentLinkResponse(UUID invoiceId, URL url, Instant created) implements Serializable {
+public record GetPaymentLinkResponse(String invoiceId, URL url, Instant created) implements Serializable {
 }

@@ -36,7 +36,7 @@ public class EventService {
     private Long slotsLeft;
     private Long adultSlotsLeft;
     private Long kidSlotLeft;
-    private Long extId;
+    private String extId;
     private LocalDateTime time;
     private String name;
     private String type;
@@ -79,7 +79,7 @@ public class EventService {
         slotsLeft = Long.parseLong(getValueFromProperty(element, "PROPERTY_131"));
         adultSlotsLeft = Long.parseLong(getValueFromProperty(element, "PROPERTY_111"));
         kidSlotLeft = Long.parseLong(getValueFromProperty(element, "PROPERTY_111"));
-        extId = element.path("ID").asLong();
+        extId = element.path("ID").asText();
         name = element.path("NAME").asText();
         type = defineType(element);
         time =

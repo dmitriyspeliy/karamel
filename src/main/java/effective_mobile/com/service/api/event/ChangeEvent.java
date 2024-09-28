@@ -52,6 +52,7 @@ public class ChangeEvent {
 
         payLoad.put("PROPERTY_109", event.getKidCapacity().toString());
         payLoad.put("PROPERTY_111", event.getAdultCapacity().toString());
+        payLoad.put("PROPERTY_131", event.getCapacity().toString());
         payLoad.put("PROPERTY_117", deals.toString());
         payLoad.put("PROPERTY_113", event.getTime().toString());
         if (event.getAdultCapacity() == 0 || event.getKidCapacity() == 0) {
@@ -110,14 +111,10 @@ public class ChangeEvent {
         event.setTime(LocalDateTime.parse(getValueFromProperty(element, "PROPERTY_113"),
                 DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss")));
 
-        for (var deal : element.path("PROPERTY_117")) {
-            try {
-                var key = deal.fieldNames().next();
-                deals.add(deal.path(key).asText());
-            } catch (NoSuchElementException e) {
-                break;
-            }
-        }
+        JsonNode property117 = element.path("PROPERTY_117");
+        property117.fields().forEachRemaining(entry -> {
+            deals.add(entry.getValue().asText());
+        });
 
         payLoad.put("NAME", element.path("NAME").asText());
         payLoad.put("PROPERTY_107", getValueFromProperty(element, "PROPERTY_107"));

@@ -17,7 +17,9 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 import static effective_mobile.com.utils.CommonVar.*;
 import static effective_mobile.com.utils.UtilsMethods.getValueFromProperty;
@@ -29,13 +31,16 @@ public class ChangeEvent {
     private final EventRepository eventRepository;
     private final EventService service;
     // id сделок в битриксе
-    private ArrayList<String> deals;
+    private ArrayList<String> deals = new ArrayList<>();
     // сохраняем все поля слота, т.к. битрикс удаляет значения из полей, которых нет в запросе.
-    private Map<String, String> payLoad;
+    private Map<String, String> payLoad = new HashMap<>();
 
+    // предполагается что deal уже есть в битрикс
     public void bookMixedEvent(int kidTickets, int adultTickets, Deal deal) {
         log.info("Starting to book mixed event: {}", deal.getEvent().getName());
         var event = deal.getEvent();
+
+        deals.add(deal.getExtDealId());
 
         updateEventFromWebHook(event);
 
@@ -63,6 +68,7 @@ public class ChangeEvent {
     public void bookSchoolEvent(int kidTickets, int adultTickets, Deal deal) {
         log.info("Starting to book school event: {}", deal.getEvent().getName());
         var event = deal.getEvent();
+        deals.add(deal.getExtDealId());
 
         updateEventFromWebHook(event);
         payLoad.put("PROPERTY_119", "95");
@@ -82,7 +88,8 @@ public class ChangeEvent {
                 + "&ELEMENT_ID=" + eventBitrixId;
 
         var node = restTemplate.getForObject(hookWithAdditionalParams, JsonNode.class);
-        updateValueFromNode(node, event);
+        var levelNode = node.path("result").get(0);
+        updateValueFromNode(levelNode, event);
         log.info("Updated event from webhook: {}", event);
     }
 
@@ -104,8 +111,12 @@ public class ChangeEvent {
                 DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss")));
 
         for (var deal : element.path("PROPERTY_117")) {
-            var key = deal.fieldNames().next();
-            deals.add(deal.path(key).asText());
+            try {
+                var key = deal.fieldNames().next();
+                deals.add(deal.path(key).asText());
+            } catch (NoSuchElementException e) {
+                break;
+            }
         }
 
         payLoad.put("NAME", element.path("NAME").asText());
@@ -135,8 +146,8 @@ public class ChangeEvent {
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         Map<String, Object> requestBody = Map.of(
-                "IBLOCK_TYPE_ID", "your_iblock_type_id",
-                "IBLOCK_ID", "your_iblock_id",
+                "IBLOCK_TYPE_ID", IBLOCK_TYPE_ID,
+                "IBLOCK_ID", IBLOCK_ID,
                 "ELEMENT_ID", eventBitrixId,
                 "FIELDS", payLoad
         );

@@ -134,7 +134,7 @@ public class EventService {
         }
     }
 
-    private String defineType(JsonNode element) {
+    public String defineType(JsonNode element) {
         String type = getValueFromProperty(element, "PROPERTY_125");
         if (type == null || type.equals("")) {
             return "ШКОЛЬНЫЕ ГРУППЫ";

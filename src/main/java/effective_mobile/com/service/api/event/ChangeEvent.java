@@ -34,6 +34,7 @@ public class ChangeEvent {
     private Map<String, String> payLoad;
 
     public void bookMixedEvent(int kidTickets, int adultTickets, Deal deal) {
+        log.info("Starting to book mixed event: {}", deal.getEvent().getName());
         var event = deal.getEvent();
 
         updateEventFromWebHook(event);
@@ -54,11 +55,13 @@ public class ChangeEvent {
 
         updateInBitrix(event, payLoad);
 
+        log.info("Saving event: {}", event);
         eventRepository.save(event);
     }
 
     // убрал логику с местами, т.к. по идеи 1бронь - 1класс
     public void bookSchoolEvent(int kidTickets, int adultTickets, Deal deal) {
+        log.info("Starting to book school event: {}", deal.getEvent().getName());
         var event = deal.getEvent();
 
         updateEventFromWebHook(event);
@@ -66,6 +69,7 @@ public class ChangeEvent {
         payLoad.put("PROPERTY_117", deals.toString());
         updateInBitrix(event, payLoad);
 
+        log.info("Saving event: {}", event);
         eventRepository.save(event);
     }
 
@@ -79,6 +83,7 @@ public class ChangeEvent {
 
         var node = restTemplate.getForObject(hookWithAdditionalParams, JsonNode.class);
         updateValueFromNode(node, event);
+        log.info("Updated event from webhook: {}", event);
     }
 
     // обновляем сущность и сохраняем значения в пейлоад, чтобы битрикс их при обновление не затер
@@ -122,22 +127,24 @@ public class ChangeEvent {
     }
 
     private void updateInBitrix(Event event, Map<String, String> payLoad) {
-            var restTemplate = new RestTemplate();
-            var eventBitrixId = event.getExtEventId();
-            var url = BITRIX_WEBHOOK + "lists.element.update";
+        var restTemplate = new RestTemplate();
+        var eventBitrixId = event.getExtEventId();
+        var url = BITRIX_WEBHOOK + "lists.element.update";
 
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
 
-            Map<String, Object> requestBody = Map.of(
-                    "IBLOCK_TYPE_ID", "your_iblock_type_id",
-                    "IBLOCK_ID", "your_iblock_id",
-                    "ELEMENT_ID", eventBitrixId,
-                    "FIELDS", payLoad
-            );
+        Map<String, Object> requestBody = Map.of(
+                "IBLOCK_TYPE_ID", "your_iblock_type_id",
+                "IBLOCK_ID", "your_iblock_id",
+                "ELEMENT_ID", eventBitrixId,
+                "FIELDS", payLoad
+        );
 
-            HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(requestBody, headers);
-            restTemplate.postForObject(url, requestEntity, String.class);
+        HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(requestBody, headers);
+        log.info("Updating event in Bitrix with payload: {}", payLoad);
+        var response = restTemplate.postForObject(url, requestEntity, String.class);
+        log.info("Received response from Bitrix: {}", response);
     }
 
 }

@@ -1,15 +1,12 @@
 package effective_mobile.com.service.api.deal;
 
 import com.google.gson.Gson;
-import effective_mobile.com.model.dto.rq.RequestToBookingEvent;
 import effective_mobile.com.model.dto.rs.BitrixCommonResponse;
 import effective_mobile.com.model.entity.Contact;
 import effective_mobile.com.model.entity.Deal;
 import effective_mobile.com.model.entity.Event;
 import effective_mobile.com.repository.DealRepository;
-import effective_mobile.com.repository.EventRepository;
 import effective_mobile.com.utils.CommonVar;
-import effective_mobile.com.utils.UtilsMethods;
 import effective_mobile.com.utils.enums.NameOfCity;
 import effective_mobile.com.utils.exception.BadRequestException;
 import kong.unirest.HttpResponse;
@@ -22,7 +19,6 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 
 import static effective_mobile.com.utils.UtilsMethods.checkVar;
 
@@ -34,18 +30,24 @@ public class AddDeal {
     @Value("${spring.current-city}")
     private String currentCity;
     private BitrixCommonResponse bitrixCommonResponse;
-    private RequestToBookingEvent requestToBookingEvent;
+    private Event event;
     private HttpResponse<JsonNode> contactResponse;
     private Deal deal;
+    private BigDecimal sum;
     private Contact contact;
     private final DealRepository dealRepository;
-    private final EventRepository eventRepository;
+    private String siteHostName;
+    private Integer adultCount;
+    private Integer kidCount;
 
-    public Deal addDeal(RequestToBookingEvent requestToBookingEvent, Contact contact) throws BadRequestException {
-        log.info("Запрос на добавление cделки \n" + requestToBookingEvent.toString());
-        this.requestToBookingEvent = requestToBookingEvent;
+    public Deal addDeal(BigDecimal sum, Event event, Contact contact, Integer adultCount, Integer kidCount) throws BadRequestException {
+        log.info("Запрос на добавление cделки \n" + event.toString());
+        this.kidCount = kidCount;
+        this.adultCount = adultCount;
+        this.sum = sum;
         this.contact = contact;
-        checkVar(List.of(requestToBookingEvent.getNumber(), requestToBookingEvent.getContactName()));
+        this.event = event;
+        checkVar(List.of(contact.getPhone(), contact.getFullName()));
         makeRequest();
         answer();
         return deal;
@@ -53,25 +55,15 @@ public class AddDeal {
 
     private void makeRequest() throws BadRequestException {
         try {
-            Optional<Event> eventOptional = eventRepository.findByName(requestToBookingEvent.getName().trim());
-            Integer sum = 0;
-            String extId = "0";
-            if (eventOptional.isPresent()) {
-                BigDecimal adultPrice = eventOptional.get().getAdultPrice();
-                BigDecimal kidPrice = eventOptional.get().getKidPrice();
-                sum = (adultPrice.intValue() * requestToBookingEvent.getPaidAdultCount()) + (kidPrice.intValue() * requestToBookingEvent.getChildrenCount());
-                extId = String.valueOf(eventOptional.get().getExtEventId());
-            }
+            siteHostName = NameOfCity.valueOf(currentCity.toUpperCase()).getHostName();
             contactResponse
                     = Unirest.post(CommonVar.BITRIX_WEBHOOK + "crm.deal.add.json")
                     .queryString("fields[CONTACT_ID]", contact.getExtContactId())
-                    .queryString("fields[OPPORTUNITY]", String.valueOf(sum))
-                    .queryString("fields[TITLE]", "Сделка с сайта " + NameOfCity.valueOf(currentCity.toUpperCase()).getHostName())
+                    .queryString("fields[OPPORTUNITY]", sum.toString())
+                    .queryString("fields[TITLE]", "Сделка с сайта " + siteHostName)
                     .queryString("fields[STAGE_ID]", "NEW")
-                    .queryString("fields[UF_CRM_66A35EF77437E]", "link")
                     .queryString("fields[UF_CRM_66A35EF7571B0]", "119") //117 yes 119 no
-                    .queryString("fields[UF_CRM_1723104093]", extId)
-                    .queryString("fields[COMMENTS]", requestToBookingEvent)
+                    .queryString("fields[UF_CRM_1723104093]", event.getExtEventId())
                     .asJson();
         } catch (Exception e) {
             throw new BadRequestException("Не удалось отправить запрос на добавление сделки. Текст боди : " + e.getMessage());
@@ -97,10 +89,14 @@ public class AddDeal {
     }
 
     private void saveToDb() {
-        deal.setAddInfo(requestToBookingEvent.getSource());
-        deal.setCreateDate(UtilsMethods.parseLocalDataTimeFromInstant(requestToBookingEvent.getDate()));
+        deal.setKidAge(event.getChildAge());
+        deal.setKidPrice(event.getKidPrice());
+        deal.setKidCount(kidCount);
+        deal.setAdultPrice(event.getAdultPrice());
+        deal.setAdultCount(adultCount);
+        deal.setCreateDate(event.getTime());
         deal.setContact(contact);
-        deal.setTitle("Сделка с сайта " + NameOfCity.valueOf(currentCity.toUpperCase()).getHostName());
+        deal.setTitle(siteHostName);
         deal.setPaid(false);
         dealRepository.save(deal);
     }

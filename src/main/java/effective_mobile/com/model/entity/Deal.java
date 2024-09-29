@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -30,6 +31,21 @@ public class Deal {
 
     @Column(name = "paid")
     private Boolean paid;
+
+    @Column(name = "kid_count")
+    private Integer kidCount;
+
+    @Column(name = "kid_price")
+    private BigDecimal kidPrice;
+
+    @Column(name = "kid_age")
+    private String kidAge;
+
+    @Column(name = "adult_count")
+    private Integer adultCount;
+
+    @Column(name = "adult_price")
+    private BigDecimal adultPrice;
 
     @OneToOne(mappedBy = "deal", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @PrimaryKeyJoinColumn

@@ -5,6 +5,7 @@ import effective_mobile.com.model.dto.Event;
 import effective_mobile.com.model.dto.rs.GetEventsResponse;
 import effective_mobile.com.repository.EventRepository;
 import effective_mobile.com.service.api.event.FetchAllSlot;
+import effective_mobile.com.utils.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Optional;
 
+import static effective_mobile.com.utils.UtilsMethods.defineType;
 import static effective_mobile.com.utils.UtilsMethods.getValueFromProperty;
 
 @Slf4j
@@ -103,8 +105,7 @@ public class EventService {
                 .slotsLeft(slotsLeft)
                 .adultSlotsLeft(adultSlotsLeft)
                 .kidSlotsLeft(kidSlotLeft)
-                .gatheringType(type)
-                //в слотах не передается этот параметр
+                .gatheringType(type) //в слотах не передается этот параметр
                 .adultRequired(true)
                 .build();
     }
@@ -134,16 +135,14 @@ public class EventService {
         }
     }
 
-    public String defineType(JsonNode element) {
-        String type = getValueFromProperty(element, "PROPERTY_125");
-        if (type == null || type.equals("")) {
-            return "ШКОЛЬНЫЕ ГРУППЫ";
-        } else if (type.equals("117")) {
-            return "ШКОЛЬНЫЕ ГРУППЫ";
-        } else if (type.equals("119")) {
-            return "СБОРНЫЕ ГРУППЫ";
+    public effective_mobile.com.model.entity.Event findEventByName(String name) throws BadRequestException {
+        Optional<effective_mobile.com.model.entity.Event> eventOptional = eventRepository.findByName(name);
+        if (eventOptional.isPresent()) {
+            return eventOptional.get();
         } else {
-            return "ШКОЛЬНЫЕ ГРУППЫ";
+            throw new BadRequestException("No event by name " + name);
         }
     }
+
+
 }

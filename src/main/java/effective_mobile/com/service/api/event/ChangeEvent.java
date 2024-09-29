@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 
 import static effective_mobile.com.utils.CommonVar.*;
+import static effective_mobile.com.utils.UtilsMethods.defineType;
 import static effective_mobile.com.utils.UtilsMethods.getValueFromProperty;
 
 @Component
@@ -107,7 +108,7 @@ public class ChangeEvent {
         event.setKidSlotsLeft(Long.parseLong(getValueFromProperty(element, "PROPERTY_111")));
         event.setExtEventId(element.path("ID").asText());
         event.setName(element.path("NAME").asText());
-        event.setType(service.defineType(element));
+        event.setType(defineType(element));
         event.setTime(LocalDateTime.parse(getValueFromProperty(element, "PROPERTY_113"),
                 DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss")));
 

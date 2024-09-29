@@ -25,8 +25,8 @@ public class BookingController {
 
     private final BookingService bookingService;
 
-    //@GetMapping("/cart/{id}")
-    public ResponseEntity<GetBookingCartResponse> getCart(@PathVariable UUID id) {
+    @GetMapping("/cart/{id}")
+    public ResponseEntity<GetBookingCartResponse> getCart(@PathVariable UUID id) throws BadRequestException {
         return ResponseEntity.ok(toDto(bookingService.getBookingCart(id)));
     }
 

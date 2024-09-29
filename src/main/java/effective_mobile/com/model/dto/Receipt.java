@@ -4,19 +4,21 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
 public class Receipt {
-    private Long dealId;
-    private String ext_receipt_id;
+
+    private List<Items> items;
     private String sno;
-    private LocalDateTime createDate;
-    private String link;
-    private BigDecimal value;
-    private String tax;
-    private BigDecimal quantity;
-    private String currency;
-    private String add_info;
+
+    @Getter
+    @Setter
+    public static class Items {
+        private String name;
+        private BigDecimal quantity;
+        private BigDecimal sum;
+        private String tax;
+    }
 }

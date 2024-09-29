@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.net.URL;
 import java.time.Instant;
 
@@ -21,9 +22,9 @@ public class Cart {
 
     private Integer kidCount;
     private Integer adultCount;
-    private Integer kidPrice;
-    private Integer adultPrice;
-    private Integer totalPrice;
+    private BigDecimal kidPrice;
+    private BigDecimal adultPrice;
+    private BigDecimal totalPrice;
 
     private String kidAge;
     private String address;

@@ -15,24 +15,40 @@ import java.util.Map;
 @Getter
 @Setter
 public class CityProperties {
-    Map<String, Info> cityInfo = new HashMap<>();
+
+    private Map<String, Info> cityInfo = new HashMap<>();
 
     @Getter
     @Setter
     public static class Info {
-        Integer timezone;
-        Long invoiceLifetimeMinutes;
-        String cityName;
-        Instant startEndpoint;
-        Instant finishEndpoint;
-        String address;
-        List<String> managerContactNumbers;
-        String vkLink;
-        String offerLink;
-        BigDecimal reservationPaymentAmount;
-        Integer maxCapacity;
-        Integer minCapacity;
-        Integer refundPeriod;
+
+        private Integer timezone;
+        private Long invoiceLifetimeMinutes;
+        private String cityName;
+        private Instant startEndpoint;
+        private Instant finishEndpoint;
+        private String address;
+        private List<String> managerContactNumbers;
+        private String vkLink;
+        private String offerLink;
+        private BigDecimal reservationPaymentAmount;
+        private Integer maxCapacity;
+        private Integer minCapacity;
+        private Integer refundPeriod;
+
+        private PaymentInfo paymentInfo;
+
+        @Getter
+        @Setter
+        public static class PaymentInfo {
+            private String robokassaPass1;
+            private String robokassaPass2;
+            private String robokassaPass1Test;
+            private String robokassaPass2Test;
+            private String login;
+            private String sno;
+            private String tax;
+        }
 
         public ZoneOffset getTimezone() {
             return ZoneOffset.ofHours(timezone);

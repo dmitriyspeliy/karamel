@@ -48,7 +48,7 @@ public class BookingService {
     private String currentCity;
 
     public synchronized GetPaymentLinkResponse bookEvent(RequestToBookingEvent requestBody) throws BadRequestException {
-        Event event = eventService.findEventByName(requestBody.getName());
+        Event event = eventService.findEventByName(requestBody.getEventName());
         // TODO проверка и установка новых значение мест в слоте
 
         // считаем сумму

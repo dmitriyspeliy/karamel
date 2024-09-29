@@ -30,7 +30,7 @@ public class BookingController {
         return ResponseEntity.ok(toDto(bookingService.getBookingCart(id)));
     }
 
-    @PostMapping("/group")
+    @PostMapping("/gathered")
     public ResponseEntity<GetPaymentLinkResponse> createGroupBooking(@RequestBody RequestToBookingEvent requestBody)
             throws BadRequestException {
         return ResponseEntity.ok(bookingService.bookEvent(requestBody));

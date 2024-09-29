@@ -75,7 +75,7 @@ public class BookingService {
 
         // сохранили все сущности в бд
         deal.setContact(contact);
-        deal.setInvoice(invoice);
+        deal.setEvent(event);
         Deal save = dealRepository.save(deal);
 
         List<Deal> dealList = event.getDealList();

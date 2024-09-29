@@ -19,7 +19,6 @@ create table if not exists deal
     paid        bool        default false,
     add_info    text        default 'No information',
     contact_id  bigint      default 0,
-    invoice_id  bigint      default 0,
     event_id    bigint      default 0,
     kid_count   int         default 0,
     kid_price   numeric     default 0,

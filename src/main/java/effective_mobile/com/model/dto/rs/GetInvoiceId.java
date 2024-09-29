@@ -8,7 +8,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 public class GetInvoiceId implements Serializable {
-    private String hashId;
+    private String invoiceID;
     private String errorCode;
     private String errorMessage;
 }

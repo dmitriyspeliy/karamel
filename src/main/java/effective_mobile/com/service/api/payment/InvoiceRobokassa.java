@@ -16,9 +16,11 @@ import kong.unirest.Unirest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -53,7 +55,7 @@ public class InvoiceRobokassa {
     public Invoice generateInvoiceLink(BigDecimal sum, Deal deal) throws BadRequestException, MalformedURLException {
         this.paymentInfo = cityProperties.getCityInfo().get(currentCity).getPaymentInfo();
         this.deal = deal;
-        this.sum = sum;
+        this.sum = sum.setScale(2, RoundingMode.HALF_UP);
 
         makeReceipt();
         makeBody();
@@ -72,7 +74,6 @@ public class InvoiceRobokassa {
                             deal.getExtDealId()),
                     paymentInfo.getSno(),
                     paymentInfo.getTax(),
-                    // hardcode quantity
                     BigDecimal.ONE);
         } catch (JsonProcessingException e) {
             throw new BadRequestException(e.getMessage());
@@ -91,21 +92,26 @@ public class InvoiceRobokassa {
                 + "&IsTest=1";
     }
 
-    private void makeRequest() {
+    private void makeRequest() throws BadRequestException {
         log.info("Запрос на получение айди счета");
-        response = Unirest.post(robokassaProperties.getIdUrl())
-                .body(body)
-                .asJson();
+        try {
+            response = Unirest.post(robokassaProperties.getIdUrl())
+                    .contentType(MediaType.APPLICATION_FORM_URLENCODED.toString())
+                    .body(body)
+                    .asJson();
+        } catch (Exception e) {
+            throw new BadRequestException(e.getMessage());
+        }
     }
 
     private void answerProcessing() throws BadRequestException {
         if (response.getStatus() == 200) {
             GetInvoiceId getInvoiceId = new Gson().fromJson(response.getBody().toString(), GetInvoiceId.class);
             //https://docs.robokassa.ru/pay-interface/#errors
-            if (getInvoiceId.getErrorCode().equals("0") && getInvoiceId.getHashId() != null
-                    && !getInvoiceId.getHashId().equals("")) {
+            if (getInvoiceId.getErrorCode().equals("0") && getInvoiceId.getInvoiceID() != null
+                    && !getInvoiceId.getInvoiceID().equals("")) {
                 log.info("Айди получен " + hashId);
-                hashId = getInvoiceId.getHashId();
+                hashId = getInvoiceId.getInvoiceID();
             } else {
                 throw new BadRequestException("Не удалось получить айди счета. Код ошибки " + getInvoiceId.getErrorCode() + ". Сообщение: "
                         + getInvoiceId.getErrorMessage());

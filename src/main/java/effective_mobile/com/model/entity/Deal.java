@@ -47,8 +47,8 @@ public class Deal {
     @Column(name = "adult_price")
     private BigDecimal adultPrice;
 
-    @OneToOne(mappedBy = "deal", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @PrimaryKeyJoinColumn
+    @ManyToOne
+    @JoinColumn(name = "contact_id", referencedColumnName = "id")
     private Contact contact;
 
     @OneToOne(mappedBy = "deal", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

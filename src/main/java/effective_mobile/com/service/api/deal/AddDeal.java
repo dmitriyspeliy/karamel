@@ -5,7 +5,6 @@ import effective_mobile.com.model.dto.rs.BitrixCommonResponse;
 import effective_mobile.com.model.entity.Contact;
 import effective_mobile.com.model.entity.Deal;
 import effective_mobile.com.model.entity.Event;
-import effective_mobile.com.repository.DealRepository;
 import effective_mobile.com.utils.CommonVar;
 import effective_mobile.com.utils.enums.NameOfCity;
 import effective_mobile.com.utils.exception.BadRequestException;
@@ -35,7 +34,6 @@ public class AddDeal {
     private Deal deal;
     private BigDecimal sum;
     private Contact contact;
-    private final DealRepository dealRepository;
     private String siteHostName;
     private Integer adultCount;
     private Integer kidCount;
@@ -80,15 +78,15 @@ public class AddDeal {
             getResult();
             deal = new Deal();
             deal.setExtDealId(String.valueOf(bitrixCommonResponse.getResult()));
-            saveToDb();
-            log.info("Сделка успешно добавлена в битрикс систему и сохранена в бд");
+            createDeal();
+            log.info("Сделка успешно добавлена в битрикс систему");
         } else {
             throw new BadRequestException("Не удалось отправить запрос на добавление сделки. Статус код " + contactResponse.getStatus()
                     + ". Боди " + contactResponse.getBody());
         }
     }
 
-    private void saveToDb() {
+    private void createDeal() {
         deal.setKidAge(event.getChildAge());
         deal.setKidPrice(event.getKidPrice());
         deal.setKidCount(kidCount);
@@ -98,7 +96,5 @@ public class AddDeal {
         deal.setContact(contact);
         deal.setTitle(siteHostName);
         deal.setPaid(false);
-        dealRepository.save(deal);
     }
-
 }

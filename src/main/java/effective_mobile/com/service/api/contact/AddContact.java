@@ -36,13 +36,13 @@ public class AddContact {
     private final FindById findById;
 
     public Contact addContact(RequestToBookingEvent requestToBookingEvent) throws BadRequestException {
-        log.info("Запрос на добавление контакта по имени ( " + requestToBookingEvent.getContactName() +
-                " ), городу ( " + city + " ), телефону ( " + phone + " ), с комментарием ( " + addInfo + " ).");
-        checkVar(List.of(requestToBookingEvent.getContactName(), city, phone, addInfo));
         this.fullname = requestToBookingEvent.getContactName();
         this.addInfo = requestToBookingEvent.getSource();
         this.city = requestToBookingEvent.getCity();
         this.phone = requestToBookingEvent.getNumber();
+        checkVar(List.of(fullname, city, phone, addInfo));
+        log.info("Запрос на добавление контакта по имени ( " + requestToBookingEvent.getContactName() +
+                " ), городу ( " + city + " ), телефону ( " + phone + " ), с комментарием ( " + addInfo + " ).");
         if (checkExistContact()) {
             return contact;
         }

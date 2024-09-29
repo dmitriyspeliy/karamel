@@ -8,6 +8,7 @@ import effective_mobile.com.model.entity.Contact;
 import effective_mobile.com.model.entity.Deal;
 import effective_mobile.com.model.entity.Event;
 import effective_mobile.com.model.entity.Invoice;
+import effective_mobile.com.repository.ContactRepository;
 import effective_mobile.com.repository.DealRepository;
 import effective_mobile.com.repository.EventRepository;
 import effective_mobile.com.repository.InvoiceRepository;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -39,6 +41,7 @@ public class BookingService {
     private final DealRepository dealRepository;
     private final EventRepository eventRepository;
     private final InvoiceRepository invoiceRepository;
+    private final ContactRepository contactRepository;
 
 
     @Value("${spring.current-city}")
@@ -64,20 +67,38 @@ public class BookingService {
         try {
             invoice = invoiceRobokassa.generateInvoiceLink(sum, deal);
         } catch (Exception e) {
-            // удалить сделку в битрикс как компенсирующая операция;
+            // удалить сделку в битрикс и вернуть поля слота назад как компенсирующая операция;
             // выход из метода
         }
 
         // TODO тут должно быть добавление сделки к слоту
 
         // сохранили все сущности в бд
-        List<Deal> dealList = event.getDealList();
         deal.setContact(contact);
         deal.setInvoice(invoice);
-        dealList.add(deal);
-        dealRepository.save(deal);
+        Deal save = dealRepository.save(deal);
+
+        List<Deal> dealList = event.getDealList();
+        if (dealList != null) {
+            dealList.add(save);
+        } else {
+            dealList = new ArrayList<>();
+            dealList.add(save);
+        }
         event.setDealList(dealList);
         eventRepository.save(event);
+
+
+        List<Deal> deals = contact.getDeal();
+        if (deals != null) {
+            deals.add(save);
+        } else {
+            deals = new ArrayList<>();
+            deals.add(save);
+        }
+        contact.setDeal(deals);
+        contactRepository.save(contact);
+
 
         return new GetPaymentLinkResponse(invoice.getExtInvoiceId(), invoice.getInvoiceLink(),
                 invoice.getCreateAt().toInstant(ZoneOffset.of("+00:00")));

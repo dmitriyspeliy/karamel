@@ -12,8 +12,8 @@ import java.util.List;
 @Table(name = "contact")
 public class Contact {
     @Id
-    @Column(name = "deal_id")
-    private Long dealId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(name = "ext_contact_id")
     private String extContactId;
@@ -30,8 +30,11 @@ public class Contact {
     @Column(name = "add_info")
     private String addInfo;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @MapsId
-    @JoinColumn(name = "deal_id")
-    private Deal deal;
+    @OneToMany(cascade = {
+            CascadeType.DETACH,
+            CascadeType.PERSIST,
+            CascadeType.MERGE,
+            CascadeType.REFRESH},
+            fetch = FetchType.LAZY, mappedBy = "contact", orphanRemoval = true)
+    private List<Deal> deal;
 }

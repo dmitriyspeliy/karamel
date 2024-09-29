@@ -1,11 +1,11 @@
 create table if not exists contact
 (
-    deal_id        bigint primary key,
+    id             bigint generated always as identity primary key,
     ext_contact_id varchar(100) not null,
     full_name      varchar(300) not null,
     city           varchar(100) not null,
     phone          varchar(100) not null,
-    add_info       text default 'No information'
+    add_info       text   default 'No information'
 );
 
 create index hash_contact_index on contact (ext_contact_id);
@@ -22,10 +22,10 @@ create table if not exists deal
     invoice_id  bigint      default 0,
     event_id    bigint      default 0,
     kid_count   int         default 0,
-    kid_price   numeric      default 0,
+    kid_price   numeric     default 0,
     kid_age     varchar(10) default '0',
     adult_count int         default 0,
-    adult_price numeric      default 0
+    adult_price numeric     default 0
 );
 
 create index hash_deal_index on deal (ext_deal_id);

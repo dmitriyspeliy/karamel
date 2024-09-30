@@ -33,7 +33,7 @@ spring:
       invoice-lifetime-minutes: 15
       start-endpoint: 2023-11-30T00:00:00+00:00
       finish-endpoint: 2024-01-10T00:00:00+00:00
-      address: Челябинская область, Сосновский район, пос. Саргазы, ул. Юбилейная, д.12
+      address: Челябинск, ул. Рощинская, дом 2
       manager-contact-numbers:
         - +79587569849
       vk-link: https://vk.com/public222553186

@@ -10,7 +10,7 @@ public interface DealRepository extends CrudRepository<Deal, Long> {
     Optional<Deal> findByExtDealId(String extId);
 
     @Query(nativeQuery = true, value =
-            "select * from deal inner join contact on deal.contact_id = contact.id where ext_contact_id = ?1 and event_id = ?2")
+            "select * from deal inner join contact on deal.contact_id = contact.id where ext_contact_id = ?1 and event_id = ?2 order by create_date desc limit 1")
     Optional<Deal> findDealByContactIdAdnEventId(String contactId, Long eventId);
 
 

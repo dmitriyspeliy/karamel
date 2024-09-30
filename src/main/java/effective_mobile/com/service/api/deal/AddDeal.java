@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static effective_mobile.com.utils.UtilsMethods.checkVar;
@@ -92,7 +93,7 @@ public class AddDeal {
         deal.setKidCount(kidCount);
         deal.setAdultPrice(event.getAdultPrice());
         deal.setAdultCount(adultCount);
-        deal.setCreateDate(event.getTime());
+        deal.setCreateDate(LocalDateTime.now());
         deal.setContact(contact);
         deal.setTitle(siteHostName);
         deal.setPaid(false);

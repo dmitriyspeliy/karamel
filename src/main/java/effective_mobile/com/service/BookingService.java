@@ -64,9 +64,9 @@ public class BookingService {
         // считаем сумму
         BigDecimal adultPrice = event.getAdultPrice();
         BigDecimal kidPrice = event.getKidPrice();
-        BigDecimal sum = adultPrice.multiply(BigDecimal.valueOf(requestBody.getPaidAdultCount())
+        BigDecimal sum = adultPrice.multiply(BigDecimal.valueOf(Long.parseLong(String.valueOf(requestBody.getPaidAdultCount())))
                 .add(
-                        kidPrice.multiply(BigDecimal.valueOf(requestBody.getChildrenCount()))));
+                        kidPrice.multiply(BigDecimal.valueOf(Long.parseLong(String.valueOf(requestBody.getChildrenCount()))))));
 
         // регистрация сущностей в битриксе
         Contact contact = addContact.addContact(requestBody);

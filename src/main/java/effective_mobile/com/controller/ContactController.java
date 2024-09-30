@@ -1,7 +1,7 @@
 package effective_mobile.com.controller;
 
 import effective_mobile.com.model.dto.rq.UpdateContactRequestBody;
-import effective_mobile.com.service.api.deal.UpdateDealComment;
+import effective_mobile.com.service.ContactService;
 import effective_mobile.com.utils.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -11,14 +11,11 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class ContactController {
 
-    private final UpdateDealComment updateContact;
+    private final ContactService contactService;
 
     @PatchMapping("/{id}")
     public void updateEmail(@PathVariable Long id, @RequestBody UpdateContactRequestBody contactRequestBody) throws BadRequestException {
-        updateContact.refreshCommentDeal(
-                String.valueOf(id),
-                "Билеты отправлены на почту " + contactRequestBody.getEmail()
-        );
+        contactService.updateEmail(id, contactRequestBody);
     }
 
 }

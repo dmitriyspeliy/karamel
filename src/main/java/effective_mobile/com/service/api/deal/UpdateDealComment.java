@@ -19,18 +19,18 @@ import static effective_mobile.com.utils.UtilsMethods.checkVar;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class UpdateDeal {
+public class UpdateDealComment {
 
     private final DealRepository dealRepository;
     private HttpResponse<JsonNode> contactResponse;
-    private String status;
+    private String comment;
     private String extId;
 
-    public void refreshStatusDeal(String extId, String status) throws BadRequestException {
-        log.info("Запрос на обновление статуса платежа сделки по айди " + extId);
-        checkVar(List.of(extId, status));
+    public void refreshCommentDeal(String extId, String comment) throws BadRequestException {
+        log.info("Запрос на обновление коммента сделки по айди " + extId);
+        checkVar(List.of(extId, comment));
         this.extId = extId;
-        this.status = status;
+        this.comment = comment;
         makeRequest();
         answer();
     }
@@ -40,11 +40,11 @@ public class UpdateDeal {
             contactResponse
                     = Unirest.post(CommonVar.BITRIX_WEBHOOK + "crm.deal.update.json")
                     .queryString("id", extId)
-                    .queryString("fields[UF_CRM_66A35EF7571B0]", status) // 117 yes 119 no
+                    .queryString("fields[COMMENTS]", comment)
                     .queryString("params[REGISTER_SONET_EVENT]", "Y")
                     .asJson();
         } catch (Exception e) {
-            throw new BadRequestException("Не удалось отправить запрос на обновление статуса платежа. Текст боди : " + e.getMessage());
+            throw new BadRequestException("Не удалось отправить запрос на обновление коммента сделки. Текст боди : " + e.getMessage());
         }
     }
 
@@ -52,13 +52,19 @@ public class UpdateDeal {
         if (contactResponse.getStatus() == 200) {
             Optional<Deal> dealOptional = dealRepository.findByExtDealId(extId);
             if (dealOptional.isPresent()) {
-                dealOptional.get().setPaid(extId.equals("117"));
+                String addInfo = dealOptional.get().getAddInfo();
+                if (addInfo != null) {
+                    addInfo = addInfo + ";" + comment;
+                } else {
+                    addInfo = comment + ";";
+                }
+                dealOptional.get().setAddInfo(addInfo);
                 dealRepository.save(dealOptional.get());
                 log.info("Сделка успешно обновлена в бд и в битрикс");
             }
             return;
         }
-        throw new BadRequestException("Не удалось отправить запрос на добавление сделки. Статус код " + contactResponse.getStatus()
+        throw new BadRequestException("Не удалось отправить запрос на обновление коммента сделки. Статус код " + contactResponse.getStatus()
                 + ". Боди " + contactResponse.getBody());
     }
 }

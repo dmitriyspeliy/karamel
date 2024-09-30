@@ -1,15 +1,12 @@
 package effective_mobile.com.service;
 
 import effective_mobile.com.model.dto.rq.UpdateContactRequestBody;
-import effective_mobile.com.model.entity.Deal;
 import effective_mobile.com.repository.DealRepository;
 import effective_mobile.com.service.api.deal.UpdateDealComment;
 import effective_mobile.com.utils.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -21,11 +18,10 @@ public class ContactService {
 
 
     public void updateEmail(Long id, UpdateContactRequestBody contactRequestBody) throws BadRequestException {
-        Optional<Deal> dealOptional = dealRepository.findDealByContactIdAdnEventId(String.valueOf(id), contactRequestBody.getLeadId());
-        if (dealOptional.isPresent()) {
-            String extId = dealOptional.get().getExtDealId();
+        String extDealId = dealRepository.findDealByContactIdAdnEventId(String.valueOf(id), contactRequestBody.getLeadId());
+        if (extDealId != null && !extDealId.equals("")) {
             updateContact.refreshCommentDeal(
-                    extId,
+                    extDealId,
                     "Билеты отправлены на почту " + contactRequestBody.getEmail()
             );
         } else {

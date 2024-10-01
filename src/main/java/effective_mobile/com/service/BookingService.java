@@ -52,9 +52,9 @@ public class BookingService {
     public synchronized GetPaymentLinkResponse bookEvent(RequestToBookingEvent requestBody) throws BadRequestException {
         Event event = eventService.findEventByName(requestBody.getEventName());
 
-        if (event.getType().equalsIgnoreCase("Школьные")) {
+        if (event.getType().contains("ШКОЛЬНЫЕ")) {
             changeEvent.bookSchoolEvent(event);
-        } else if (event.getType().equalsIgnoreCase("Сборные")) {
+        } else if (event.getType().contains("СБОРНЫЕ")) {
             changeEvent.bookMixedEvent(requestBody.getChildrenCount(), requestBody.getPaidAdultCount(), event);
         } else {
             // TODO тут нужно будет добавить кастомное исключение, хотя возможно оно и не нужно

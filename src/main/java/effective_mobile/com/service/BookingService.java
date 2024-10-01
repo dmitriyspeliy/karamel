@@ -14,6 +14,7 @@ import effective_mobile.com.repository.EventRepository;
 import effective_mobile.com.repository.InvoiceRepository;
 import effective_mobile.com.service.api.contact.AddContact;
 import effective_mobile.com.service.api.deal.AddDeal;
+import effective_mobile.com.service.api.event.ChangeEventInBitrix;
 import effective_mobile.com.service.api.payment.InvoiceRobokassa;
 import effective_mobile.com.utils.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;
@@ -42,6 +43,7 @@ public class BookingService {
     private final EventRepository eventRepository;
     private final InvoiceRepository invoiceRepository;
     private final ContactRepository contactRepository;
+    private final ChangeEventInBitrix changeEvent;
 
 
     @Value("${spring.current-city}")
@@ -49,7 +51,15 @@ public class BookingService {
 
     public synchronized GetPaymentLinkResponse bookEvent(RequestToBookingEvent requestBody) throws BadRequestException {
         Event event = eventService.findEventByName(requestBody.getEventName());
-        // TODO проверка и установка новых значение мест в слоте
+
+        if (event.getType().equalsIgnoreCase("Школьные")) {
+            changeEvent.bookSchoolEvent(event);
+        } else if (event.getType().equalsIgnoreCase("Сборные")) {
+            changeEvent.bookMixedEvent(requestBody.getChildrenCount(), requestBody.getPaidAdultCount(), event);
+        } else {
+            // TODO тут нужно будет добавить кастомное исключение, хотя возможно оно и не нужно
+            throw new RuntimeException();
+        }
 
         // считаем сумму
         BigDecimal adultPrice = event.getAdultPrice();
@@ -67,8 +77,14 @@ public class BookingService {
         try {
             invoice = invoiceRobokassa.generateInvoiceLink(sum, deal);
         } catch (Exception e) {
-            // удалить сделку в битрикс и вернуть поля слота назад как компенсирующая операция;
-            // выход из метода
+            if (event.getType().equalsIgnoreCase("Школьные")) {
+                changeEvent.undoChangingInSchoolEvent(event);
+            } else {
+                changeEvent.undoChangingInMixedEvent(requestBody.getChildrenCount(),
+                        requestBody.getPaidAdultCount(), event);
+            }
+
+            // нужно удалять сделку ?
         }
 
         // TODO тут должно быть добавление сделки к слоту

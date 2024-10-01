@@ -1,7 +1,6 @@
 package effective_mobile.com.service.api.event;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import effective_mobile.com.model.entity.Deal;
 import effective_mobile.com.model.entity.Event;
 import effective_mobile.com.repository.EventRepository;
 import effective_mobile.com.service.EventService;
@@ -16,10 +15,8 @@ import org.springframework.web.client.RestTemplate;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.NoSuchElementException;
 
 import static effective_mobile.com.utils.CommonVar.*;
 import static effective_mobile.com.utils.UtilsMethods.defineType;
@@ -28,20 +25,14 @@ import static effective_mobile.com.utils.UtilsMethods.getValueFromProperty;
 @Component
 @Slf4j
 @RequiredArgsConstructor
-public class ChangeEvent {
+public class ChangeEventInBitrix {
     private final EventRepository eventRepository;
     private final EventService service;
-    // id сделок в битриксе
-    private ArrayList<String> deals = new ArrayList<>();
     // сохраняем все поля слота, т.к. битрикс удаляет значения из полей, которых нет в запросе.
     private Map<String, String> payLoad = new HashMap<>();
 
-    // предполагается что deal уже есть в битрикс
-    public void bookMixedEvent(int kidTickets, int adultTickets, Deal deal) {
-        log.info("Starting to book mixed event: {}", deal.getEvent().getName());
-        var event = deal.getEvent();
-
-        deals.add(deal.getExtDealId());
+    public void bookMixedEvent(int kidTickets, int adultTickets, Event event) {
+        log.info("Starting to book mixed event: {}", event.getName());
 
         updateEventFromWebHook(event);
 
@@ -51,10 +42,16 @@ public class ChangeEvent {
         event.setAdultCapacity(event.getAdultCapacity() - adultTickets);
         event.setCapacity(event.getCapacity() - adultTickets - kidTickets);
 
+        if (event.getKidSlotsLeft() < 0
+                || event.getAdultSlotsLeft() < 0
+                || event.getCapacity() < 0) {
+            // TODO исключение добавить какое-нибудь
+            throw new RuntimeException();
+        }
+
         payLoad.put("PROPERTY_109", event.getKidCapacity().toString());
         payLoad.put("PROPERTY_111", event.getAdultCapacity().toString());
         payLoad.put("PROPERTY_131", event.getCapacity().toString());
-        payLoad.put("PROPERTY_117", deals.toString());
         payLoad.put("PROPERTY_113", event.getTime().toString());
         if (event.getAdultCapacity() == 0 || event.getKidCapacity() == 0) {
             payLoad.put("PROPERTY_119", "95");
@@ -67,14 +64,47 @@ public class ChangeEvent {
     }
 
     // убрал логику с местами, т.к. по идеи 1бронь - 1класс
-    public void bookSchoolEvent(int kidTickets, int adultTickets, Deal deal) {
-        log.info("Starting to book school event: {}", deal.getEvent().getName());
-        var event = deal.getEvent();
-        deals.add(deal.getExtDealId());
+    public void bookSchoolEvent(Event event) {
+        log.info("Starting to book school event: {}", event.getName());
 
         updateEventFromWebHook(event);
         payLoad.put("PROPERTY_119", "95");
-        payLoad.put("PROPERTY_117", deals.toString());
+        updateInBitrix(event, payLoad);
+
+        log.info("Saving event: {}", event);
+        eventRepository.save(event);
+    }
+
+    public void undoChangingInMixedEvent(int kidTickets, int adultTickets, Event event) {
+        log.info("Starting to cancel book mixed event: {}", event.getName());
+
+        updateEventFromWebHook(event);
+
+        event.setKidSlotsLeft(event.getKidSlotsLeft() + kidTickets);
+        event.setKidCapacity(event.getKidCapacity() + kidTickets);
+        event.setAdultSlotsLeft(event.getAdultSlotsLeft() + adultTickets);
+        event.setAdultCapacity(event.getAdultCapacity() + adultTickets);
+        event.setCapacity(event.getCapacity() + adultTickets + kidTickets);
+
+        payLoad.put("PROPERTY_109", event.getKidCapacity().toString());
+        payLoad.put("PROPERTY_111", event.getAdultCapacity().toString());
+        payLoad.put("PROPERTY_131", event.getCapacity().toString());
+        payLoad.put("PROPERTY_113", event.getTime().toString());
+        if (event.getAdultCapacity() > 0 || event.getKidCapacity() > 0) {
+            payLoad.put("PROPERTY_119", "93");
+        }
+
+        updateInBitrix(event, payLoad);
+
+        log.info("Saving event: {}", event);
+        eventRepository.save(event);
+    }
+
+    public void undoChangingInSchoolEvent(Event event) {
+        log.info("Starting to cancel book school event: {}", event.getName());
+
+        updateEventFromWebHook(event);
+        payLoad.put("PROPERTY_119", "93");
         updateInBitrix(event, payLoad);
 
         log.info("Saving event: {}", event);
@@ -112,10 +142,6 @@ public class ChangeEvent {
         event.setTime(LocalDateTime.parse(getValueFromProperty(element, "PROPERTY_113"),
                 DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss")));
 
-        JsonNode property117 = element.path("PROPERTY_117");
-        property117.fields().forEachRemaining(entry -> {
-            deals.add(entry.getValue().asText());
-        });
 
         payLoad.put("NAME", element.path("NAME").asText());
         payLoad.put("PROPERTY_107", getValueFromProperty(element, "PROPERTY_107"));
@@ -123,7 +149,7 @@ public class ChangeEvent {
         payLoad.put("PROPERTY_111", getValueFromProperty(element, "PROPERTY_111"));
         payLoad.put("PROPERTY_113", getValueFromProperty(element, "PROPERTY_113"));
         payLoad.put("PROPERTY_115", getValueFromProperty(element, "PROPERTY_115"));
-        payLoad.put("PROPERTY_117", deals.toString());
+        payLoad.put("PROPERTY_117", element.path("PROPERTY_117").toString());
         payLoad.put("PROPERTY_119", getValueFromProperty(element, "PROPERTY_119"));
         payLoad.put("PROPERTY_121", getValueFromProperty(element, "PROPERTY_121"));
         payLoad.put("PROPERTY_123", getValueFromProperty(element, "PROPERTY_123"));

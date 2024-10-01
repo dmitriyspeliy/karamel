@@ -3,6 +3,7 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+src/main/java/effective_mobile/com/controller/TestController.java
 src/main/resources/application-local.yml
 .tool-versions
 

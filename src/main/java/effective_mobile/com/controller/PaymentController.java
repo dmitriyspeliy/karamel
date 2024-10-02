@@ -20,6 +20,9 @@ public class PaymentController {
 
     private final InvoiceRepository invoiceRepository;
 
+    /**
+     * Ищет инвойс по айди и возвращает статус
+     */
     @GetMapping(value = "{id}/status", produces = MediaType.APPLICATION_JSON_VALUE)
     public String paymentStatus(@PathVariable UUID id) throws BadRequestException {
         Optional<Invoice> invoiceOptional = invoiceRepository.findByExtInvoiceId(id.toString());

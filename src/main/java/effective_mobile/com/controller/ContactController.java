@@ -13,6 +13,9 @@ public class ContactController {
 
     private final ContactService contactService;
 
+    /**
+     * Апдейт почты по айди контакта и айди евента
+     */
     @PatchMapping("/{id}")
     public void updateEmail(@PathVariable Long id, @RequestBody UpdateContactRequestBody contactRequestBody) throws BadRequestException {
         contactService.updateEmail(id, contactRequestBody);

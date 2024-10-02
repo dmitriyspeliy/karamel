@@ -19,7 +19,7 @@ public class CityInfoController {
     private String currentCity;
 
     /**
-     * Возвращает информацию про конкретный город
+     * Возвращает информацию про конкретный город, установленной в переменной
      */
     @GetMapping("/city")
     public CityInfoResponse getCityInfo() {

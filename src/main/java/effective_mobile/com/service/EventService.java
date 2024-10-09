@@ -134,6 +134,8 @@ public class EventService {
             log.info("Save event in db");
         } else {
             effective_mobile.com.model.entity.Event event = optionalEvent.get();
+            event.setType(type);
+            event.setTime(time);
             event.setAdultPrice(adultPrice);
             event.setKidPrice(kidPrice);
             event.setChildAge(childAge);
@@ -142,6 +144,7 @@ public class EventService {
             event.setKidCapacity(kidCapacity);
             event.setSlotsLeft(slotsLeft);
             event.setAdultSlotsLeft(adultSlotsLeft);
+            event.setGatheringType(type);
             event.setAdultRequired(true);
             event.setKidSlotsLeft(kidSlotLeft);
             eventRepository.save(event);

@@ -91,6 +91,7 @@ public class EventService {
     }
 
     private Event makeEvent() {
+        System.out.println(Integer.valueOf(childAge.substring(0,1)));
         return Event.builder()
                 .id(id)
                 .type(type)

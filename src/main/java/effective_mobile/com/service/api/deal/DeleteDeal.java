@@ -2,6 +2,7 @@ package effective_mobile.com.service.api.deal;
 
 import com.google.gson.Gson;
 import effective_mobile.com.model.dto.rs.BitrixCommonResponse;
+import effective_mobile.com.model.dto.rs.BitrixResponseDeleteDeal;
 import effective_mobile.com.utils.CommonVar;
 import effective_mobile.com.utils.exception.BadRequestException;
 import kong.unirest.HttpResponse;
@@ -19,7 +20,7 @@ import static effective_mobile.com.utils.UtilsMethods.checkVar;
 @RequiredArgsConstructor
 @Slf4j
 public class DeleteDeal {
-    private BitrixCommonResponse bitrixCommonResponse;
+    private BitrixResponseDeleteDeal bitrixCommonResponse;
     private HttpResponse<JsonNode> contactResponse;
     private String extId;
 
@@ -44,7 +45,7 @@ public class DeleteDeal {
 
     private void getResult() {
         Gson gson = new Gson();
-        bitrixCommonResponse = gson.fromJson(contactResponse.getBody().toString(), BitrixCommonResponse.class);
+        bitrixCommonResponse = gson.fromJson(contactResponse.getBody().toString(), BitrixResponseDeleteDeal.class);
     }
 
     public void answer() throws BadRequestException {

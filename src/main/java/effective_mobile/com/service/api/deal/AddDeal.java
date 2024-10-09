@@ -91,6 +91,7 @@ public class AddDeal {
         deal.setKidAge(event.getChildAge());
         deal.setKidPrice(event.getKidPrice());
         deal.setKidCount(kidCount);
+        deal.setType(event.getType());
         deal.setAdultPrice(event.getAdultPrice());
         deal.setAdultCount(adultCount);
         deal.setCreateDate(LocalDateTime.now());

@@ -100,9 +100,9 @@ public class EventService {
                 .kidPrice(kidPrice.longValue())
                 .childAge(childAge)
                 .capacity(capacity)
-                .slotsLeft(15L)
-                .kidSlotsLeft(10L)
-                .adultSlotsLeft(20L)
+                .slotsLeft(capacity)
+                .kidSlotsLeft(kidCapacity)
+                .adultSlotsLeft(adultCapacity)
                 .adultCapacity(adultCapacity)
                 .kidCapacity(kidCapacity)
                 .gatheringType(type) //в слотах не передается этот параметр

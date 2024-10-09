@@ -122,12 +122,19 @@ public class ChangeEventInBitrix {
         event.setAdultPrice(BigDecimal.valueOf(Long.parseLong(getValueFromProperty(element, "PROPERTY_135"))));
         event.setKidPrice(BigDecimal.valueOf(Long.parseLong(getValueFromProperty(element, "PROPERTY_129"))));
         event.setChildAge(getValueFromProperty(element, "PROPERTY_133"));
-        event.setCapacity(1L);
-        event.setAdultCapacity(1L);
-        event.setKidCapacity(1L);
+        String type = defineType(element);
+        event.setType(type);
+        if(type.equals("ШКОЛЬНЫЕ ГРУППЫ")) {
+            event.setCapacity(1L);
+            event.setAdultCapacity(1L);
+            event.setKidCapacity(1L);
+        }else {
+            event.setCapacity(Long.parseLong(getValueFromProperty(element, "PROPERTY_131")));
+            event.setAdultCapacity(Long.parseLong(getValueFromProperty(element, "PROPERTY_111")));
+            event.setKidCapacity(Long.parseLong(getValueFromProperty(element, "PROPERTY_109")));
+        }
         event.setExtEventId(element.path("ID").asText());
         event.setName(element.path("NAME").asText());
-        event.setType(defineType(element));
         event.setTime(LocalDateTime.parse(getValueFromProperty(element, "PROPERTY_113"),
                 DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss")));
 

@@ -41,8 +41,8 @@ spring:
       city-name: ЧЕЛЯБИНСК
       timezone: 3
       invoice-lifetime-minutes: 15
-      start-endpoint: 2024-10-30T00:00:00+00:00
-      finish-endpoint: 2025-02-10T00:00:00+00:00
+      start-endpoint: 2024-11-29T00:00:00+00:00
+      finish-endpoint: 2025-01-08T00:00:00+00:00
       address: Челябинск, ул. Рощинская, дом 2
       manager-contact-numbers:
         - +79587569849

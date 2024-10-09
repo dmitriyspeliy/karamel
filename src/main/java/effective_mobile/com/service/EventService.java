@@ -91,7 +91,6 @@ public class EventService {
     }
 
     private Event makeEvent() {
-        System.out.println(Integer.valueOf(childAge.substring(0,1)));
         return Event.builder()
                 .id(id)
                 .type(type)
@@ -99,7 +98,7 @@ public class EventService {
                 .time(time.toInstant(ZoneOffset.of("+00:00")))
                 .adultPrice(adultPrice.longValue())
                 .kidPrice(kidPrice.longValue())
-                .childAge(Integer.valueOf(childAge.substring(0,1)))
+                .childAge(childAge)
                 .capacity(capacity)
                 .slotsLeft(capacity)
                 .kidSlotsLeft(kidCapacity)

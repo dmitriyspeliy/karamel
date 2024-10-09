@@ -98,7 +98,7 @@ public class EventService {
                 .time(time.toInstant(ZoneOffset.of("+00:00")))
                 .adultPrice(adultPrice.longValue())
                 .kidPrice(kidPrice.longValue())
-                .childAge(childAge)
+                .childAge(Integer.valueOf(childAge.substring(0,1)))
                 .capacity(capacity)
                 .slotsLeft(capacity)
                 .kidSlotsLeft(kidCapacity)

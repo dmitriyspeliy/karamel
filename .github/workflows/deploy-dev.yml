@@ -2,25 +2,25 @@ on:
     push:
         branches:
             - test-chel
-#jobs:
-#    deploy-to-remote:
-#        runs-on: ubuntu-latest
-#        steps:
-#            -   uses: actions/checkout@v3
-#            -   name: Setup Java JDK
-#                uses: actions/setup-java@v1.4.4
-#                with:
-#                    java-version: '17'
-#            -   name: Build with Maven
-#                run: mvn --batch-mode --update-snapshots package -Dmaven.test.skip
-#            -   name: Install SSH Key
-#                uses: shimataro/ssh-key-action@v2
-#                with:
-#                    key: ${{ secrets.EXCURSION_API_GITHUB_SSH_KEY }}
-#                    known_hosts: 'placeholder'
-#            -   name: Adding Known Hosts
-#                run: ssh-keyscan -H ${{ secrets.REMOTE_IP }} >> ~/.ssh/known_hosts
-#            -   name: Uploading this version of repository
-#                run: rsync -vr ./target/ admin@${{ secrets.REMOTE_IP }}:/home/admin/excursionapi-dev/build-bitrix/
-#            -   name: Launch server
-#                run: ssh admin@${{ secrets.REMOTE_IP }} '/home/admin/start-bitrix.sh'
+jobs:
+    deploy-to-remote:
+        runs-on: ubuntu-latest
+        steps:
+            -   uses: actions/checkout@v3
+            -   name: Setup Java JDK
+                uses: actions/setup-java@v1.4.4
+                with:
+                    java-version: '17'
+            -   name: Build with Maven
+                run: mvn --batch-mode --update-snapshots package -Dmaven.test.skip
+            -   name: Install SSH Key
+                uses: shimataro/ssh-key-action@v2
+                with:
+                    key: ${{ secrets.EXCURSION_API_GITHUB_SSH_KEY }}
+                    known_hosts: 'placeholder'
+            -   name: Adding Known Hosts
+                run: ssh-keyscan -H ${{ secrets.REMOTE_IP }} >> ~/.ssh/known_hosts
+            -   name: Uploading this version of repository
+                run: rsync -vr ./target/ admin@${{ secrets.REMOTE_IP }}:/home/admin/excursionapi-dev/build-bitrix/
+            -   name: Launch server
+                run: ssh admin@${{ secrets.REMOTE_IP }} '/home/admin/start-bitrix.sh'

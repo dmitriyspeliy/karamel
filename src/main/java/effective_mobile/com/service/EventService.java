@@ -102,7 +102,7 @@ public class EventService {
                 .capacity(capacity)
                 .slotsLeft(1L)
                 .kidSlotsLeft(1L)
-                .slotsLeft(1L)
+                .adultSlotsLeft(1L)
                 .adultCapacity(adultCapacity)
                 .kidCapacity(kidCapacity)
                 .gatheringType(type) //в слотах не передается этот параметр

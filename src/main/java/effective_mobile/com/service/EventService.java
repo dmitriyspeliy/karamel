@@ -132,15 +132,29 @@ public class EventService {
             event.setKidSlotsLeft(kidSlotLeft);
             eventRepository.save(event);
             log.info("Save event in db");
+        } else {
+            effective_mobile.com.model.entity.Event event = optionalEvent.get();
+            event.setAdultPrice(adultPrice);
+            event.setKidPrice(kidPrice);
+            event.setChildAge(childAge);
+            event.setCapacity(capacity);
+            event.setAdultCapacity(adultCapacity);
+            event.setKidCapacity(kidCapacity);
+            event.setSlotsLeft(slotsLeft);
+            event.setAdultSlotsLeft(adultSlotsLeft);
+            event.setAdultRequired(true);
+            event.setKidSlotsLeft(kidSlotLeft);
+            eventRepository.save(event);
+            log.info("Refresh event in db");
         }
     }
 
-    public effective_mobile.com.model.entity.Event findEventByName(String name) throws BadRequestException {
-        Optional<effective_mobile.com.model.entity.Event> eventOptional = eventRepository.findByName(name);
+    public effective_mobile.com.model.entity.Event findEventByNameAndCity(String name, String city) throws BadRequestException {
+        Optional<effective_mobile.com.model.entity.Event> eventOptional = eventRepository.findByNameAndCity(name, city);
         if (eventOptional.isPresent()) {
             return eventOptional.get();
         } else {
-            throw new BadRequestException("No event by name " + name);
+            throw new BadRequestException("No event by name " + name + " and city " + city);
         }
     }
 

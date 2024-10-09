@@ -27,6 +27,9 @@ public class Contact {
     @Column(name = "phone")
     private String phone;
 
+    @Column(name = "email")
+    private String email;
+
     @Column(name = "add_info")
     private String addInfo;
 

@@ -3,7 +3,7 @@ package effective_mobile.com.service.api.event;
 import com.fasterxml.jackson.databind.JsonNode;
 import effective_mobile.com.model.entity.Event;
 import effective_mobile.com.repository.EventRepository;
-import effective_mobile.com.service.EventService;
+import effective_mobile.com.utils.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
@@ -27,11 +27,9 @@ import static effective_mobile.com.utils.UtilsMethods.getValueFromProperty;
 @RequiredArgsConstructor
 public class ChangeEventInBitrix {
     private final EventRepository eventRepository;
-    private final EventService service;
-    // сохраняем все поля слота, т.к. битрикс удаляет значения из полей, которых нет в запросе.
-    private Map<String, String> payLoad = new HashMap<>();
+    private final Map<String, String> payLoad = new HashMap<>();
 
-    public void bookMixedEvent(int kidTickets, int adultTickets, Event event) {
+    public void bookMixedEvent(int kidTickets, int adultTickets, Event event) throws BadRequestException {
         log.info("Starting to book mixed event: {}", event.getName());
 
         updateEventFromWebHook(event);
@@ -45,8 +43,7 @@ public class ChangeEventInBitrix {
         if (event.getKidSlotsLeft() < 0
                 || event.getAdultSlotsLeft() < 0
                 || event.getCapacity() < 0) {
-            // TODO исключение добавить какое-нибудь
-            throw new RuntimeException();
+            throw new BadRequestException("Нельзя забронировать так как мест меньше 0");
         }
 
         payLoad.put("PROPERTY_109", event.getKidCapacity().toString());
@@ -120,6 +117,7 @@ public class ChangeEventInBitrix {
                 + "&ELEMENT_ID=" + eventBitrixId;
 
         var node = restTemplate.getForObject(hookWithAdditionalParams, JsonNode.class);
+        assert node != null;
         var levelNode = node.path("result").get(0);
         updateValueFromNode(levelNode, event);
         log.info("Updated event from webhook: {}", event);

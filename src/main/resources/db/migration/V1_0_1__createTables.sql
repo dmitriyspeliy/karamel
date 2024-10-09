@@ -3,9 +3,10 @@ create table if not exists contact
     id             bigint generated always as identity primary key,
     ext_contact_id varchar(100) not null,
     full_name      varchar(300) not null,
+    email          varchar(300) default 'No email',
     city           varchar(100) not null,
     phone          varchar(100) not null,
-    add_info       text   default 'No information'
+    add_info       text         default 'No information'
 );
 
 create index hash_contact_index on contact (ext_contact_id);
@@ -15,6 +16,7 @@ create table if not exists deal
     id          bigint generated always as identity primary key,
     ext_deal_id varchar(100) not null,
     title       varchar(100) not null,
+    type        varchar(100) not null,
     create_date timestamp   default now(),
     paid        bool        default false,
     add_info    text        default 'No information',

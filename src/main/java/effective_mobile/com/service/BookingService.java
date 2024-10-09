@@ -14,6 +14,7 @@ import effective_mobile.com.repository.EventRepository;
 import effective_mobile.com.repository.InvoiceRepository;
 import effective_mobile.com.service.api.contact.AddContact;
 import effective_mobile.com.service.api.deal.AddDeal;
+import effective_mobile.com.service.api.deal.DeleteDeal;
 import effective_mobile.com.service.api.event.ChangeEventInBitrix;
 import effective_mobile.com.service.api.payment.InvoiceRobokassa;
 import effective_mobile.com.utils.exception.BadRequestException;
@@ -44,78 +45,42 @@ public class BookingService {
     private final InvoiceRepository invoiceRepository;
     private final ContactRepository contactRepository;
     private final ChangeEventInBitrix changeEvent;
+    private final DeleteDeal deleteDeal;
 
 
     @Value("${spring.current-city}")
     private String currentCity;
 
-    public synchronized GetPaymentLinkResponse bookEvent(RequestToBookingEvent requestBody) throws BadRequestException {
-        Event event = eventService.findEventByName(requestBody.getEventName());
+    private Event event;
+    private RequestToBookingEvent requestToBookingEvent;
+    private BigDecimal sum;
+    private Contact contact;
+    private Deal deal;
+    private Invoice invoice;
 
-        if (event.getType().contains("ШКОЛЬНЫЕ")) {
-            changeEvent.bookSchoolEvent(event);
-        } else if (event.getType().contains("СБОРНЫЕ")) {
-            changeEvent.bookMixedEvent(requestBody.getChildrenCount(), requestBody.getPaidAdultCount(), event);
-        } else {
-            // TODO тут нужно будет добавить кастомное исключение, хотя возможно оно и не нужно
-            throw new RuntimeException();
-        }
+    public synchronized GetPaymentLinkResponse bookEvent(RequestToBookingEvent requestBody) throws BadRequestException {
+
+        this.requestToBookingEvent = requestBody;
+        event = eventService.findEventByNameAndCity(requestBody.getEventName(),
+                cityProperties.getCityInfo().get(currentCity).getCityName());
+
+        // бронируем места
+        bookSeats();
 
         // считаем сумму
-        BigDecimal adultPrice = event.getAdultPrice();
-        BigDecimal kidPrice = event.getKidPrice();
-        BigDecimal sum = adultPrice.multiply(BigDecimal.valueOf(requestBody.getPaidAdultCount()))
-                .add(
-                        kidPrice.multiply(BigDecimal.valueOf(requestBody.getChildrenCount())));
+        makeSum();
 
         // регистрация сущностей в битриксе
-        Contact contact = addContact.addContact(requestBody);
-        Deal deal = addDeal.addDeal(sum, event, contact, requestBody.getPaidAdultCount(), requestBody.getChildrenCount());
+        contact = addContact.addContact(requestBody);
+        deal = addDeal.addDeal(sum, event, contact, requestBody.getPaidAdultCount(), requestBody.getChildrenCount());
 
         // получение инвойса
-        Invoice invoice = null;
-        try {
-            invoice = invoiceRobokassa.generateInvoiceLink(sum, deal);
-        } catch (Exception e) {
-            if (event.getType().equalsIgnoreCase("Школьные")) {
-                changeEvent.undoChangingInSchoolEvent(event);
-            } else {
-                changeEvent.undoChangingInMixedEvent(requestBody.getChildrenCount(),
-                        requestBody.getPaidAdultCount(), event);
-            }
-
-            // нужно удалять сделку ?
-        }
-
-        // TODO тут должно быть добавление сделки к слоту
+        makeInvoice();
 
         // сохранили все сущности в бд
-        deal.setContact(contact);
-        deal.setEvent(event);
-        Deal save = dealRepository.save(deal);
+        saveEntitiesInDb();
 
-        List<Deal> dealList = event.getDealList();
-        if (dealList != null) {
-            dealList.add(save);
-        } else {
-            dealList = new ArrayList<>();
-            dealList.add(save);
-        }
-        event.setDealList(dealList);
-        eventRepository.save(event);
-
-
-        List<Deal> deals = contact.getDeal();
-        if (deals != null) {
-            deals.add(save);
-        } else {
-            deals = new ArrayList<>();
-            deals.add(save);
-        }
-        contact.setDeal(deals);
-        contactRepository.save(contact);
-
-
+        // отдаем ссылку
         return new GetPaymentLinkResponse(invoice.getExtInvoiceId(), invoice.getInvoiceLink(),
                 invoice.getCreateAt().toInstant(ZoneOffset.of("+00:00")));
     }
@@ -149,6 +114,71 @@ public class BookingService {
         } else {
             throw new BadRequestException("No invoice by hash " + invoiceId);
         }
+    }
+
+    private void bookSeats() throws BadRequestException {
+        if (event.getType().contains("ШКОЛЬНЫЕ")) {
+            changeEvent.bookSchoolEvent(event);
+        } else if (event.getType().contains("СБОРНЫЕ")) {
+            changeEvent.bookMixedEvent(requestToBookingEvent.getChildrenCount(), requestToBookingEvent.getPaidAdultCount(), event);
+        } else {
+            throw new BadRequestException("Нет такого типа " + event.getType());
+        }
+    }
+
+    private void makeSum() {
+        BigDecimal adultPrice = event.getAdultPrice();
+        BigDecimal kidPrice = event.getKidPrice();
+        sum = adultPrice.multiply(BigDecimal.valueOf(requestToBookingEvent.getPaidAdultCount()))
+                .add(
+                        kidPrice.multiply(BigDecimal.valueOf(requestToBookingEvent.getChildrenCount())));
+    }
+
+    private void makeInvoice() throws BadRequestException {
+        invoice = null;
+        try {
+            invoice = invoiceRobokassa.generateInvoiceLink(sum, deal);
+        } catch (Exception e) {
+            // если на этапе получение инвойса что-то не получилось, то делаем компенсирующую операцию
+            // возвращаем бронируемые места + удаляем сделку в битрикс
+            if (event.getType().contains("ШКОЛЬНЫЕ")) {
+                changeEvent.undoChangingInSchoolEvent(event);
+                deleteDeal.deleteByExtId(deal.getExtDealId());
+            } else if (event.getType().contains("СБОРНЫЕ")) {
+                changeEvent.undoChangingInMixedEvent(requestToBookingEvent.getChildrenCount(),
+                        requestToBookingEvent.getPaidAdultCount(), event);
+                deleteDeal.deleteByExtId(deal.getExtDealId());
+            } else {
+                deleteDeal.deleteByExtId(deal.getExtDealId());
+            }
+        }
+    }
+
+    private void saveEntitiesInDb() {
+        deal.setContact(contact);
+        deal.setEvent(event);
+        Deal save = dealRepository.save(deal);
+
+        List<Deal> dealList = event.getDealList();
+        if (dealList != null) {
+            dealList.add(save);
+        } else {
+            dealList = new ArrayList<>();
+            dealList.add(save);
+        }
+        event.setDealList(dealList);
+        eventRepository.save(event);
+
+
+        List<Deal> deals = contact.getDeal();
+        if (deals != null) {
+            deals.add(save);
+        } else {
+            deals = new ArrayList<>();
+            deals.add(save);
+        }
+        contact.setDeal(deals);
+        contactRepository.save(contact);
     }
 
 

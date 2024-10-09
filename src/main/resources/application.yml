@@ -6,6 +6,16 @@ robokassa:
   invoice-url: https://auth.robokassa.ru/Merchant/Index/
 
 spring:
+  mail:
+    host: smtp.yandex.ru
+    port: 465
+    username: karamel.msk@yandex.ru
+    password: ibrpzealrqlekqvv
+    properties:
+      mail:
+        smtp:
+          auth: true
+          ssl.enable: true
   flyway:
     baselineOnMigrate: true
     enabled: true
@@ -31,8 +41,8 @@ spring:
       city-name: ЧЕЛЯБИНСК
       timezone: 3
       invoice-lifetime-minutes: 15
-      start-endpoint: 2023-11-30T00:00:00+00:00
-      finish-endpoint: 2024-01-10T00:00:00+00:00
+      start-endpoint: 2024-10-30T00:00:00+00:00
+      finish-endpoint: 2025-02-10T00:00:00+00:00
       address: Челябинск, ул. Рощинская, дом 2
       manager-contact-numbers:
         - +79587569849

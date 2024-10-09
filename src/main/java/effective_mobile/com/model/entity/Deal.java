@@ -23,6 +23,9 @@ public class Deal {
     @Column(name = "title")
     private String title;
 
+    @Column(name = "type")
+    private String type;
+
     @Column(name = "create_date")
     private LocalDateTime createDate;
 

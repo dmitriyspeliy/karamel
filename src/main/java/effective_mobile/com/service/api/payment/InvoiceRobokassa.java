@@ -87,9 +87,8 @@ public class InvoiceRobokassa {
                 + "&Receipt=" + URLEncoder.encode(receipt, StandardCharsets.UTF_8)
                 + "&ExpirationDate=" + DateTimeFormatter.ISO_ZONED_DATE_TIME.format(
                 ZonedDateTime.ofInstant(Instant.now().plus(Duration.ofHours(24)), ZoneOffset.UTC))
-                + "&SignatureValue=" + calculateSignature(paymentInfo.getLogin(), sum, deal.getExtDealId(), receipt, paymentInfo.getRobokassaPass1Test())
-                + "&Culture=ru"
-                + "&IsTest=1";
+                + "&SignatureValue=" + calculateSignature(paymentInfo.getLogin(), sum, deal.getExtDealId(), receipt, paymentInfo.getRobokassaPass1())
+                + "&Culture=ru";
     }
 
     private void makeRequest() throws BadRequestException {

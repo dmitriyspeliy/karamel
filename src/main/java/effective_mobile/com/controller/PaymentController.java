@@ -36,6 +36,6 @@ public class PaymentController {
     @PostMapping("/result")
     public void paymentResult(@RequestBody Object paymentResult) throws BadRequestException {
         System.out.println(paymentResult.toString());
-        paymentService.paymentProcessing(new PaymentResult());
+        //paymentService.paymentProcessing(new PaymentResult());
     }
 }

@@ -106,7 +106,7 @@ public class BookingService {
                     .adultCount(deal.getAdultCount())
                     .adultPrice(deal.getAdultPrice())
                     .totalPrice(invoice.getTotalSum())
-                    .kidAge(deal.getKidAge())
+                    .kidAge(getAge(deal.getKidAge()))
                     .address(info.getAddress())
                     .time(event.getTime().toInstant(ZoneOffset.of("+00:00")))
                     .createdAt(invoice.getCreateAt().toInstant(ZoneOffset.of("+00:00")))
@@ -179,6 +179,15 @@ public class BookingService {
         }
         contact.setDeal(deals);
         contactRepository.save(contact);
+    }
+
+    private String getAge(String age) {
+        return switch (age) {
+            case "9,9" -> "8-11";
+            case "7,7" -> "6-8";
+            case "5,5" -> "4-6";
+            default -> null;
+        };
     }
 
 

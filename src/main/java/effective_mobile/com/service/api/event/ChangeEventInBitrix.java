@@ -34,15 +34,11 @@ public class ChangeEventInBitrix {
 
         updateEventFromWebHook(event);
 
-        event.setKidSlotsLeft(event.getKidSlotsLeft() - kidTickets);
         event.setKidCapacity(event.getKidCapacity() - kidTickets);
-        event.setAdultSlotsLeft(event.getAdultSlotsLeft() - adultTickets);
         event.setAdultCapacity(event.getAdultCapacity() - adultTickets);
         event.setCapacity(event.getCapacity() - adultTickets - kidTickets);
 
-        if (event.getKidSlotsLeft() < 0
-                || event.getAdultSlotsLeft() < 0
-                || event.getCapacity() < 0) {
+        if (event.getCapacity() < 0) {
             throw new BadRequestException("Нельзя забронировать так как мест меньше 0");
         }
 
@@ -77,9 +73,7 @@ public class ChangeEventInBitrix {
 
         updateEventFromWebHook(event);
 
-        event.setKidSlotsLeft(event.getKidSlotsLeft() + kidTickets);
         event.setKidCapacity(event.getKidCapacity() + kidTickets);
-        event.setAdultSlotsLeft(event.getAdultSlotsLeft() + adultTickets);
         event.setAdultCapacity(event.getAdultCapacity() + adultTickets);
         event.setCapacity(event.getCapacity() + adultTickets + kidTickets);
 
@@ -128,12 +122,9 @@ public class ChangeEventInBitrix {
         event.setAdultPrice(BigDecimal.valueOf(Long.parseLong(getValueFromProperty(element, "PROPERTY_135"))));
         event.setKidPrice(BigDecimal.valueOf(Long.parseLong(getValueFromProperty(element, "PROPERTY_129"))));
         event.setChildAge(getValueFromProperty(element, "PROPERTY_133"));
-        event.setCapacity(Long.parseLong(getValueFromProperty(element, "PROPERTY_131")));
-        event.setAdultCapacity(Long.parseLong(getValueFromProperty(element, "PROPERTY_111")));
-        event.setKidCapacity(Long.parseLong(getValueFromProperty(element, "PROPERTY_109")));
-        event.setSlotsLeft(Long.parseLong(getValueFromProperty(element, "PROPERTY_131")));
-        event.setAdultSlotsLeft(Long.parseLong(getValueFromProperty(element, "PROPERTY_111")));
-        event.setKidSlotsLeft(Long.parseLong(getValueFromProperty(element, "PROPERTY_111")));
+        event.setCapacity(1L);
+        event.setAdultCapacity(1L);
+        event.setKidCapacity(1L);
         event.setExtEventId(element.path("ID").asText());
         event.setName(element.path("NAME").asText());
         event.setType(defineType(element));

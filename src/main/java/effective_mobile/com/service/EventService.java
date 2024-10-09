@@ -35,9 +35,6 @@ public class EventService {
     private Long capacity;
     private Long adultCapacity;
     private Long kidCapacity;
-    private Long slotsLeft;
-    private Long adultSlotsLeft;
-    private Long kidSlotLeft;
     private String extId;
     private LocalDateTime time;
     private String name;
@@ -75,15 +72,18 @@ public class EventService {
         kidPrice =
                 BigDecimal.valueOf(Long.parseLong(getValueFromProperty(element, "PROPERTY_129")));
         childAge = getValueFromProperty(element, "PROPERTY_133");
-        capacity = Long.parseLong(getValueFromProperty(element, "PROPERTY_131"));
-        adultCapacity = Long.parseLong(getValueFromProperty(element, "PROPERTY_111"));
-        kidCapacity = Long.parseLong(getValueFromProperty(element, "PROPERTY_109"));
-        slotsLeft = Long.parseLong(getValueFromProperty(element, "PROPERTY_131"));
-        adultSlotsLeft = Long.parseLong(getValueFromProperty(element, "PROPERTY_111"));
-        kidSlotLeft = Long.parseLong(getValueFromProperty(element, "PROPERTY_111"));
+        type = defineType(element);
+        if(type.equals("ШКОЛЬНЫЕ ГРУППЫ")) {
+            capacity = 1L;
+            adultCapacity = 1L;
+            kidCapacity = 1L;
+        }else {
+            capacity = Long.parseLong(getValueFromProperty(element, "PROPERTY_131"));
+            adultCapacity = Long.parseLong(getValueFromProperty(element, "PROPERTY_111"));
+            kidCapacity = Long.parseLong(getValueFromProperty(element, "PROPERTY_109"));
+        }
         extId = element.path("ID").asText();
         name = element.path("NAME").asText();
-        type = defineType(element);
         time =
                 LocalDateTime.parse(getValueFromProperty(element, "PROPERTY_113"),
                         DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss"));
@@ -102,9 +102,6 @@ public class EventService {
                 .capacity(capacity)
                 .adultCapacity(adultCapacity)
                 .kidCapacity(kidCapacity)
-                .slotsLeft(slotsLeft)
-                .adultSlotsLeft(adultSlotsLeft)
-                .kidSlotsLeft(kidSlotLeft)
                 .gatheringType(type) //в слотах не передается этот параметр
                 .adultRequired(true)
                 .build();
@@ -124,12 +121,9 @@ public class EventService {
             event.setCapacity(capacity);
             event.setAdultCapacity(adultCapacity);
             event.setKidCapacity(kidCapacity);
-            event.setSlotsLeft(slotsLeft);
-            event.setAdultSlotsLeft(adultSlotsLeft);
             event.setGatheringType(type);
             event.setAdultRequired(true);
             event.setCity(city);
-            event.setKidSlotsLeft(kidSlotLeft);
             eventRepository.save(event);
             log.info("Save event in db");
         } else {
@@ -142,11 +136,8 @@ public class EventService {
             event.setCapacity(capacity);
             event.setAdultCapacity(adultCapacity);
             event.setKidCapacity(kidCapacity);
-            event.setSlotsLeft(slotsLeft);
-            event.setAdultSlotsLeft(adultSlotsLeft);
             event.setGatheringType(type);
             event.setAdultRequired(true);
-            event.setKidSlotsLeft(kidSlotLeft);
             eventRepository.save(event);
             log.info("Refresh event in db");
         }

@@ -22,9 +22,6 @@ public class Event implements Serializable {
     private Long capacity;
     private Long adultCapacity;
     private Long kidCapacity;
-    private Long slotsLeft;
-    private Long adultSlotsLeft;
-    private Long kidSlotsLeft;
     private String gatheringType;
     private Boolean adultRequired;
 }

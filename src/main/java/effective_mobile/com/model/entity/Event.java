@@ -37,12 +37,6 @@ public class Event implements Serializable {
     private Long adultCapacity;
     @Column(name = "kid_capacity")
     private Long kidCapacity;
-    @Column(name = "slots_left")
-    private Long slotsLeft;
-    @Column(name = "adult_slots_left")
-    private Long adultSlotsLeft;
-    @Column(name = "kid_slots_left")
-    private Long kidSlotsLeft;
     @Column(name = "gathering_type")
     private String gatheringType;
     @Column(name = "adult_required")

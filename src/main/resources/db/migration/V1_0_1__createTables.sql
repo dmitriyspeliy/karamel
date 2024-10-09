@@ -44,9 +44,6 @@ create table if not exists event
     capacity         bigint              not null CHECK (capacity >= 0)         default 0,
     adult_capacity   bigint              not null CHECK (adult_capacity >= 0)   default 0,
     kid_capacity     bigint              not null CHECK (kid_capacity >= 0)     default 0,
-    slots_left       bigint              not null CHECK (slots_left >= 0)       default 0,
-    adult_slots_left bigint              not null CHECK (adult_slots_left >= 0) default 0,
-    kid_slots_left   bigint              not null CHECK (kid_slots_left >= 0)   default 0,
     gathering_type   varchar(100)        not null,
     adult_required   bool                not null,
     city             varchar(100)        not null

@@ -54,7 +54,7 @@ public class Deal {
     @JoinColumn(name = "contact_id", referencedColumnName = "id")
     private Contact contact;
 
-    @OneToOne(mappedBy = "deal", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "deal", cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
     private Invoice invoice;
 

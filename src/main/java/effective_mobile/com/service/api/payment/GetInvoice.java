@@ -73,7 +73,7 @@ public class GetInvoice {
             System.out.println(node);
             resultCode = node.get("Result").get("Code").toString();
             System.out.println(resultCode);
-            if (resultCode != null && !resultCode.equals("") && resultCode.equals("0")) {
+            if (resultCode.equals("0")) {
                 stateCode = node.get("State").get("Code").toString();
                 info = node.get("Info").toString();
             } else {

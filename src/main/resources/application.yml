@@ -10,8 +10,8 @@ spring:
   mail:
     host: smtp.yandex.ru
     port: 465
-    username: karamel.msk@yandex.ru
-    password: ibrpzealrqlekqvv
+    username: caramel.kras@yandex.ru
+    password: zfmuynwokohwkfwe
     properties:
       mail:
         smtp:

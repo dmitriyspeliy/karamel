@@ -8,6 +8,7 @@ import effective_mobile.com.model.dto.rs.GetInvoiceId;
 import effective_mobile.com.model.entity.Deal;
 import effective_mobile.com.model.entity.Invoice;
 import effective_mobile.com.repository.InvoiceRepository;
+import effective_mobile.com.service.api.deal.UpdateDealInvoiceInfo;
 import effective_mobile.com.utils.enums.Status;
 import effective_mobile.com.utils.exception.BadRequestException;
 import kong.unirest.HttpResponse;
@@ -39,6 +40,7 @@ public class InvoiceRobokassa {
     private final CityProperties cityProperties;
     private final RobokassaProperties robokassaProperties;
     private final InvoiceRepository invoiceRepository;
+    private final UpdateDealInvoiceInfo updateDealInvoiceInfo;
 
     @Value("${spring.current-city}")
     private String currentCity;
@@ -111,6 +113,8 @@ public class InvoiceRobokassa {
                     && !getInvoiceId.getInvoiceID().equals("")) {
                 log.info("Айди получен " + hashId);
                 hashId = getInvoiceId.getInvoiceID();
+                updateDealInvoiceInfo.refreshStatusDeal(deal.getExtDealId(), robokassaProperties.getInvoiceUrl() + hashId,
+                        LocalDate.now());
             } else {
                 throw new BadRequestException("Не удалось получить айди счета. Код ошибки " + getInvoiceId.getErrorCode() + ". Сообщение: "
                         + getInvoiceId.getErrorMessage());

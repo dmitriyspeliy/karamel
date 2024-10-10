@@ -79,8 +79,6 @@ public class AddDeal {
                     .queryString("fields[UF_CRM_66D98814E3C15]", event.getAdultPrice()) // price adult
                     .queryString("fields[UF_CRM_66A35EF72DC9E]", getAgeBitrixField(event.getChildAge())) // age 103 105 107
                     .queryString("fields[UF_CRM_66A35EF6C77BB]", typeOfDealInBitrixFields(event.getGatheringType())) // type of group школьные 93 сборные 95
-                    //  .queryString("fields[UF_CRM_66A35EF77437E]", event.()) // pay link
-                    //  .queryString("fields[UF_CRM_66A35EF7800D8]", event.()) // pay link date send
                     .asJson();
         } catch (Exception e) {
             throw new BadRequestException("Не удалось отправить запрос на добавление сделки. Текст боди : " + e.getMessage());

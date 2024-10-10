@@ -1,7 +1,5 @@
 package effective_mobile.com.service.api.deal;
 
-import effective_mobile.com.model.entity.Deal;
-import effective_mobile.com.repository.DealRepository;
 import effective_mobile.com.utils.CommonVar;
 import effective_mobile.com.utils.exception.BadRequestException;
 import kong.unirest.HttpResponse;
@@ -12,7 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Optional;
 
 import static effective_mobile.com.utils.UtilsMethods.checkVar;
 
@@ -21,44 +18,53 @@ import static effective_mobile.com.utils.UtilsMethods.checkVar;
 @Slf4j
 public class UpdateDealStatus {
 
-    private final DealRepository dealRepository;
     private HttpResponse<JsonNode> contactResponse;
-    private String status;
     private String extId;
+    private String type;
 
-    public void refreshStatusDeal(String extId, String status) throws BadRequestException {
+    public void refreshStatusDeal(String extId, String type) throws BadRequestException {
         log.info("Запрос на обновление статуса платежа сделки по айди " + extId);
-        checkVar(List.of(extId, status));
+        checkVar(List.of(extId));
         this.extId = extId;
-        this.status = status;
+        this.type = type;
         makeRequest();
         answer();
     }
 
     private void makeRequest() throws BadRequestException {
-        try {
-            contactResponse
-                    = Unirest.post(CommonVar.BITRIX_WEBHOOK + "crm.deal.update.json")
-                    .queryString("id", extId)
-                    .queryString("fields[UF_CRM_66A35EF7571B0]", status) // 117 yes 119 no
-                    .queryString("params[REGISTER_SONET_EVENT]", "Y")
-                    .asJson();
-        } catch (Exception e) {
-            throw new BadRequestException("Не удалось отправить запрос на обновление статуса платежа. Текст боди : " + e.getMessage());
+        if (type.equals("СБОРНЫЕ ГРУППЫ")) {
+            try {
+                contactResponse
+                        = Unirest.post(CommonVar.BITRIX_WEBHOOK + "crm.deal.update.json")
+                        .queryString("id", extId)
+                        .queryString("params[REGISTER_SONET_EVENT]", "Y")
+                        .queryString("fields[STAGE_ID]", "FINAL_INVOICE") // NEW FINAL_INVOICE
+                        .queryString("fields[UF_CRM_66A35EF7675A3]", "121") // оплата мест 121 yes 123 no
+                        .asJson();
+            } catch (Exception e) {
+                throw new BadRequestException("Не удалось отправить запрос на обновление статуса платежа. Текст боди : " + e.getMessage());
+            }
+        } else {
+            try {
+                contactResponse
+                        = Unirest.post(CommonVar.BITRIX_WEBHOOK + "crm.deal.update.json")
+                        .queryString("id", extId)
+                        .queryString("params[REGISTER_SONET_EVENT]", "Y")
+                        .queryString("fields[STAGE_ID]", "FINAL_INVOICE") // NEW FINAL_INVOICE
+                        .queryString("fields[UF_CRM_66A35EF7571B0]", "117") // оплата бронь 117 yes 119 no
+                        .asJson();
+            } catch (Exception e) {
+                throw new BadRequestException("Не удалось отправить запрос на обновление статуса платежа. Текст боди : " + e.getMessage());
+            }
         }
     }
 
     public void answer() throws BadRequestException {
         if (contactResponse.getStatus() == 200) {
-            Optional<Deal> dealOptional = dealRepository.findByExtDealId(extId);
-            if (dealOptional.isPresent()) {
-                dealOptional.get().setPaid(extId.equals("117"));
-                dealRepository.save(dealOptional.get());
-                log.info("Сделка успешно обновлена в бд и в битрикс");
-            }
-            return;
+            log.info("Сделка успешно обновлена в битрикс");
+        } else {
+            throw new BadRequestException("Не удалось отправить запрос на обновление сделки. Статус код " + contactResponse.getStatus()
+                    + ". Боди " + contactResponse.getBody());
         }
-        throw new BadRequestException("Не удалось отправить запрос на добавление сделки. Статус код " + contactResponse.getStatus()
-                + ". Боди " + contactResponse.getBody());
     }
 }

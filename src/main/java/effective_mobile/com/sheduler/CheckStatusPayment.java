@@ -5,6 +5,7 @@ import effective_mobile.com.model.entity.Deal;
 import effective_mobile.com.model.entity.Invoice;
 import effective_mobile.com.repository.DealRepository;
 import effective_mobile.com.repository.InvoiceRepository;
+import effective_mobile.com.service.api.deal.UpdateDealStatus;
 import effective_mobile.com.service.api.payment.GetInvoice;
 import effective_mobile.com.utils.enums.Status;
 import effective_mobile.com.utils.exception.BadRequestException;
@@ -31,6 +32,7 @@ public class CheckStatusPayment {
     private final InvoiceRepository invoiceRepository;
     private final DealRepository dealRepository;
     private final GetInvoice getInvoice;
+    private final UpdateDealStatus updateDealStatus;
 
     /**
      * Синхронизируем статус платежа в бд с робокассой
@@ -52,6 +54,7 @@ public class CheckStatusPayment {
                 deal.setPaid(true);
                 invoiceRepository.save(byStatus);
                 dealRepository.save(deal);
+                updateDealStatus.refreshStatusDeal(deal.getExtDealId(), deal.getType());
             } else if (status == Status.FAILURE) {
                 byStatus.setStatus(status);
                 byStatus.setState(state);

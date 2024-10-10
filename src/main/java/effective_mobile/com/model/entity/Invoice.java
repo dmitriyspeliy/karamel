@@ -33,7 +33,7 @@ public class Invoice {
     private String state;
     @Column(name = "count_of_send_ticket")
     private Integer countOfSendTicket;
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne
     @MapsId
     @JoinColumn(name = "deal_id")
     private Deal deal;

@@ -1,8 +1,5 @@
 package effective_mobile.com.service.api.payment;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import effective_mobile.com.configuration.properties.CityProperties;
 import effective_mobile.com.configuration.properties.RobokassaProperties;
@@ -76,7 +73,7 @@ public class GetInvoice {
             resultCode = node.get("Result").get("Code").asText();
             if (resultCode.equals("0")) {
                 stateCode = node.get("State").get("Code").asText();
-                info = node.get("Info").asText();
+                info = node.get("Info").toString();
             } else {
                 throw new BadRequestException("Статус код в ответе " + stateCode);
             }

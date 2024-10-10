@@ -14,6 +14,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -31,6 +32,9 @@ public class CheckStatusPayment {
     private final DealRepository dealRepository;
     private final GetInvoice getInvoice;
 
+    /**
+     * Синхронизируем статус платежа в бд с робокассой
+     */
     @Scheduled(fixedDelay = 300000L)
     public void check() throws BadRequestException {
         log.info("Start working scheduler. Check invoice's with status PENDING");
@@ -51,6 +55,24 @@ public class CheckStatusPayment {
             } else if (status == Status.FAILURE) {
                 byStatus.setStatus(status);
                 byStatus.setState(state);
+                invoiceRepository.save(byStatus);
+            }
+        }
+        log.info("Scheduler was finish");
+    }
+
+
+    /**
+     * Все платежи, со статусом PENDING, которые уже 2 дня находятся в этом статусе, будут отменены
+     */
+    @Scheduled(fixedDelay = 500000L)
+    public void checkInvoiceStatusAndTime() {
+        log.info("Start working scheduler. Set FAILURE status in invoice");
+        // выгружаем все счета со статусом PENDING
+        List<Invoice> invoiceByStatus = invoiceRepository.getInvoiceByStatus(Status.PENDING.name());
+        for (Invoice byStatus : invoiceByStatus) {
+            if (byStatus.getCreateAt().plusDays(2).isBefore(LocalDateTime.now())) {
+                byStatus.setStatus(Status.FAILURE);
                 invoiceRepository.save(byStatus);
             }
         }

@@ -30,6 +30,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static effective_mobile.com.utils.UtilsMethods.getAge;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -179,15 +181,6 @@ public class BookingService {
         }
         contact.setDeal(deals);
         contactRepository.save(contact);
-    }
-
-    private String getAge(String age) {
-        return switch (age) {
-            case "9,9" -> "8-11";
-            case "7,7" -> "6-8";
-            case "5,5" -> "4-6";
-            default -> age;
-        };
     }
 
 

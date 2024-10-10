@@ -12,7 +12,6 @@ import effective_mobile.com.utils.exception.BadRequestException;
 import kong.unirest.HttpResponse;
 import kong.unirest.JsonNode;
 import kong.unirest.Unirest;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,10 +21,9 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
 
-import static effective_mobile.com.utils.UtilsMethods.checkVar;
+import static effective_mobile.com.utils.UtilsMethods.*;
 
 @Component
 @RequiredArgsConstructor
@@ -69,7 +67,7 @@ public class AddDeal {
                     .queryString("fields[OPPORTUNITY]", sum.toString())
                     .queryString("fields[TITLE]", "Сделка с сайта " + siteHostName)
                     .queryString("fields[STAGE_ID]", "NEW") // FINAL_INVOICE
-                    .queryString("fields[UF_CRM_66A35EF5A2449]", paymentInfo.getCityName()) // CITY
+                    .queryString("fields[UF_CRM_66A35EF5A2449]", paymentInfo.getBitrixFieldNum()) // CITY
                     .queryString("fields[UF_CRM_66A35EF6A220C]", LocalDate.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))) // DATE CREATE
                     .queryString("fields[UF_CRM_1724735874999]", LocalDate.now().plusDays(2).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))) // FINISH PAY DAY
                     .queryString("fields[UF_CRM_66A35EF7571B0]", "119") // оплата бронь 117 yes 119 no
@@ -79,9 +77,10 @@ public class AddDeal {
                     .queryString("fields[UF_CRM_66D98814EFA14]", event.getKidPrice()) // price kid
                     .queryString("fields[UF_CRM_66A35EF6E715E]", adultCount) // count adult
                     .queryString("fields[UF_CRM_66D98814E3C15]", event.getAdultPrice()) // price adult
-                    .queryString("fields[UF_CRM_66A35EF72DC9E]", event.getChildAge()) // age
-                    .queryString("fields[UF_CRM_66A35EF6C77BB]", event.getGatheringType()) // type of group
-                  //  .queryString("fields[UF_CRM_66A35EF77437E]", event.()) // pay link
+                    .queryString("fields[UF_CRM_66A35EF72DC9E]", getAgeBitrixField(event.getChildAge())) // age 103 105 107
+                    .queryString("fields[UF_CRM_66A35EF6C77BB]", typeOfDealInBitrixFields(event.getGatheringType())) // type of group школьные 93 сборные 95
+                    //  .queryString("fields[UF_CRM_66A35EF77437E]", event.()) // pay link
+                    //  .queryString("fields[UF_CRM_66A35EF7800D8]", event.()) // pay link date send
                     .asJson();
         } catch (Exception e) {
             throw new BadRequestException("Не удалось отправить запрос на добавление сделки. Текст боди : " + e.getMessage());

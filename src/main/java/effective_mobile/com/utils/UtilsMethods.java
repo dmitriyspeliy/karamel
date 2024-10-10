@@ -84,4 +84,29 @@ public class UtilsMethods {
             return "ШКОЛЬНЫЕ ГРУППЫ";
         }
     }
+
+    public static String getAge(String age) {
+        return switch (age) {
+            case "9,9" -> "8-11";
+            case "7,7" -> "6-8";
+            case "5,5" -> "4-6";
+            default -> age;
+        };
+    }
+
+    public static String getAgeBitrixField(String age) {
+        return switch (age) {
+            case "9,9" -> "107";
+            case "7,7" -> "105";
+            default -> "103";
+        };
+    }
+
+    public static String typeOfDealInBitrixFields(String type) {
+        if (type.equals("СБОРНЫЕ ГРУППЫ")) {
+            return "93";
+        } else {
+            return "95";
+        }
+    }
 }

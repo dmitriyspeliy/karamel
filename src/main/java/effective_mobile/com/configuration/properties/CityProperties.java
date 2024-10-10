@@ -23,6 +23,7 @@ public class CityProperties {
     public static class Info {
 
         private Integer timezone;
+        private String bitrixFieldNum;
         private Long invoiceLifetimeMinutes;
         private String cityName;
         private Instant startEndpoint;

@@ -31,7 +31,7 @@ public class CheckStatusPayment {
     private final DealRepository dealRepository;
     private final GetInvoice getInvoice;
 
-    @Scheduled(fixedRate = 300000L)
+    @Scheduled(fixedDelay = 300000L)
     public void check() throws BadRequestException {
         log.info("Start working scheduler. Check invoice's with status PENDING");
         // выгружаем все счета со статусом PENDING

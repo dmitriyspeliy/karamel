@@ -66,6 +66,9 @@ public class GetInvoice {
 
     private void answerProcessing() throws BadRequestException, IOException {
         log.info("Response is " + response.getStatus());
+        stateCode = null;
+        resultCode = null;
+        info = null;
         if (response.getStatus() == 200) {
             XmlMapper xmlMapper = new XmlMapper();
             com.fasterxml.jackson.databind.JsonNode node = xmlMapper.readTree(response.getBody());

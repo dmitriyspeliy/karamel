@@ -11,6 +11,8 @@ import org.springframework.util.DigestUtils;
 import java.math.BigDecimal;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -104,9 +106,17 @@ public class UtilsMethods {
 
     public static String typeOfDealInBitrixFields(String type) {
         if (type.equals("СБОРНЫЕ ГРУППЫ")) {
-            return "93";
-        } else {
             return "95";
+        } else {
+            return "93";
         }
+    }
+
+    public static String changeTimeFormat(String time) {
+        if (time == null || time.length() < 10) {
+            return time;
+        }
+        return LocalDateTime.parse(time, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"))
+                .format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss"));
     }
 }

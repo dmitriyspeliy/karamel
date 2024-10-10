@@ -42,7 +42,7 @@ public class UpdateDealInvoiceInfo {
                     .queryString("id", extId)
                     .queryString("params[REGISTER_SONET_EVENT]", "Y")
                     .queryString("fields[UF_CRM_66A35EF77437E]", payLink) // pay link
-                    .queryString("fields[UF_CRM_66A35EF7800D8]", createPayLink.plusDays(2)
+                    .queryString("fields[UF_CRM_66A35EF7800D8]", createPayLink
                             .format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))) // pay link date send
                     .asJson();
         } catch (Exception e) {

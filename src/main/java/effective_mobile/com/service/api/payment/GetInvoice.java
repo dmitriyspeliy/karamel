@@ -74,8 +74,11 @@ public class GetInvoice {
             resultCode = node.get("Result").get("Code").toString();
             System.out.println(resultCode);
             if (resultCode.equals("0")) {
+                System.out.println("MARK");
                 stateCode = node.get("State").get("Code").toString();
+                System.out.println("MARK");
                 info = node.get("Info").toString();
+                System.out.println("MARK");
             } else {
                 throw new BadRequestException("Статус код в ответе " + stateCode);
             }

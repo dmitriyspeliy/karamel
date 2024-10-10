@@ -29,7 +29,7 @@ public class SendEmail {
     private final InvoiceRepository invoiceRepository;
     private final EmailService emailService;
 
-    @Scheduled(fixedDelay = 300000L)
+    @Scheduled(fixedRate = 300000L)
     public void sendTicket() throws BadRequestException {
         log.info("Start working scheduler. Send tickets");
         // выгружаем все счета со статусом SUCCESS и счетчиком отправки 0

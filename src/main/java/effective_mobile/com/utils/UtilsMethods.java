@@ -39,6 +39,16 @@ public class UtilsMethods {
                 pass1).getBytes());
     }
 
+    public static String calculateSignature(String loginMerchant,
+                                            String extInvoiceId,
+                                            String pass2) {
+        return DigestUtils.md5DigestAsHex(String.join(
+                ":",
+                loginMerchant,
+                extInvoiceId,
+                pass2).getBytes());
+    }
+
     public static String createUrlEncodedReceipt(BigDecimal sum, String desc, String sno, String tax, BigDecimal quantity) throws JsonProcessingException {
         Receipt.Items items = new Receipt.Items();
         items.setName(desc);

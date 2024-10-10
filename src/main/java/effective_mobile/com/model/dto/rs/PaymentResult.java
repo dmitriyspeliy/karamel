@@ -9,6 +9,6 @@ import java.io.Serializable;
 @Getter
 @Setter
 public class PaymentResult implements Serializable {
-    private String extId;
+    private String state;
     private Status status;
 }

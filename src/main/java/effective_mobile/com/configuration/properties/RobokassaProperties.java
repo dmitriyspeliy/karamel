@@ -10,4 +10,5 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class RobokassaProperties {
     private String idUrl;
     private String invoiceUrl;
+    private String invoiceStatus;
 }

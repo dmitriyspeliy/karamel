@@ -186,7 +186,7 @@ public class BookingService {
             case "9,9" -> "8-11";
             case "7,7" -> "6-8";
             case "5,5" -> "4-6";
-            default -> null;
+            default -> age;
         };
     }
 

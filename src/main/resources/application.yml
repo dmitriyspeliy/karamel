@@ -4,6 +4,7 @@ server:
 robokassa:
   id-url: https://auth.robokassa.ru/Merchant/Indexjson.aspx
   invoice-url: https://auth.robokassa.ru/Merchant/Index/
+  invoice-status: https://auth.robokassa.ru/Merchant/WebService/Service.asmx/OpStateExt?
 
 spring:
   mail:

@@ -29,6 +29,10 @@ public class Invoice {
     private URL invoiceLink;
     @Column(name = "total_sum")
     private BigDecimal totalSum;
+    @Column(name = "state")
+    private String state;
+    @Column(name = "count_of_send_ticket")
+    private Integer countOfSendTicket;
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId
     @JoinColumn(name = "deal_id")

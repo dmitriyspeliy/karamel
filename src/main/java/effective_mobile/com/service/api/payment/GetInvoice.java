@@ -74,8 +74,6 @@ public class GetInvoice {
             if (resultCode.equals("0")) {
                 stateCode = node.get("State").get("Code").asText();
                 info = node.get("Info").toString();
-            } else {
-                throw new BadRequestException("Статус код в ответе " + stateCode);
             }
         } else {
             throw new BadRequestException("Статус код операции" + response.getStatus());

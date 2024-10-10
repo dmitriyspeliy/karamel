@@ -37,7 +37,7 @@ public class CheckStatusPayment {
     /**
      * Синхронизируем статус платежа в бд с робокассой
      */
-    @Scheduled(fixedRate = 300000L)
+    @Scheduled(fixedRate = 200000L)
     public void check() throws BadRequestException {
         log.info("Start working scheduler. Check invoice's with status PENDING");
         // выгружаем все счета со статусом PENDING

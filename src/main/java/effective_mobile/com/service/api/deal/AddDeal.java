@@ -69,7 +69,6 @@ public class AddDeal {
                     .queryString("fields[STAGE_ID]", "NEW") // FINAL_INVOICE
                     .queryString("fields[UF_CRM_66A35EF5A2449]", paymentInfo.getBitrixFieldNum()) // CITY
                     .queryString("fields[UF_CRM_66A35EF6A220C]", changeTimeFormat(event.getExtEventId())) // DATE Event
-                    .queryString("fields[UF_CRM_1724735874999]", LocalDate.now().plusDays(2).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))) // FINISH PAY DAY
                     .queryString("fields[UF_CRM_66A35EF7571B0]", "119") // оплата бронь 117 yes 119 no
                     .queryString("fields[UF_CRM_66A35EF7675A3]", "123") // оплата мест 121 yes 123 no
                     .queryString("fields[UF_CRM_1723104093]", event.getExtEventId())
@@ -78,7 +77,7 @@ public class AddDeal {
                     .queryString("fields[UF_CRM_66A35EF6E715E]", adultCount) // count adult
                     .queryString("fields[UF_CRM_66D98814E3C15]", event.getAdultPrice()) // price adult
                     .queryString("fields[UF_CRM_66A35EF72DC9E]", getAgeBitrixField(event.getChildAge())) // age 103 105 107
-                    .queryString("fields[UF_CRM_66A35EF6C77BB]", typeOfDealInBitrixFields(event.getGatheringType())) // type of group школьные 93 сборные 95
+                    .queryString("fields[UF_CRM_66A35EF6C77BB]", typeOfDealInBitrixFields(event.getType())) // type of group школьные 93 сборные 95
                     .asJson();
         } catch (Exception e) {
             throw new BadRequestException("Не удалось отправить запрос на добавление сделки. Текст боди : " + e.getMessage());

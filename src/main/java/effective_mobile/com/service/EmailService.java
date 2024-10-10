@@ -2,6 +2,7 @@ package effective_mobile.com.service;
 
 import effective_mobile.com.configuration.properties.CityProperties;
 import effective_mobile.com.model.entity.Deal;
+import effective_mobile.com.model.entity.Event;
 import effective_mobile.com.utils.exception.BadRequestException;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -16,6 +17,7 @@ import org.springframework.util.FileCopyUtils;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
@@ -54,7 +56,7 @@ public class EmailService {
     }
 
     public String createMessage(Deal deal) throws BadRequestException {
-
+        Event event = deal.getEvent();
         Resource resource = new ClassPathResource("ticket-email-template.html");
         String emailContent;
 
@@ -71,13 +73,13 @@ public class EmailService {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMMM yyyy", Locale.forLanguageTag("ru"));
 
             return emailContent
-                    .replace("{email}", deal.getContact().getEmail())
+                    .replace("{email}", username)
                     .replace("{phone1}", String.join(", ",
                             info.getManagerContactNumbers()))
                     .replace("{vkLink}", info.getVkLink())
                     .replace("{type}", deal.getType())
-                    .replace("{date}", deal.getCreateDate().format(formatter))
-                    .replace("{time}", deal.getCreateDate().toLocalTime().toString())
+                    .replace("{date}", event.getTime().format(formatter))
+                    .replace("{time}", event.getTime().toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm:ss")))
                     .replace("{price}", deal.getInvoice().getTotalSum().toString())
                     .replace("{address}", info.getAddress())
                     .replace("{adultCount}", deal.getAdultCount().toString())

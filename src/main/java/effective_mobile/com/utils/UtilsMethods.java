@@ -105,7 +105,7 @@ public class UtilsMethods {
     }
 
     public static String typeOfDealInBitrixFields(String type) {
-        if (type.equals("СБОРНЫЕ ГРУППЫ")) {
+        if (type.contains("СБОРНЫЕ")) {
             return "95";
         } else {
             return "93";

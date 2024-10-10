@@ -2,6 +2,7 @@ package effective_mobile.com.sheduler;
 
 import effective_mobile.com.model.entity.Contact;
 import effective_mobile.com.model.entity.Deal;
+import effective_mobile.com.model.entity.Event;
 import effective_mobile.com.model.entity.Invoice;
 import effective_mobile.com.repository.InvoiceRepository;
 import effective_mobile.com.service.EmailService;

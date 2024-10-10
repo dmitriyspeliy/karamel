@@ -1,6 +1,8 @@
 package effective_mobile.com.service.api.payment;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import effective_mobile.com.configuration.properties.CityProperties;
 import effective_mobile.com.configuration.properties.RobokassaProperties;
@@ -71,15 +73,10 @@ public class GetInvoice {
             XmlMapper xmlMapper = new XmlMapper();
             com.fasterxml.jackson.databind.JsonNode node = xmlMapper.readTree(response.getBody());
             // доки https://docs.robokassa.ru/xml-interfaces/#account
-            System.out.println(node);
-            resultCode = node.get("Result").get("Code").toString();
-            System.out.println(resultCode);
-            if (resultCode.equals("0")) {
-                JsonNode state = node.get("State");
-                System.out.println(state);
-                stateCode = state.get("Code").toString();
-                info = node.get("Info").toString();
-                System.out.println(info);
+            resultCode = node.get("Result").get("Code").asText();
+            if (resultCode.equals("\"0\"")) {
+                stateCode = node.get("State").get("Code").asText();
+                info = node.get("Info").asText();
             } else {
                 throw new BadRequestException("Статус код в ответе " + stateCode);
             }

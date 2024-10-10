@@ -69,6 +69,7 @@ public class GetInvoice {
             XmlMapper xmlMapper = new XmlMapper();
             com.fasterxml.jackson.databind.JsonNode node = xmlMapper.readTree(response.getBody());
             // доки https://docs.robokassa.ru/xml-interfaces/#account
+            System.out.println(node);
             resultCode = node.get("Result").get("Code").toString();
             if (resultCode != null && !resultCode.equals("") && resultCode.equals("0")) {
                 stateCode = node.get("State").get("Code").toString();

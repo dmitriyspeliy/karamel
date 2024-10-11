@@ -6,7 +6,6 @@ import effective_mobile.com.model.entity.Event;
 import effective_mobile.com.model.entity.Invoice;
 import effective_mobile.com.repository.DealRepository;
 import effective_mobile.com.repository.InvoiceRepository;
-import effective_mobile.com.service.api.deal.DeleteDeal;
 import effective_mobile.com.service.api.deal.UpdateDealStatus;
 import effective_mobile.com.service.api.event.ChangeEventInBitrix;
 import effective_mobile.com.service.api.payment.GetInvoice;
@@ -41,7 +40,7 @@ public class CheckStatusPayment {
     /**
      * Синхронизируем статус платежа в бд с робокассой
      */
-    @Scheduled(fixedRate = 200000L)
+    @Scheduled(cron = " 0 0/2 * * * ?")
     public synchronized void check() throws BadRequestException {
         log.info("Start working scheduler. Check invoice's with status PENDING");
         // выгружаем все счета со статусом PENDING
@@ -72,8 +71,8 @@ public class CheckStatusPayment {
     /**
      * Все платежи, со статусом PENDING, которые уже 15 минут находятся в этом статусе, будут отменены
      */
-    @Scheduled(fixedRate = 300000L)
-    public synchronized void checkInvoiceStatusAndTime() throws BadRequestException {
+    @Scheduled(cron = " 0 0/5 * * * ?")
+    public synchronized void checkInvoiceStatusAndTime() {
         log.info("Start working scheduler. Set FAILURE status in invoice");
         // выгружаем все счета со статусом PENDING
         List<Invoice> invoiceByStatus = invoiceRepository.getInvoiceByStatus(Status.PENDING.name());

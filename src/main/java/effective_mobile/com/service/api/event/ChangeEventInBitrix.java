@@ -75,7 +75,7 @@ public class ChangeEventInBitrix {
 
         event.setKidCapacity(event.getKidCapacity() + kidTickets);
         event.setAdultCapacity(event.getAdultCapacity() + adultTickets);
-        event.setCapacity(event.getCapacity() + adultTickets + kidTickets);
+        event.setCapacity(event.getKidCapacity() + event.getAdultCapacity());
 
         payLoad.put("PROPERTY_109", event.getKidCapacity().toString());
         payLoad.put("PROPERTY_111", event.getAdultCapacity().toString());

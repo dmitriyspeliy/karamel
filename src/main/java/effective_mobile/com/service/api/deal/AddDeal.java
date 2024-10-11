@@ -68,7 +68,7 @@ public class AddDeal {
                     .queryString("fields[TITLE]", "Сделка с сайта " + siteHostName)
                     .queryString("fields[STAGE_ID]", "NEW") // FINAL_INVOICE
                     .queryString("fields[UF_CRM_66A35EF5A2449]", paymentInfo.getBitrixFieldNum()) // CITY
-                    .queryString("fields[UF_CRM_66A35EF6A220C]", changeTimeFormat(event.getExtEventId())) // DATE Event
+                    .queryString("fields[UF_CRM_66A35EF6A220C]", changeTimeFormat(event.getName())) // DATE Event
                     .queryString("fields[UF_CRM_66A35EF7571B0]", "119") // оплата бронь 117 yes 119 no
                     .queryString("fields[UF_CRM_66A35EF7675A3]", "123") // оплата мест 121 yes 123 no
                     .queryString("fields[UF_CRM_1723104093]", event.getExtEventId())

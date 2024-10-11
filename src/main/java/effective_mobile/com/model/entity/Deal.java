@@ -58,7 +58,7 @@ public class Deal {
     @PrimaryKeyJoinColumn
     private Invoice invoice;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "event_id")
     private Event event;
 

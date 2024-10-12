@@ -5,12 +5,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Getter
 @Setter
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-public class BitrixCommonResponse {
+public class BitrixCommonResponse implements Serializable {
     @JsonProperty("result")
     private Integer result;
     @JsonProperty("time")

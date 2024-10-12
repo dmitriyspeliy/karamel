@@ -5,12 +5,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Getter
 @Setter
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-public class BitrixResponseDeleteDeal {
+public class BitrixResponseDeleteDeal implements Serializable {
     @JsonProperty("result")
     private Boolean result;
     @JsonProperty("time")

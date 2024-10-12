@@ -24,26 +24,4 @@ public class RequestToBookingEvent implements Serializable {
     private String eventName;
     private String number;
     private String contactName;
-
-    @Override
-    public String toString() {
-        return "RequestToBookingEvent{" +
-                "name='" + name + '\'' +
-                ", source='" + source + '\'' +
-                ", childrenCount=" + childrenCount +
-                ", paidAdultCount=" + paidAdultCount +
-                ", freeChild=" + freeChild +
-                ", freeAdultCount=" + freeAdultCount +
-                ", totalCount=" + totalCount +
-                ", childrenAge='" + childrenAge + '\'' +
-                ", date=" + date +
-                ", school='" + school + '\'' +
-                ", address='" + address + '\'' +
-                ", departureAddress='" + departureAddress + '\'' +
-                ", city='" + city + '\'' +
-                ", eventName='" + eventName + '\'' +
-                ", number='" + number + '\'' +
-                ", contactName='" + contactName + '\'' +
-                '}';
-    }
 }

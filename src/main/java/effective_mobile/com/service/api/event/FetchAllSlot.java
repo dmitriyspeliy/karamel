@@ -3,6 +3,7 @@ package effective_mobile.com.service.api.event;
 import com.fasterxml.jackson.databind.JsonNode;
 import effective_mobile.com.utils.enums.City;
 import effective_mobile.com.utils.enums.SlotType;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -13,12 +14,14 @@ import static effective_mobile.com.utils.CommonVar.*;
 
 @Component
 @Slf4j
+@RequiredArgsConstructor
 public class FetchAllSlot {
+
+    private final RestTemplate restTemplate;
 
     public JsonNode fetchAllSlotByCityAndType(String city, String type) {
         log.info("Sending request to Bitrix API for city: {} and type: {}", city, type);
 
-        var restTemplate = new RestTemplate();
         var codeOfCity = City.getCodeOfCity(city);
         var codeOfType = SlotType.getCodeOfType(type);
         var now = LocalDateTime.now();

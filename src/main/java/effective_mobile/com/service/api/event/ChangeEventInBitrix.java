@@ -26,11 +26,12 @@ import static effective_mobile.com.utils.UtilsMethods.getValueFromProperty;
 @Slf4j
 @RequiredArgsConstructor
 public class ChangeEventInBitrix {
+
     private final EventRepository eventRepository;
-    private final Map<String, String> payLoad = new HashMap<>();
+    private final RestTemplate restTemplate;
+    private Map<String, String> payLoad;
 
     public void bookMixedEvent(int kidTickets, int adultTickets, Event event) throws BadRequestException {
-        log.info("Starting to book mixed event: {}", event.getName());
 
         updateEventFromWebHook(event);
 
@@ -46,30 +47,26 @@ public class ChangeEventInBitrix {
         payLoad.put("PROPERTY_111", event.getAdultCapacity().toString());
         payLoad.put("PROPERTY_131", event.getCapacity().toString());
         payLoad.put("PROPERTY_113", event.getTime().toString());
+
         if (event.getAdultCapacity() == 0 || event.getKidCapacity() == 0) {
             payLoad.put("PROPERTY_119", "95");
         }
 
         updateInBitrix(event, payLoad);
 
-        log.info("Saving event: {}", event);
         eventRepository.save(event);
     }
 
-    // убрал логику с местами, т.к. по идеи 1бронь - 1класс
     public void bookSchoolEvent(Event event) {
-        log.info("Starting to book school event: {}", event.getName());
-
+        payLoad = new HashMap<>();
         updateEventFromWebHook(event);
         payLoad.put("PROPERTY_119", "95");
         updateInBitrix(event, payLoad);
 
-        log.info("Saving event: {}", event);
         eventRepository.save(event);
     }
 
     public void undoChangingInMixedEvent(int kidTickets, int adultTickets, Event event) {
-        log.info("Starting to cancel book mixed event: {}", event.getName());
 
         updateEventFromWebHook(event);
 
@@ -81,43 +78,43 @@ public class ChangeEventInBitrix {
         payLoad.put("PROPERTY_111", event.getAdultCapacity().toString());
         payLoad.put("PROPERTY_131", event.getCapacity().toString());
         payLoad.put("PROPERTY_113", event.getTime().toString());
+
         if (event.getAdultCapacity() > 0 || event.getKidCapacity() > 0) {
             payLoad.put("PROPERTY_119", "93");
         }
 
         updateInBitrix(event, payLoad);
 
-        log.info("Saving event: {}", event);
         eventRepository.save(event);
     }
 
     public void undoChangingInSchoolEvent(Event event) {
-        log.info("Starting to cancel book school event: {}", event.getName());
 
         updateEventFromWebHook(event);
         payLoad.put("PROPERTY_119", "93");
         updateInBitrix(event, payLoad);
 
-        log.info("Saving event: {}", event);
         eventRepository.save(event);
     }
 
     private void updateEventFromWebHook(Event event) {
-        var restTemplate = new RestTemplate();
+
         var eventBitrixId = event.getExtEventId();
+
         var hookWithAdditionalParams = BITRIX_WEBHOOK + "lists.element.get.json?"
                 + "IBLOCK_TYPE_ID=" + IBLOCK_TYPE_ID
                 + "&IBLOCK_ID=" + IBLOCK_ID
                 + "&ELEMENT_ID=" + eventBitrixId;
 
         var node = restTemplate.getForObject(hookWithAdditionalParams, JsonNode.class);
+
         assert node != null;
+
         var levelNode = node.path("result").get(0);
+
         updateValueFromNode(levelNode, event);
-        log.info("Updated event from webhook: {}", event);
     }
 
-    // обновляем сущность и сохраняем значения в пейлоад, чтобы битрикс их при обновление не затер
     private void updateValueFromNode(JsonNode element, Event event) {
         event.setAdultPrice(BigDecimal.valueOf(Long.parseLong(getValueFromProperty(element, "PROPERTY_135"))));
         event.setKidPrice(BigDecimal.valueOf(Long.parseLong(getValueFromProperty(element, "PROPERTY_129"))));
@@ -158,7 +155,7 @@ public class ChangeEventInBitrix {
     }
 
     private void updateInBitrix(Event event, Map<String, String> payLoad) {
-        var restTemplate = new RestTemplate();
+
         var eventBitrixId = event.getExtEventId();
         var url = BITRIX_WEBHOOK + "lists.element.update";
 
@@ -173,9 +170,8 @@ public class ChangeEventInBitrix {
         );
 
         HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(requestBody, headers);
-        log.info("Updating event in Bitrix with payload: {}", payLoad);
-        var response = restTemplate.postForObject(url, requestEntity, String.class);
-        log.info("Received response from Bitrix: {}", response);
+
+        restTemplate.postForObject(url, requestEntity, String.class);
     }
 
 }

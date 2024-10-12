@@ -45,7 +45,6 @@ public class EventService {
     public ResponseEntity<GetEventsResponse> getUpcomingEvents(String city, String type) {
         this.type = type;
         this.city = city;
-        log.info("Fetching upcoming events for city: {} and type: {}", city, type);
 
         var response = fetchAllSlot.fetchAllSlotByCityAndType(city, type);
         var elements = response.path("result");
@@ -59,9 +58,6 @@ public class EventService {
 
             saveToDb();
         }
-
-        log.info("Found {} upcoming events for city: {}", slots.size(), city);
-
 
         return ResponseEntity.ok(new GetEventsResponse(new GetEventsResponse.EventsField(slots)));
     }

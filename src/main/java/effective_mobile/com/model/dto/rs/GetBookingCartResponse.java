@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.time.Instant;
@@ -11,7 +12,7 @@ import java.time.Instant;
 @Builder
 @Getter
 @Setter
-public class GetBookingCartResponse {
+public class GetBookingCartResponse implements Serializable {
     private Long leadId;
     private Long contactId;
     private String name;

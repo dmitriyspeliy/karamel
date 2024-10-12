@@ -27,9 +27,7 @@ public class EventController {
      */
     @GetMapping("/group")
     public ResponseEntity<GetEventsResponse> getUpcomingGroupEvents() {
-        log.info("Request received for upcoming group events");
-        var cityName = cityProperties.getCityInfo().get(currentCity).getCityName();
-        return eventService.getUpcomingEvents(cityName, "Школьные");
+        return eventService.getUpcomingEvents(cityProperties.getCityInfo().get(currentCity).getCityName(), "Школьные");
     }
 
     /**
@@ -37,9 +35,7 @@ public class EventController {
      */
     @GetMapping("/mixed")
     public ResponseEntity<GetEventsResponse> getUpcomingMixedEvents() {
-        log.info("Request received for upcoming mixed events");
-        var cityName = cityProperties.getCityInfo().get(currentCity).getCityName();
-        return eventService.getUpcomingEvents(cityName, "Сборные");
+        return eventService.getUpcomingEvents(cityProperties.getCityInfo().get(currentCity).getCityName(), "Сборные");
     }
 
 }

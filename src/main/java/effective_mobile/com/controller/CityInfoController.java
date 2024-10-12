@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -22,7 +23,8 @@ public class CityInfoController {
      * Возвращает информацию про конкретный город, установленной в переменной
      */
     @GetMapping("/city")
-    public CityInfoResponse getCityInfo() {
+    public CityInfoResponse getCityInfo(@RequestParam(name = "city") String city) {
+        System.out.println(city);
         CityProperties.Info info = cityProperties.getCityInfo().get(currentCity);
         return new CityInfoResponse(
                 info.getCityName(),

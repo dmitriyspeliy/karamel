@@ -1,9 +1,11 @@
 package effective_mobile.com.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import effective_mobile.com.configuration.properties.CityProperties;
 import effective_mobile.com.model.dto.Event;
 import effective_mobile.com.model.dto.rs.GetEventsResponse;
 import effective_mobile.com.repository.EventRepository;
+import effective_mobile.com.service.api.event.FetchAllSlot;
 import effective_mobile.com.utils.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +30,7 @@ public class EventService {
 
     private final EventRepository eventRepository;
     private final CashedEvent cashedEvent;
+    private final CityProperties cityProperties;
 
     private BigDecimal adultPrice;
     private BigDecimal kidPrice;
@@ -41,12 +44,14 @@ public class EventService {
     private String type;
     private String city;
     private Long id;
+    private final FetchAllSlot fetchAllSlot;
+
 
     public synchronized ResponseEntity<GetEventsResponse> getUpcomingEvents(String city, String type) {
         this.type = type;
         this.city = city;
 
-        var response = cashedEvent.cashedEvent(city, type);
+        var response = fetchAllSlot.fetchAllSlotByCityAndType(city, type);
         var elements = response.path("result");
         var slots = new ArrayList<Event>();
 
@@ -54,7 +59,7 @@ public class EventService {
 
             extractValue(element);
 
-            slots.add(makeEvent());
+            slots.add(makeEvent(city));
 
             saveToDb();
         }
@@ -86,7 +91,8 @@ public class EventService {
         id = element.path("ID").asLong();
     }
 
-    private Event makeEvent() {
+    private Event makeEvent(String city) {
+        CityProperties.Info info = cityProperties.getCityInfo().get(city);
         return Event.builder()
                 .id(id)
                 .type(type)

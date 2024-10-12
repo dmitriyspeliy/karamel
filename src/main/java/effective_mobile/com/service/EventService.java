@@ -8,7 +8,10 @@ import effective_mobile.com.service.api.event.FetchAllSlot;
 import effective_mobile.com.utils.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -41,12 +44,25 @@ public class EventService {
     private String type;
     private String city;
     private Long id;
+    private final String cleanRate = "300000"; //5 mins
+
+    @CacheEvict(value = "json-nodes", allEntries = true)
+    @Scheduled(fixedRateString = cleanRate)
+    public void emptyCache() {
+        log.info("Clean cashed json-nodes");
+    }
+
+    @Cacheable(value = "json-nodes", key = "#cityName")
+    public JsonNode cashedEvent(String cityName, String type) {
+        log.info("Get cashed with parameters: {}, {}", name, type);
+        return fetchAllSlot.fetchAllSlotByCityAndType(city, type);
+    }
 
     public ResponseEntity<GetEventsResponse> getUpcomingEvents(String city, String type) {
         this.type = type;
         this.city = city;
 
-        var response = fetchAllSlot.fetchAllSlotByCityAndType(city, type);
+        var response = cashedEvent(city, type);
         var elements = response.path("result");
         var slots = new ArrayList<Event>();
 

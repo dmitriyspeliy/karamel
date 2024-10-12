@@ -34,22 +34,23 @@ create index hash_deal_index on deal (ext_deal_id);
 create table if not exists event
 (
     id             bigint generated always as identity primary key,
-    ext_event_id   varchar(100)        not null,
-    name           varchar(100) unique not null,
-    type           varchar(100)        not null,
-    time           timestamp           not null,
-    adult_price    numeric             not null CHECK (adult_price >= 0),
-    kid_price      numeric             not null CHECK (kid_price >= 0),
-    child_age      varchar(10)         not null,
-    capacity       bigint              not null CHECK (capacity >= 0)       default 0,
-    adult_capacity bigint              not null CHECK (adult_capacity >= 0) default 0,
-    kid_capacity   bigint              not null CHECK (kid_capacity >= 0)   default 0,
-    gathering_type varchar(100)        not null,
-    adult_required bool                not null,
-    city           varchar(100)        not null
+    ext_event_id   varchar(100) not null,
+    name           varchar(100) not null,
+    type           varchar(100) not null,
+    time           timestamp    not null,
+    adult_price    numeric      not null CHECK (adult_price >= 0),
+    kid_price      numeric      not null CHECK (kid_price >= 0),
+    child_age      varchar(10)  not null,
+    capacity       bigint       not null CHECK (capacity >= 0)       default 0,
+    adult_capacity bigint       not null CHECK (adult_capacity >= 0) default 0,
+    kid_capacity   bigint       not null CHECK (kid_capacity >= 0)   default 0,
+    gathering_type varchar(100) not null,
+    adult_required bool         not null,
+    city           varchar(100) not null
 );
 
 create index hash_event_index on event (ext_event_id);
+create unique index hash_event_name_city_index on event (name, city);
 
 create table if not exists invoice
 (

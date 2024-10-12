@@ -59,6 +59,7 @@ public class BookingService {
     public synchronized GetPaymentLinkResponse bookEvent(RequestToBookingEvent requestBody, String currentCity) throws BadRequestException {
 
         this.requestToBookingEvent = requestBody;
+
         event = eventService.findEventByNameAndCity(requestBody.getEventName(),
                 cityProperties.getCityInfo().get(currentCity).getCityName());
 

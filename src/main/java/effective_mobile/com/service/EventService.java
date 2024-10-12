@@ -1,7 +1,6 @@
 package effective_mobile.com.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import effective_mobile.com.configuration.properties.CityProperties;
 import effective_mobile.com.model.dto.Event;
 import effective_mobile.com.model.dto.rs.GetEventsResponse;
 import effective_mobile.com.repository.EventRepository;
@@ -29,8 +28,6 @@ import static effective_mobile.com.utils.UtilsMethods.getValueFromProperty;
 public class EventService {
 
     private final EventRepository eventRepository;
-    private final CashedEvent cashedEvent;
-    private final CityProperties cityProperties;
 
     private BigDecimal adultPrice;
     private BigDecimal kidPrice;
@@ -50,20 +47,38 @@ public class EventService {
     public synchronized ResponseEntity<GetEventsResponse> getUpcomingEvents(String city, String type) {
         this.type = type;
         this.city = city;
-
+        ArrayList<JsonNode> jsonNodeArrayList = new ArrayList<>();
         var response = fetchAllSlot.fetchAllSlotByCityAndType(city, type);
-        var elements = response.path("result");
-        var slots = new ArrayList<Event>();
+        jsonNodeArrayList.add(response);
+        String resStr = response.path("total").asText();
+        if (resStr != null && !resStr.equals("")) {
+            int res = Integer.parseInt(resStr);
+            if (res > 50) {
+                String totalStr = response.path("total").asText();
+                if (totalStr != null && !totalStr.equals("")) {
+                    int total = Integer.parseInt(totalStr);
+                    while (res <= total) {
+                        response = fetchAllSlot.fetchAllSlotByCityAndType(city, type);
+                        jsonNodeArrayList.add(response);
+                        res = res + 50;
+                    }
+                }
 
-        for (var element : elements) {
-
-            extractValue(element);
-
-            slots.add(makeEvent(city));
-
-            saveToDb();
+            }
         }
 
+        var slots = new ArrayList<Event>();
+        for (JsonNode jsonNode : jsonNodeArrayList) {
+            var elements = jsonNode.path("result");
+            for (var element : elements) {
+
+                extractValue(element);
+
+                slots.add(makeEvent());
+
+                saveToDb();
+            }
+        }
         return ResponseEntity.ok(new GetEventsResponse(new GetEventsResponse.EventsField(slots)));
     }
 
@@ -91,8 +106,7 @@ public class EventService {
         id = element.path("ID").asLong();
     }
 
-    private Event makeEvent(String city) {
-        CityProperties.Info info = cityProperties.getCityInfo().get(city);
+    private Event makeEvent() {
         return Event.builder()
                 .id(id)
                 .type(type)

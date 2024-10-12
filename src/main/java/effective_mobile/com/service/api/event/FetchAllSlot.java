@@ -38,4 +38,24 @@ public class FetchAllSlot {
         return restTemplate.getForObject(hookWithAdditionalParams, JsonNode.class);
     }
 
+    public JsonNode fetchAllSlotByCityAndType(String city, String type, String start) {
+        log.info("Sending request to Bitrix API for city: {} and type: {}", city, type);
+
+        var codeOfCity = City.getCodeOfCity(city);
+        var codeOfType = SlotType.getCodeOfType(type);
+        var now = LocalDateTime.now();
+
+        var hookWithAdditionalParams = BITRIX_WEBHOOK + "lists.element.get.json?"
+                + "IBLOCK_TYPE_ID=" + IBLOCK_TYPE_ID
+                + "&IBLOCK_ID=" + IBLOCK_ID
+                + "&start=" + start
+                + "&FILTER[PROPERTY_119]=" + FILTER_PROPERTY_119
+                + "&ELEMENT_ORDER[PROPERTY_113]=" + ELEMENT_ORDER_PROPERTY_113
+                + "&FILTER[PROPERTY_123]=" + codeOfCity
+                + "&FILTER[PROPERTY_125]=" + codeOfType
+                + "&FILTER[PROPERTY_113]>" + now;
+
+        return restTemplate.getForObject(hookWithAdditionalParams, JsonNode.class);
+    }
+
 }

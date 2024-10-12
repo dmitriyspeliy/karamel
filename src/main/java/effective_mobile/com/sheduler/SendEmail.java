@@ -5,6 +5,7 @@ import effective_mobile.com.model.entity.Deal;
 import effective_mobile.com.model.entity.Invoice;
 import effective_mobile.com.repository.InvoiceRepository;
 import effective_mobile.com.service.EmailService;
+import effective_mobile.com.service.api.deal.UpdateDealComment;
 import effective_mobile.com.utils.enums.Status;
 import effective_mobile.com.utils.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,7 @@ public class SendEmail {
 
     private final InvoiceRepository invoiceRepository;
     private final EmailService emailService;
+    private final UpdateDealComment updateDealComment;
 
     @Scheduled(cron = " 0 0/3 * * * ?")
     public void sendTicket() throws BadRequestException {
@@ -39,6 +41,7 @@ public class SendEmail {
             log.info("Билеты были отправлены на почту " + contact.getEmail());
             byStatus.setCountOfSendTicket(byStatus.getCountOfSendTicket() == null ? 1 : byStatus.getCountOfSendTicket() + 1);
             invoiceRepository.save(byStatus);
+            updateDealComment.refreshCommentDeal(deal.getExtDealId(), "Билеты были отправлены на почту " + contact.getEmail());
         }
         log.info("Scheduler was finish");
     }

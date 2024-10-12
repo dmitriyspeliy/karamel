@@ -20,7 +20,6 @@ import effective_mobile.com.service.api.payment.InvoiceRobokassa;
 import effective_mobile.com.utils.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -50,9 +49,6 @@ public class BookingService {
     private final DeleteDeal deleteDeal;
 
 
-    @Value("${spring.current-city}")
-    private String currentCity;
-
     private Event event;
     private RequestToBookingEvent requestToBookingEvent;
     private BigDecimal sum;
@@ -60,7 +56,7 @@ public class BookingService {
     private Deal deal;
     private Invoice invoice;
 
-    public synchronized GetPaymentLinkResponse bookEvent(RequestToBookingEvent requestBody) throws BadRequestException {
+    public synchronized GetPaymentLinkResponse bookEvent(RequestToBookingEvent requestBody, String currentCity) throws BadRequestException {
 
         this.requestToBookingEvent = requestBody;
         event = eventService.findEventByNameAndCity(requestBody.getEventName(),
@@ -74,10 +70,10 @@ public class BookingService {
 
         // регистрация сущностей в битриксе
         contact = addContact.addContact(requestBody);
-        deal = addDeal.addDeal(sum, event, contact, requestBody.getPaidAdultCount(), requestBody.getChildrenCount());
+        deal = addDeal.addDeal(sum, event, contact, requestBody.getPaidAdultCount(), requestBody.getChildrenCount(), currentCity);
 
         // получение инвойса
-        makeInvoice();
+        makeInvoice(currentCity);
 
         // сохранили все сущности в бд
         saveEntitiesInDb();
@@ -88,7 +84,7 @@ public class BookingService {
     }
 
 
-    public Cart getBookingCart(UUID invoiceId) throws BadRequestException {
+    public Cart getBookingCart(UUID invoiceId, String currentCity) throws BadRequestException {
         CityProperties.Info info = cityProperties.getCityInfo().get(currentCity);
 
         Optional<Invoice> optionalInvoice = invoiceRepository.findByExtInvoiceId(invoiceId.toString());
@@ -136,10 +132,10 @@ public class BookingService {
                         kidPrice.multiply(BigDecimal.valueOf(requestToBookingEvent.getChildrenCount())));
     }
 
-    private void makeInvoice() throws BadRequestException {
+    private void makeInvoice(String currentCity) throws BadRequestException {
         invoice = null;
         try {
-            invoice = invoiceRobokassa.generateInvoiceLink(sum, deal);
+            invoice = invoiceRobokassa.generateInvoiceLink(sum, deal, currentCity);
         } catch (Exception e) {
             // если на этапе получение инвойса что-то не получилось, то делаем компенсирующую операцию
             // возвращаем бронируемые места + удаляем сделку в битрикс

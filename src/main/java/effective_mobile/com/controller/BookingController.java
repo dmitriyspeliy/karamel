@@ -28,25 +28,31 @@ public class BookingController {
      * @return дто заказа
      */
     @GetMapping("/cart/{id}")
-    public ResponseEntity<GetBookingCartResponse> getCart(@PathVariable UUID id) throws BadRequestException {
-        return ResponseEntity.ok(toDto(bookingService.getBookingCart(id)));
+    public ResponseEntity<GetBookingCartResponse> getCart(
+            @RequestParam(name = "city") String city,
+            @PathVariable UUID id) throws BadRequestException {
+        return ResponseEntity.ok(toDto(bookingService.getBookingCart(id, city)));
     }
 
     /**
      * Для бронирования сборных групп
      */
     @PostMapping("/gathered")
-    public ResponseEntity<GetPaymentLinkResponse> createGroupBooking(@RequestBody RequestToBookingEvent requestBody)
+    public ResponseEntity<GetPaymentLinkResponse> createGroupBooking(
+            @RequestParam(name = "city") String city,
+            @RequestBody RequestToBookingEvent requestBody)
             throws BadRequestException {
-        return ResponseEntity.ok(bookingService.bookEvent(requestBody));
+        return ResponseEntity.ok(bookingService.bookEvent(requestBody, city));
     }
 
     /**
      * Для бронирования школьных групп
      */
     @PostMapping("/group")
-    public ResponseEntity<GetPaymentLinkResponse> createGroupBookingGroup(@RequestBody RequestToBookingEvent requestBody)
+    public ResponseEntity<GetPaymentLinkResponse> createGroupBookingGroup(
+            @RequestParam(name = "city") String city,
+            @RequestBody RequestToBookingEvent requestBody)
             throws BadRequestException {
-        return ResponseEntity.ok(bookingService.bookEvent(requestBody));
+        return ResponseEntity.ok(bookingService.bookEvent(requestBody, city));
     }
 }

@@ -31,9 +31,6 @@ import static effective_mobile.com.utils.UtilsMethods.*;
 public class AddDeal {
 
     private final CityProperties cityProperties;
-
-    @Value("${spring.current-city}")
-    private String currentCity;
     private BitrixCommonResponse bitrixCommonResponse;
     private Event event;
     private HttpResponse<JsonNode> contactResponse;
@@ -43,14 +40,16 @@ public class AddDeal {
     private String siteHostName;
     private Integer adultCount;
     private Integer kidCount;
+    private String currentCity;
 
-    public Deal addDeal(BigDecimal sum, Event event, Contact contact, Integer adultCount, Integer kidCount) throws BadRequestException {
+    public Deal addDeal(BigDecimal sum, Event event, Contact contact, Integer adultCount, Integer kidCount, String city) throws BadRequestException {
         log.info("Запрос на добавление cделки \n" + event.toString());
         this.kidCount = kidCount;
         this.adultCount = adultCount;
         this.sum = sum;
         this.contact = contact;
         this.event = event;
+        this.currentCity = city;
         checkVar(List.of(contact.getPhone(), contact.getFullName()));
         makeRequest();
         answer();

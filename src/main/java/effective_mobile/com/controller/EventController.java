@@ -5,10 +5,10 @@ import effective_mobile.com.model.dto.rs.GetEventsResponse;
 import effective_mobile.com.service.EventService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -17,8 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @Slf4j
 public class EventController {
-    @Value("${spring.current-city}")
-    private String currentCity;
+
     private final EventService eventService;
     private final CityProperties cityProperties;
 
@@ -26,7 +25,8 @@ public class EventController {
      * Возвращает информацию про школьные группы
      */
     @GetMapping("/group")
-    public ResponseEntity<GetEventsResponse> getUpcomingGroupEvents() {
+    public ResponseEntity<GetEventsResponse> getUpcomingGroupEvents(
+            @RequestParam(name = "city") String currentCity) {
         return eventService.getUpcomingEvents(cityProperties.getCityInfo().get(currentCity).getCityName(), "Школьные");
     }
 
@@ -34,7 +34,8 @@ public class EventController {
      * Возвращает информацию про сборные группы
      */
     @GetMapping("/mixed")
-    public ResponseEntity<GetEventsResponse> getUpcomingMixedEvents() {
+    public ResponseEntity<GetEventsResponse> getUpcomingMixedEvents(
+            @RequestParam(name = "city") String currentCity) {
         return eventService.getUpcomingEvents(cityProperties.getCityInfo().get(currentCity).getCityName(), "Сборные");
     }
 

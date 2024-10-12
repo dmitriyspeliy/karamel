@@ -3,7 +3,6 @@ package effective_mobile.com.controller;
 import effective_mobile.com.configuration.properties.CityProperties;
 import effective_mobile.com.model.dto.rs.CityInfoResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,16 +15,12 @@ public class CityInfoController {
 
     private final CityProperties cityProperties;
 
-    @Value("${spring.current-city}")
-    private String currentCity;
-
     /**
-     * Возвращает информацию про конкретный город, установленной в переменной
+     * Возвращает информацию про конкретный город
      */
     @GetMapping("/city")
     public CityInfoResponse getCityInfo(@RequestParam(name = "city") String city) {
-        System.out.println(city);
-        CityProperties.Info info = cityProperties.getCityInfo().get(currentCity);
+        CityProperties.Info info = cityProperties.getCityInfo().get(city);
         return new CityInfoResponse(
                 info.getCityName(),
                 info.getStartEndpoint(),

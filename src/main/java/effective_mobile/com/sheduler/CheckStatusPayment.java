@@ -13,20 +13,15 @@ import effective_mobile.com.utils.enums.Status;
 import effective_mobile.com.utils.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-/**
- * Поднимаем этот шедулер только на челябинске, чтобы не было работы на всех сессиях
- */
+import static effective_mobile.com.utils.UtilsMethods.getShortCityName;
+
 @Component
-@ConditionalOnExpression(
-        "'${spring.current-city}'.equals('chel')"
-)
 @Slf4j
 @RequiredArgsConstructor
 public class CheckStatusPayment {
@@ -47,10 +42,11 @@ public class CheckStatusPayment {
         List<Invoice> invoiceByStatus = invoiceRepository.getInvoiceByStatus(Status.PENDING.name());
         for (Invoice byStatus : invoiceByStatus) {
             // делаем запрос по каждому инвойсу в робокассу и проверяем изменился ли статус
-            PaymentResult paymentResult = getInvoice.checkStatusById(byStatus);
+            Deal deal = byStatus.getDeal();
+            Event event = byStatus.getDeal().getEvent();
+            PaymentResult paymentResult = getInvoice.checkStatusById(byStatus, getShortCityName(event.getCity()));
             Status status = paymentResult.getStatus();
             String state = paymentResult.getState();
-            Deal deal = byStatus.getDeal();
             if (status == Status.SUCCESS) {
                 byStatus.setStatus(status);
                 byStatus.setState(state);

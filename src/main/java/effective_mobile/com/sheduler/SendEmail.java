@@ -2,7 +2,6 @@ package effective_mobile.com.sheduler;
 
 import effective_mobile.com.model.entity.Contact;
 import effective_mobile.com.model.entity.Deal;
-import effective_mobile.com.model.entity.Event;
 import effective_mobile.com.model.entity.Invoice;
 import effective_mobile.com.repository.InvoiceRepository;
 import effective_mobile.com.service.EmailService;
@@ -10,19 +9,13 @@ import effective_mobile.com.utils.enums.Status;
 import effective_mobile.com.utils.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-/**
- * Поднимаем этот шедулер только на челябинске, чтобы не было работы на всех сессиях
- */
+
 @Component
-@ConditionalOnExpression(
-        "'${spring.current-city}'.equals('chel')"
-)
 @Slf4j
 @RequiredArgsConstructor
 public class SendEmail {

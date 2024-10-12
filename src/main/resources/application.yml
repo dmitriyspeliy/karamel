@@ -36,7 +36,6 @@ spring:
     open-in-view: true
 
 
-  current-city: ${CURRENT_CITY}
   city-info:
     chel:
       city-name: ЧЕЛЯБИНСК

@@ -42,9 +42,6 @@ public class InvoiceRobokassa {
     private final InvoiceRepository invoiceRepository;
     private final UpdateDealInvoiceInfo updateDealInvoiceInfo;
 
-    @Value("${spring.current-city}")
-    private String currentCity;
-
     private CityProperties.Info.PaymentInfo paymentInfo;
     private Deal deal;
     private BigDecimal sum;
@@ -54,7 +51,7 @@ public class InvoiceRobokassa {
     private String hashId;
     private Invoice invoice;
 
-    public Invoice generateInvoiceLink(BigDecimal sum, Deal deal) throws BadRequestException, MalformedURLException {
+    public Invoice generateInvoiceLink(BigDecimal sum, Deal deal, String currentCity) throws BadRequestException, MalformedURLException {
         this.paymentInfo = cityProperties.getCityInfo().get(currentCity).getPaymentInfo();
         this.deal = deal;
         this.sum = sum.setScale(2, RoundingMode.HALF_UP);

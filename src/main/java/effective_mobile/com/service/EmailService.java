@@ -17,9 +17,10 @@ import org.springframework.util.FileCopyUtils;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
+
+import static effective_mobile.com.utils.UtilsMethods.getShortCityName;
 
 @Service
 @RequiredArgsConstructor
@@ -28,8 +29,6 @@ public class EmailService {
     private final JavaMailSender javaMailSender;
     private final CityProperties cityProperties;
     private final JavaMailSender emailSender;
-    @Value("${spring.current-city}")
-    private String currentCity;
     @Value("${spring.mail.username}")
     private String username;
 
@@ -68,7 +67,7 @@ public class EmailService {
 
         try {
 
-            CityProperties.Info info = cityProperties.getCityInfo().get(currentCity);
+            CityProperties.Info info = cityProperties.getCityInfo().get(getShortCityName(event.getCity()));
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMMM yyyy", Locale.forLanguageTag("ru"));
 

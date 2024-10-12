@@ -26,8 +26,6 @@ public class GetInvoice {
     private final RobokassaProperties robokassaProperties;
     private final CityProperties cityProperties;
 
-    @Value("${spring.current-city}")
-    private String currentCity;
     private String extId;
     private String login;
     private String pass2;
@@ -37,7 +35,7 @@ public class GetInvoice {
     String info;
 
 
-    public PaymentResult checkStatusById(Invoice invoice) throws BadRequestException {
+    public PaymentResult checkStatusById(Invoice invoice, String currentCity) throws BadRequestException {
         CityProperties.Info.PaymentInfo paymentInfo = cityProperties.getCityInfo().get(currentCity).getPaymentInfo();
         this.extId = invoice.getDeal().getExtDealId();
         this.login = paymentInfo.getLogin();

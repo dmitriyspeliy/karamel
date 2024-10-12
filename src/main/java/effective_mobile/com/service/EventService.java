@@ -50,15 +50,15 @@ public class EventService {
         ArrayList<JsonNode> jsonNodeArrayList = new ArrayList<>();
         var response = fetchAllSlot.fetchAllSlotByCityAndType(city, type);
         jsonNodeArrayList.add(response);
-        String resStr = response.path("total").asText();
+        String resStr = response.path("next").asText();
         if (resStr != null && !resStr.equals("")) {
             int res = Integer.parseInt(resStr);
-            if (res > 50) {
+            if (res >= 50) {
                 String totalStr = response.path("total").asText();
                 if (totalStr != null && !totalStr.equals("")) {
                     int total = Integer.parseInt(totalStr);
                     while (res <= total) {
-                        response = fetchAllSlot.fetchAllSlotByCityAndType(city, type);
+                        response = fetchAllSlot.fetchAllSlotByCityAndType(city, type, String.valueOf(res));
                         jsonNodeArrayList.add(response);
                         res = res + 50;
                     }

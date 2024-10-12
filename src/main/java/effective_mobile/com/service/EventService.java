@@ -4,15 +4,12 @@ import com.fasterxml.jackson.databind.JsonNode;
 import effective_mobile.com.model.dto.Event;
 import effective_mobile.com.model.dto.rs.GetEventsResponse;
 import effective_mobile.com.repository.EventRepository;
-import effective_mobile.com.service.api.event.FetchAllSlot;
 import effective_mobile.com.utils.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -30,7 +27,7 @@ import static effective_mobile.com.utils.UtilsMethods.getValueFromProperty;
 public class EventService {
 
     private final EventRepository eventRepository;
-    private final FetchAllSlot fetchAllSlot;
+    private final CashedEvent cashedEvent;
 
     private BigDecimal adultPrice;
     private BigDecimal kidPrice;
@@ -44,25 +41,12 @@ public class EventService {
     private String type;
     private String city;
     private Long id;
-    private final String cleanRate = "300000"; //5 mins
 
-    @CacheEvict(value = "json-nodes", allEntries = true)
-    @Scheduled(fixedRateString = cleanRate)
-    public void emptyCache() {
-        log.info("Clean cashed json-nodes");
-    }
-
-    @Cacheable(value = "json-nodes", key = "#cityName")
-    public JsonNode cashedEvent(String cityName, String type) {
-        log.info("Get cashed with parameters: {}, {}", name, type);
-        return fetchAllSlot.fetchAllSlotByCityAndType(city, type);
-    }
-
-    public ResponseEntity<GetEventsResponse> getUpcomingEvents(String city, String type) {
+    public synchronized ResponseEntity<GetEventsResponse> getUpcomingEvents(String city, String type) {
         this.type = type;
         this.city = city;
 
-        var response = cashedEvent(city, type);
+        var response = cashedEvent.cashedEvent(city, type);
         var elements = response.path("result");
         var slots = new ArrayList<Event>();
 
@@ -85,11 +69,11 @@ public class EventService {
                 BigDecimal.valueOf(Long.parseLong(getValueFromProperty(element, "PROPERTY_129")));
         childAge = getValueFromProperty(element, "PROPERTY_133");
         type = defineType(element);
-        if(type.equals("ШКОЛЬНЫЕ ГРУППЫ")) {
+        if (type.equals("ШКОЛЬНЫЕ ГРУППЫ")) {
             capacity = 1L;
             adultCapacity = 1L;
             kidCapacity = 1L;
-        }else {
+        } else {
             capacity = Long.parseLong(getValueFromProperty(element, "PROPERTY_131"));
             adultCapacity = Long.parseLong(getValueFromProperty(element, "PROPERTY_111"));
             kidCapacity = Long.parseLong(getValueFromProperty(element, "PROPERTY_109"));
@@ -124,40 +108,37 @@ public class EventService {
 
     private void saveToDb() {
         Optional<effective_mobile.com.model.entity.Event> optionalEvent = eventRepository.findByExtEventId(extId);
-        if (optionalEvent.isEmpty()) {
-            effective_mobile.com.model.entity.Event event = new effective_mobile.com.model.entity.Event();
+        effective_mobile.com.model.entity.Event event = new effective_mobile.com.model.entity.Event();
+        if (optionalEvent.isPresent()) {
+            createEvent(event);
+            event.setId(optionalEvent.get().getId());
+            event.setExtEventId(optionalEvent.get().getExtEventId());
+            event.setName(optionalEvent.get().getName());
+            event.setCity(optionalEvent.get().getCity());
+            event.setTime(optionalEvent.get().getTime());
+        } else {
             event.setExtEventId(extId);
             event.setName(name);
-            event.setType(type);
-            event.setTime(time);
-            event.setAdultPrice(adultPrice);
-            event.setKidPrice(kidPrice);
-            event.setChildAge(childAge);
-            event.setCapacity(capacity);
-            event.setAdultCapacity(adultCapacity);
-            event.setKidCapacity(kidCapacity);
-            event.setGatheringType(type);
-            event.setAdultRequired(true);
             event.setCity(city);
-            eventRepository.save(event);
-            log.info("Save event in db");
-        } else {
-            effective_mobile.com.model.entity.Event event = optionalEvent.get();
-            event.setType(type);
             event.setTime(time);
-            event.setAdultPrice(adultPrice);
-            event.setKidPrice(kidPrice);
-            event.setChildAge(childAge);
-            event.setCapacity(capacity);
-            event.setAdultCapacity(adultCapacity);
-            event.setKidCapacity(kidCapacity);
-            event.setGatheringType(type);
-            event.setAdultRequired(true);
-            eventRepository.save(event);
-            log.info("Refresh event in db");
+            createEvent(event);
         }
+        eventRepository.save(event);
     }
 
+    private void createEvent(effective_mobile.com.model.entity.Event event) {
+        event.setType(type);
+        event.setAdultPrice(adultPrice);
+        event.setKidPrice(kidPrice);
+        event.setChildAge(childAge);
+        event.setCapacity(capacity);
+        event.setAdultCapacity(adultCapacity);
+        event.setKidCapacity(kidCapacity);
+        event.setGatheringType(type);
+        event.setAdultRequired(true);
+    }
+
+    @Transactional(readOnly = true)
     public effective_mobile.com.model.entity.Event findEventByNameAndCity(String name, String city) throws BadRequestException {
         Optional<effective_mobile.com.model.entity.Event> eventOptional = eventRepository.findByNameAndCity(name, city);
         if (eventOptional.isPresent()) {

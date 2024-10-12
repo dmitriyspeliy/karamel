@@ -32,7 +32,7 @@ public class ChangeEventInBitrix {
     private Map<String, String> payLoad;
 
     public void bookMixedEvent(int kidTickets, int adultTickets, Event event) throws BadRequestException {
-
+        payLoad = new HashMap<>();
         updateEventFromWebHook(event);
 
         event.setKidCapacity(event.getKidCapacity() - kidTickets);
@@ -57,9 +57,16 @@ public class ChangeEventInBitrix {
         eventRepository.save(event);
     }
 
-    public void bookSchoolEvent(Event event) {
+    public void bookSchoolEvent(Event event) throws BadRequestException {
         payLoad = new HashMap<>();
         updateEventFromWebHook(event);
+
+        String property119 = payLoad.get("PROPERTY_119");
+
+        if (property119.equals("93")) {
+            throw new BadRequestException("Уже забронировали");
+        }
+
         payLoad.put("PROPERTY_119", "95");
         updateInBitrix(event, payLoad);
 
@@ -67,7 +74,7 @@ public class ChangeEventInBitrix {
     }
 
     public void undoChangingInMixedEvent(int kidTickets, int adultTickets, Event event) {
-
+        payLoad = new HashMap<>();
         updateEventFromWebHook(event);
 
         event.setKidCapacity(event.getKidCapacity() + kidTickets);
@@ -89,9 +96,11 @@ public class ChangeEventInBitrix {
     }
 
     public void undoChangingInSchoolEvent(Event event) {
-
+        payLoad = new HashMap<>();
         updateEventFromWebHook(event);
+
         payLoad.put("PROPERTY_119", "93");
+
         updateInBitrix(event, payLoad);
 
         eventRepository.save(event);
@@ -121,11 +130,11 @@ public class ChangeEventInBitrix {
         event.setChildAge(getValueFromProperty(element, "PROPERTY_133"));
         String type = defineType(element);
         event.setType(type);
-        if(type.equals("ШКОЛЬНЫЕ ГРУППЫ")) {
+        if (type.equals("ШКОЛЬНЫЕ ГРУППЫ")) {
             event.setCapacity(1L);
             event.setAdultCapacity(1L);
             event.setKidCapacity(1L);
-        }else {
+        } else {
             event.setCapacity(Long.parseLong(getValueFromProperty(element, "PROPERTY_131")));
             event.setAdultCapacity(Long.parseLong(getValueFromProperty(element, "PROPERTY_111")));
             event.setKidCapacity(Long.parseLong(getValueFromProperty(element, "PROPERTY_109")));

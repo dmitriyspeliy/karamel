@@ -14,6 +14,7 @@ import effective_mobile.com.repository.EventRepository;
 import effective_mobile.com.repository.InvoiceRepository;
 import effective_mobile.com.service.api.contact.AddContact;
 import effective_mobile.com.service.api.deal.AddDeal;
+import effective_mobile.com.service.api.deal.UpdateDealComment;
 import effective_mobile.com.service.api.event.ChangeEventInBitrix;
 import effective_mobile.com.service.api.payment.InvoiceRobokassa;
 import effective_mobile.com.utils.exception.BadRequestException;
@@ -46,6 +47,7 @@ public class BookingService {
     private final InvoiceRepository invoiceRepository;
     private final ContactRepository contactRepository;
     private final ChangeEventInBitrix changeEvent;
+    private final UpdateDealComment updateDealComment;
 
 
     private Event event;
@@ -76,13 +78,14 @@ public class BookingService {
             makeInvoice(currentCity);
         } catch (Exception e) {
             // если на этапе получение инвойса или сохранения сущностей что-то не получилось, то делаем компенсирующую операцию
-            // возвращаем бронируемые места + удаляем сделку в битрикс
+            // возвращаем бронируемые места
             if (event.getType().contains("ШКОЛЬНЫЕ")) {
                 changeEvent.undoChangingInSchoolEvent(event);
             } else if (event.getType().contains("СБОРНЫЕ")) {
                 changeEvent.undoChangingInMixedEvent(requestToBookingEvent.getChildrenCount(),
                         requestToBookingEvent.getPaidAdultCount(), event);
             }
+            updateDealComment.refreshCommentDeal(deal.getExtDealId(), "Произошла ошибка на этапе получения инвойса");
         }
 
 

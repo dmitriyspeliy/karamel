@@ -79,13 +79,13 @@ public class BookingService {
         } catch (Exception e) {
             // если на этапе получение инвойса или сохранения сущностей что-то не получилось,
             // то делаем компенсирующую операцию возвращаем бронируемые места
+            log.error("Произошла ошибка на этапе получения инвойса");
             if (event.getType().contains("ШКОЛЬНЫЕ")) {
                 changeEvent.undoChangingInSchoolEvent(event);
             } else if (event.getType().contains("СБОРНЫЕ")) {
                 changeEvent.undoChangingInMixedEvent(requestToBookingEvent.getChildrenCount(),
                         requestToBookingEvent.getPaidAdultCount(), event);
             }
-            updateDealComment.refreshCommentDeal(deal.getExtDealId(), "Произошла ошибка на этапе получения инвойса");
         }
 
 

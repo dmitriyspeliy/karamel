@@ -13,6 +13,21 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Table(name = "invoice")
+@NamedEntityGraph(
+        name = "invoice_deal_event",
+        attributeNodes = {
+                @NamedAttributeNode(value = "deal", subgraph = "deal-subgraph"),
+        },
+        subgraphs = {
+                @NamedSubgraph(
+                        name = "deal-subgraph",
+                        attributeNodes = {
+                                @NamedAttributeNode("event"),
+                                @NamedAttributeNode("contact")
+                        }
+                )
+        }
+)
 public class Invoice {
     @Id
     @Column(name = "deal_id")
@@ -33,7 +48,7 @@ public class Invoice {
     private String state;
     @Column(name = "count_of_send_ticket")
     private Integer countOfSendTicket;
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @MapsId
     @JoinColumn(name = "deal_id")
     private Deal deal;

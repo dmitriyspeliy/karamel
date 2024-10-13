@@ -88,7 +88,7 @@ public class BookingService {
     public Cart getBookingCart(UUID invoiceId, String currentCity) throws BadRequestException {
         CityProperties.Info info = cityProperties.getCityInfo().get(currentCity);
 
-        Optional<Invoice> optionalInvoice = invoiceRepository.findByExtInvoiceId(invoiceId.toString());
+        Optional<Invoice> optionalInvoice = invoiceRepository.getDealAndEvent(invoiceId.toString());
         if (optionalInvoice.isPresent()) {
             Invoice invoice = optionalInvoice.get();
             Deal deal = invoice.getDeal();

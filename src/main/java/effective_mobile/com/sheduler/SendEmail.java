@@ -10,6 +10,7 @@ import effective_mobile.com.utils.enums.Status;
 import effective_mobile.com.utils.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -25,25 +26,25 @@ public class SendEmail {
     private final EmailService emailService;
     private final UpdateDealComment updateDealComment;
 
+    @Async("jobExecutor")
     @Scheduled(cron = " 0 0/3 * * * ?")
     public void sendTicket() throws BadRequestException {
-        log.info("Start working scheduler. Send tickets");
+        log.info("SEND EMAIL");
         // выгружаем все счета со статусом SUCCESS и счетчиком отправки 0
-        List<Invoice> invoiceByStatus = invoiceRepository.getInvoiceByStatusAndCountOfSendTicket(Status.SUCCESS.name());
+        List<Invoice> invoiceByStatus = invoiceRepository.getDealAndEventAndContactByStatus(Status.SUCCESS);
         for (Invoice byStatus : invoiceByStatus) {
             Contact contact = byStatus.getDeal().getContact();
             Deal deal = byStatus.getDeal();
             // отправляем билеты
-            log.info("Оплата по счету " + byStatus.getExtInvoiceId() + " прошла успешно. Отправляем билеты");
             emailService.sendEmail(contact.getEmail(),
                     "Письмо с Карамельной Фабрики Деда Мороза и ваш билет",
                     emailService.createMessage(deal));
-            log.info("Билеты были отправлены на почту " + contact.getEmail());
             byStatus.setCountOfSendTicket(byStatus.getCountOfSendTicket() == null ? 1 : byStatus.getCountOfSendTicket() + 1);
             invoiceRepository.save(byStatus);
             updateDealComment.refreshCommentDeal(deal.getExtDealId(), "Билеты были отправлены на почту " + contact.getEmail());
+            log.info("Билеты были отправлены на почту " + contact.getEmail());
         }
-        log.info("Scheduler was finish");
+        log.info("SCHEDULER WAS FINISH");
     }
 
 }

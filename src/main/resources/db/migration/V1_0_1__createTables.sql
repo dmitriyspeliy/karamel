@@ -9,7 +9,7 @@ create table if not exists contact
     add_info       text         default 'No information'
 );
 
-create index hash_contact_index on contact (ext_contact_id);
+create index if not exists hash_contact_index on contact (ext_contact_id);
 
 create table if not exists deal
 (
@@ -29,7 +29,7 @@ create table if not exists deal
     adult_price numeric     default 0
 );
 
-create index hash_deal_index on deal (ext_deal_id);
+create index if not exists hash_deal_index on deal (ext_deal_id);
 
 create table if not exists event
 (
@@ -49,8 +49,8 @@ create table if not exists event
     city           varchar(100) not null
 );
 
-create index hash_event_index on event (ext_event_id);
-create unique index hash_event_name_city_index on event (name, city);
+create index if not exists hash_event_index on event (ext_event_id);
+create unique index if not exists hash_event_name_city_index on event (name, city);
 
 create table if not exists invoice
 (
@@ -65,4 +65,4 @@ create table if not exists invoice
     count_of_send_ticket int default 0
 );
 
-create index hash_invoice_index on invoice (ext_invoice_id);
+create index if not exists hash_invoice_index on invoice (ext_invoice_id);

@@ -11,6 +11,12 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Table(name = "deal")
+@NamedEntityGraph(
+        name = "deal_contact",
+        attributeNodes = {
+                @NamedAttributeNode(value = "contact"),
+        }
+)
 public class Deal {
 
     @Id
@@ -50,15 +56,15 @@ public class Deal {
     @Column(name = "adult_price")
     private BigDecimal adultPrice;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "contact_id", referencedColumnName = "id")
     private Contact contact;
 
-    @OneToOne(mappedBy = "deal", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "deal", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
     @PrimaryKeyJoinColumn
     private Invoice invoice;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "event_id")
     private Event event;
 

@@ -4,10 +4,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import effective_mobile.com.model.dto.Event;
 import effective_mobile.com.model.dto.rs.GetEventsResponse;
 import effective_mobile.com.repository.EventRepository;
-import effective_mobile.com.service.api.event.FetchAllSlot;
 import effective_mobile.com.utils.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.CacheManager;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Optional;
 
 import static effective_mobile.com.utils.UtilsMethods.defineType;
@@ -41,42 +42,37 @@ public class EventService {
     private String type;
     private String city;
     private Long id;
-    private final FetchAllSlot fetchAllSlot;
+    private final CashedEvent cashedEvent;
 
+    private final CacheManager cacheManager;
 
     public synchronized ResponseEntity<GetEventsResponse> getUpcomingEvents(String city, String type) {
         this.type = type;
         this.city = city;
-        ArrayList<JsonNode> jsonNodeArrayList = new ArrayList<>();
-        var response = fetchAllSlot.fetchAllSlotByCityAndType(city, type);
-        jsonNodeArrayList.add(response);
-        String resStr = response.path("next").asText();
-        if (resStr != null && !resStr.equals("")) {
-            int res = Integer.parseInt(resStr);
-            if (res >= 50) {
-                String totalStr = response.path("total").asText();
-                if (totalStr != null && !totalStr.equals("")) {
-                    int total = Integer.parseInt(totalStr);
-                    while (res <= total) {
-                        response = fetchAllSlot.fetchAllSlotByCityAndType(city, type, String.valueOf(res));
-                        jsonNodeArrayList.add(response);
-                        res = res + 50;
-                    }
-                }
-
-            }
-        }
-
         var slots = new ArrayList<Event>();
-        for (JsonNode jsonNode : jsonNodeArrayList) {
-            var elements = jsonNode.path("result");
-            for (var element : elements) {
+        if (Objects.requireNonNull(cacheManager.getCache("json-nodes")).get(city + type) != null) {
+            ArrayList<JsonNode> jsonNodeArrayList = cashedEvent.cashedEvent(city, type);
+            for (JsonNode jsonNode : jsonNodeArrayList) {
+                var elements = jsonNode.path("result");
+                for (var element : elements) {
 
-                extractValue(element);
+                    extractValue(element);
 
-                slots.add(makeEvent());
+                    slots.add(makeEvent());
+                }
+            }
+        } else {
+            ArrayList<JsonNode> jsonNodeArrayList = cashedEvent.cashedEvent(city, type);
+            for (JsonNode jsonNode : jsonNodeArrayList) {
+                var elements = jsonNode.path("result");
+                for (var element : elements) {
 
-                saveToDb();
+                    extractValue(element);
+
+                    slots.add(makeEvent());
+
+                    saveToDb();
+                }
             }
         }
         return ResponseEntity.ok(new GetEventsResponse(new GetEventsResponse.EventsField(slots)));
@@ -158,7 +154,6 @@ public class EventService {
         event.setAdultRequired(true);
     }
 
-    @Transactional(readOnly = true)
     public effective_mobile.com.model.entity.Event findEventByNameAndCity(String name, String city) throws BadRequestException {
         Optional<effective_mobile.com.model.entity.Event> eventOptional = eventRepository.findByNameAndCity(name, city);
         if (eventOptional.isPresent()) {

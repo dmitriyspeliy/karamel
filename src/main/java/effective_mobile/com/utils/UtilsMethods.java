@@ -70,7 +70,6 @@ public class UtilsMethods {
             var key = entrySet.fieldNames().next();
             return entrySet.path(key).asText();
         } catch (NoSuchElementException e) {
-            log.warn("Property {} not found in node, returning default value '0'", property);
             return "0";
         }
     }

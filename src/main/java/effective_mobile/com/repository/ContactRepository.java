@@ -7,5 +7,4 @@ import java.util.Optional;
 
 public interface ContactRepository extends CrudRepository<Contact, Long> {
     Optional<Contact> findByPhone(String phone);
-    Optional<Contact> findByExtContactId(String extId);
 }

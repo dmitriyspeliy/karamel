@@ -13,6 +13,7 @@ import effective_mobile.com.utils.enums.Status;
 import effective_mobile.com.utils.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -35,11 +36,13 @@ public class CheckStatusPayment {
     /**
      * Синхронизируем статус платежа в бд с робокассой
      */
+    @Async("jobExecutor")
     @Scheduled(cron = " 0 0/2 * * * ?")
-    public synchronized void check() throws BadRequestException {
-        log.info("Start working scheduler. Check invoice's with status PENDING");
-        // выгружаем все счета со статусом PENDING
-        List<Invoice> invoiceByStatus = invoiceRepository.getInvoiceByStatus(Status.PENDING.name());
+    public void check() throws BadRequestException {
+        log.info("CHECK SUCCESS PAYMENT");
+        // выгружаем все счета со статусом PENDING, которые меньше 15 минут находятся в этом статусе
+        List<Invoice> invoiceByStatus = invoiceRepository
+                .getDealAndEventAndContactByStatusAndCreateTimeMoreThan(Status.PENDING, LocalDateTime.now().minusMinutes(15));
         for (Invoice byStatus : invoiceByStatus) {
             // делаем запрос по каждому инвойсу в робокассу и проверяем изменился ли статус
             Deal deal = byStatus.getDeal();
@@ -60,32 +63,32 @@ public class CheckStatusPayment {
                 invoiceRepository.save(byStatus);
             }
         }
-        log.info("Scheduler was finish");
+        log.info("SCHEDULER WAS FINISH");
     }
 
 
     /**
-     * Все платежи, со статусом PENDING, которые уже 15 минут находятся в этом статусе, будут отменены
+     * Все платежи, со статусом PENDING, которые уже 15 минут находятся в этом статусе, будут отменены и места будут откатаны
      */
+    @Async("jobExecutor")
     @Scheduled(cron = " 0 0/5 * * * ?")
-    public synchronized void checkInvoiceStatusAndTime() {
-        log.info("Start working scheduler. Set FAILURE status in invoice");
-        // выгружаем все счета со статусом PENDING
-        List<Invoice> invoiceByStatus = invoiceRepository.getInvoiceByStatus(Status.PENDING.name());
+    public void checkInvoiceStatusAndTime() {
+        log.info("SET STATUS FAILURE AND CANSEL BOOKING");
+        // выгружаем все счета со статусом PENDING и дата создания которых больше 15 минут
+        List<Invoice> invoiceByStatus = invoiceRepository
+                .getDealAndEventAndContactByStatusAndCreateTimeLessThan(Status.PENDING, LocalDateTime.now().minusMinutes(15));
         for (Invoice byStatus : invoiceByStatus) {
             Deal deal = byStatus.getDeal();
             Event event = byStatus.getDeal().getEvent();
-            if (byStatus.getCreateAt().plusMinutes(15).isBefore(LocalDateTime.now())) {
-                byStatus.setStatus(Status.FAILURE);
-                invoiceRepository.save(byStatus);
-                if (event.getType().contains("ШКОЛЬНЫЕ")) {
-                    changeEventInBitrix.undoChangingInSchoolEvent(event);
-                } else if (event.getType().contains("СБОРНЫЕ")) {
-                    changeEventInBitrix.undoChangingInMixedEvent(deal.getKidCount(),
-                            deal.getAdultCount(), event);
-                }
+            byStatus.setStatus(Status.FAILURE);
+            invoiceRepository.save(byStatus);
+            if (event.getType().contains("ШКОЛЬНЫЕ")) {
+                changeEventInBitrix.undoChangingInSchoolEvent(event);
+            } else if (event.getType().contains("СБОРНЫЕ")) {
+                changeEventInBitrix.undoChangingInMixedEvent(deal.getKidCount(),
+                        deal.getAdultCount(), event);
             }
         }
-        log.info("Scheduler was finish");
+        log.info("SCHEDULER WAS FINISH");
     }
 }

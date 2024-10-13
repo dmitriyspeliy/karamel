@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 import static effective_mobile.com.utils.CommonVar.*;
 
@@ -19,7 +20,7 @@ public class FetchAllSlot {
 
     private final RestTemplate restTemplate;
 
-    public JsonNode fetchAllSlotByCityAndType(String city, String type) {
+    public ArrayList<JsonNode> fetchAllSlotByCityAndType(String city, String type) {
         log.info("Sending request to Bitrix API for city: {} and type: {}", city, type);
 
         var codeOfCity = City.getCodeOfCity(city);
@@ -35,7 +36,32 @@ public class FetchAllSlot {
                 + "&FILTER[PROPERTY_125]=" + codeOfType
                 + "&FILTER[PROPERTY_113]>" + now;
 
-        return restTemplate.getForObject(hookWithAdditionalParams, JsonNode.class);
+        var response = restTemplate.getForObject(hookWithAdditionalParams, JsonNode.class);
+
+        ArrayList<JsonNode> jsonNodeArrayList = new ArrayList<>();
+
+        if (response != null) {
+            jsonNodeArrayList.add(response);
+            String resStr = response.path("next").asText();
+            if (resStr != null && !resStr.equals("")) {
+                int res = Integer.parseInt(resStr);
+                if (res >= 50) {
+                    String totalStr = response.path("total").asText();
+                    if (totalStr != null && !totalStr.equals("")) {
+                        int total = Integer.parseInt(totalStr);
+                        while (res <= total) {
+                            response = fetchAllSlotByCityAndType(city, type, String.valueOf(res));
+                            if (response != null) {
+                                jsonNodeArrayList.add(response);
+                                res = res + 50;
+                            }
+                        }
+                    }
+
+                }
+            }
+        }
+        return jsonNodeArrayList;
     }
 
     public JsonNode fetchAllSlotByCityAndType(String city, String type, String start) {

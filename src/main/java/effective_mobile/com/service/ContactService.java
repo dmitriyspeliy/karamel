@@ -31,7 +31,7 @@ public class ContactService {
     }
 
     private void updateContactEmailInDb(String extDealId, UpdateContactRequestBody contactRequestBody) throws BadRequestException {
-        Optional<Deal> dealOptional = dealRepository.findByExtDealId(extDealId);
+        Optional<Deal> dealOptional = dealRepository.getDealAndContact(extDealId);
         if (dealOptional.isPresent()) {
             Contact contact = dealOptional.get().getContact();
             contact.setEmail(contactRequestBody.getEmail());

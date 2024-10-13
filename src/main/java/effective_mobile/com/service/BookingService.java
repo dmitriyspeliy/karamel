@@ -77,8 +77,8 @@ public class BookingService {
             // получение инвойса
             makeInvoice(currentCity);
         } catch (Exception e) {
-            // если на этапе получение инвойса или сохранения сущностей что-то не получилось, то делаем компенсирующую операцию
-            // возвращаем бронируемые места
+            // если на этапе получение инвойса или сохранения сущностей что-то не получилось,
+            // то делаем компенсирующую операцию возвращаем бронируемые места
             if (event.getType().contains("ШКОЛЬНЫЕ")) {
                 changeEvent.undoChangingInSchoolEvent(event);
             } else if (event.getType().contains("СБОРНЫЕ")) {

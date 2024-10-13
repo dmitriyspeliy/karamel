@@ -43,7 +43,7 @@ public class AddDeal {
     private String currentCity;
 
     public Deal addDeal(BigDecimal sum, Event event, Contact contact, Integer adultCount, Integer kidCount, String city) throws BadRequestException {
-        log.info("Запрос на добавление cделки \n" + event.toString());
+        log.info("Запрос на добавление cделки");
         this.kidCount = kidCount;
         this.adultCount = adultCount;
         this.sum = sum;

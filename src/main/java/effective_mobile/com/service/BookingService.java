@@ -14,7 +14,6 @@ import effective_mobile.com.repository.EventRepository;
 import effective_mobile.com.repository.InvoiceRepository;
 import effective_mobile.com.service.api.contact.AddContact;
 import effective_mobile.com.service.api.deal.AddDeal;
-import effective_mobile.com.service.api.deal.DeleteDeal;
 import effective_mobile.com.service.api.event.ChangeEventInBitrix;
 import effective_mobile.com.service.api.payment.InvoiceRobokassa;
 import effective_mobile.com.utils.exception.BadRequestException;
@@ -23,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.net.MalformedURLException;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +46,6 @@ public class BookingService {
     private final InvoiceRepository invoiceRepository;
     private final ContactRepository contactRepository;
     private final ChangeEventInBitrix changeEvent;
-    private final DeleteDeal deleteDeal;
 
 
     private Event event;
@@ -69,12 +68,23 @@ public class BookingService {
         // считаем сумму
         makeSum();
 
-        // регистрация сущностей в битриксе
-        contact = addContact.addContact(requestBody);
-        deal = addDeal.addDeal(sum, event, contact, requestBody.getPaidAdultCount(), requestBody.getChildrenCount(), currentCity);
+        try {
+            // регистрация сущностей в битриксе
+            contact = addContact.addContact(requestBody);
+            deal = addDeal.addDeal(sum, event, contact, requestBody.getPaidAdultCount(), requestBody.getChildrenCount(), currentCity);
+            // получение инвойса
+            makeInvoice(currentCity);
+        } catch (Exception e) {
+            // если на этапе получение инвойса или сохранения сущностей что-то не получилось, то делаем компенсирующую операцию
+            // возвращаем бронируемые места + удаляем сделку в битрикс
+            if (event.getType().contains("ШКОЛЬНЫЕ")) {
+                changeEvent.undoChangingInSchoolEvent(event);
+            } else if (event.getType().contains("СБОРНЫЕ")) {
+                changeEvent.undoChangingInMixedEvent(requestToBookingEvent.getChildrenCount(),
+                        requestToBookingEvent.getPaidAdultCount(), event);
+            }
+        }
 
-        // получение инвойса
-        makeInvoice(currentCity);
 
         // сохранили все сущности в бд
         saveEntitiesInDb();
@@ -133,24 +143,9 @@ public class BookingService {
                         kidPrice.multiply(BigDecimal.valueOf(requestToBookingEvent.getChildrenCount())));
     }
 
-    private void makeInvoice(String currentCity) throws BadRequestException {
+    private void makeInvoice(String currentCity) throws BadRequestException, MalformedURLException {
         invoice = null;
-        try {
-            invoice = invoiceRobokassa.generateInvoiceLink(sum, deal, currentCity);
-        } catch (Exception e) {
-            // если на этапе получение инвойса что-то не получилось, то делаем компенсирующую операцию
-            // возвращаем бронируемые места + удаляем сделку в битрикс
-            if (event.getType().contains("ШКОЛЬНЫЕ")) {
-                changeEvent.undoChangingInSchoolEvent(event);
-                deleteDeal.deleteByExtId(deal.getExtDealId());
-            } else if (event.getType().contains("СБОРНЫЕ")) {
-                changeEvent.undoChangingInMixedEvent(requestToBookingEvent.getChildrenCount(),
-                        requestToBookingEvent.getPaidAdultCount(), event);
-                deleteDeal.deleteByExtId(deal.getExtDealId());
-            } else {
-                deleteDeal.deleteByExtId(deal.getExtDealId());
-            }
-        }
+        invoice = invoiceRobokassa.generateInvoiceLink(sum, deal, currentCity);
     }
 
     private void saveEntitiesInDb() {

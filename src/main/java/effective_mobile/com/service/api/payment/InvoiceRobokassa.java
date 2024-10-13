@@ -108,8 +108,8 @@ public class InvoiceRobokassa {
             //https://docs.robokassa.ru/pay-interface/#errors
             if (getInvoiceId.getErrorCode().equals("0") && getInvoiceId.getInvoiceID() != null
                     && !getInvoiceId.getInvoiceID().equals("")) {
-                log.info("Айди получен " + hashId);
                 hashId = getInvoiceId.getInvoiceID();
+                log.info("Айди получен " + hashId);
                 updateDealInvoiceInfo.refreshStatusDeal(deal.getExtDealId(), robokassaProperties.getInvoiceUrl() + hashId,
                         LocalDate.now());
             } else {

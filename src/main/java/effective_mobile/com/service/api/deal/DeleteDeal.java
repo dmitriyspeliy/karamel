@@ -19,6 +19,7 @@ import static effective_mobile.com.utils.UtilsMethods.checkVar;
 @Component
 @RequiredArgsConstructor
 @Slf4j
+@Deprecated
 public class DeleteDeal {
     private BitrixResponseDeleteDeal bitrixCommonResponse;
     private HttpResponse<JsonNode> contactResponse;

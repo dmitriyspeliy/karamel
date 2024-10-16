@@ -39,16 +39,21 @@ public class ChangeEventInBitrix {
         event.setAdultCapacity(event.getAdultCapacity() - adultTickets);
         event.setCapacity(event.getCapacity() - adultTickets - kidTickets);
 
-        if (event.getCapacity() < 0) {
-            throw new BadRequestException("Нельзя забронировать так как мест меньше 0");
+        if (event.getKidCapacity() < 0
+                || event.getAdultCapacity() < 0
+                || event.getCapacity() < 0) {
+            throw new BadRequestException("Нельзя забронировать так как всего мест меньше, чем нужно." +
+                    "\nМест для детей " + event.getKidCapacity() + ", а нужно " + kidTickets
+                    + "\nМест для взрослых " + event.getAdultCapacity() + ", а нужно " + adultTickets
+                    + "\nМест общее кол-во " + event.getAdultCapacity() + ", а нужно " + kidTickets + adultTickets
+            );
         }
 
         payLoad.put("PROPERTY_109", event.getKidCapacity().toString());
         payLoad.put("PROPERTY_111", event.getAdultCapacity().toString());
         payLoad.put("PROPERTY_131", event.getCapacity().toString());
-        payLoad.put("PROPERTY_113", event.getTime().toString());
 
-        if (event.getAdultCapacity() == 0 || event.getKidCapacity() == 0) {
+        if (event.getCapacity() == 0 || event.getAdultCapacity() == 0 || event.getKidCapacity() == 0) {
             payLoad.put("PROPERTY_119", "95");
         }
 
@@ -63,7 +68,7 @@ public class ChangeEventInBitrix {
 
         String property119 = payLoad.get("PROPERTY_119");
 
-        if (property119.equals("93")) {
+        if (property119.equals("95")) {
             throw new BadRequestException("Уже забронировали");
         }
 
@@ -84,11 +89,7 @@ public class ChangeEventInBitrix {
         payLoad.put("PROPERTY_109", event.getKidCapacity().toString());
         payLoad.put("PROPERTY_111", event.getAdultCapacity().toString());
         payLoad.put("PROPERTY_131", event.getCapacity().toString());
-        payLoad.put("PROPERTY_113", event.getTime().toString());
-
-        if (event.getAdultCapacity() > 0 || event.getKidCapacity() > 0) {
-            payLoad.put("PROPERTY_119", "93");
-        }
+        payLoad.put("PROPERTY_119", "93");
 
         updateInBitrix(event, payLoad);
 

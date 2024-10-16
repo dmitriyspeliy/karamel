@@ -4,9 +4,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import effective_mobile.com.model.dto.Receipt;
+import effective_mobile.com.model.entity.Event;
 import effective_mobile.com.utils.enums.NameOfCity;
 import effective_mobile.com.utils.exception.BadRequestException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.CacheManager;
+import org.springframework.stereotype.Component;
 import org.springframework.util.DigestUtils;
 
 import java.math.BigDecimal;
@@ -16,9 +20,15 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 @Slf4j
+@Component
+@RequiredArgsConstructor
 public class UtilsMethods {
+
+    private final CacheManager cacheManager;
+
 
     public static void checkVar(List<String> vars) throws BadRequestException {
         for (String var : vars) {
@@ -129,4 +139,22 @@ public class UtilsMethods {
         }
         throw new BadRequestException("No city by name " + name);
     }
+
+
+    public void cleanCashed(Event event) {
+        //делаем сброс в кэше, чтобы след запрос был уже с актуальными местами
+        if (cacheManager.getCache("json-nodes") != null) {
+            try {
+                boolean res = Objects.requireNonNull(cacheManager.getCache("json-nodes")).evictIfPresent(event.getCity() + event.getType());
+                if (!res) {
+                    log.warn("Cashed wasn't refreshed for city " + event.getCity() + " and type " + event.getType());
+                } else {
+                    log.info("Cashed was refreshed for city " + event.getCity() + " and type " + event.getType());
+                }
+            } catch (NullPointerException e) {
+                log.error(e.getMessage());
+            }
+        }
+    }
+
 }

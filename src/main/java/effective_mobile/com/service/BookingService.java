@@ -16,16 +16,19 @@ import effective_mobile.com.service.api.contact.AddContact;
 import effective_mobile.com.service.api.deal.AddDeal;
 import effective_mobile.com.service.api.event.ChangeEventInBitrix;
 import effective_mobile.com.service.api.payment.InvoiceRobokassa;
+import effective_mobile.com.utils.UtilsMethods;
 import effective_mobile.com.utils.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.time.ZoneOffset;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 import static effective_mobile.com.utils.UtilsMethods.getAge;
 
@@ -44,6 +47,7 @@ public class BookingService {
     private final InvoiceRepository invoiceRepository;
     private final ContactRepository contactRepository;
     private final ChangeEventInBitrix changeEvent;
+    private final UtilsMethods utilsMethods;
 
     private Event event;
     private RequestToBookingEvent requestToBookingEvent;
@@ -51,7 +55,6 @@ public class BookingService {
     private Contact contact;
     private Deal deal;
     private Invoice invoice;
-    private final CacheManager cacheManager;
 
     public synchronized GetPaymentLinkResponse bookEvent(RequestToBookingEvent requestBody, String currentCity) throws BadRequestException {
 
@@ -82,25 +85,16 @@ public class BookingService {
                 changeEvent.undoChangingInMixedEvent(requestToBookingEvent.getChildrenCount(),
                         requestToBookingEvent.getPaidAdultCount(), event);
             }
+            utilsMethods.cleanCashed(event);
         }
 
 
         // сохранили все сущности в бд
         saveEntitiesInDb();
 
+
         //делаем сброс в кэше, чтобы след запрос был уже с актуальными местами
-        if (cacheManager.getCache("json-nodes") != null) {
-            try {
-                boolean res = Objects.requireNonNull(cacheManager.getCache("json-nodes")).evictIfPresent(event.getCity() + event.getType());
-                if(!res) {
-                    log.warn("Cashed wasn't refreshed for city " + event.getCity() + " and type " + event.getType());
-                }else {
-                    log.info("Cashed was refreshed for city " + event.getCity() + " and type " + event.getType());
-                }
-            } catch (NullPointerException e) {
-                log.error(e.getMessage());
-            }
-        }
+        utilsMethods.cleanCashed(event);
 
 
         // отдаем ссылку

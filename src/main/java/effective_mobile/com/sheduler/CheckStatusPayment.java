@@ -9,6 +9,7 @@ import effective_mobile.com.repository.InvoiceRepository;
 import effective_mobile.com.service.api.deal.UpdateDealStatus;
 import effective_mobile.com.service.api.event.ChangeEventInBitrix;
 import effective_mobile.com.service.api.payment.GetInvoice;
+import effective_mobile.com.utils.UtilsMethods;
 import effective_mobile.com.utils.enums.Status;
 import effective_mobile.com.utils.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +33,7 @@ public class CheckStatusPayment {
     private final GetInvoice getInvoice;
     private final UpdateDealStatus updateDealStatus;
     private final ChangeEventInBitrix changeEventInBitrix;
+    private final UtilsMethods utilsMethods;
 
     /**
      * Синхронизируем статус платежа в бд с робокассой
@@ -88,6 +90,10 @@ public class CheckStatusPayment {
                 changeEventInBitrix.undoChangingInMixedEvent(deal.getKidCount(),
                         deal.getAdultCount(), event);
             }
+
+            //делаем сброс в кэше, чтобы след запрос был уже с актуальными местами
+            utilsMethods.cleanCashed(event);
+
         }
         log.info("SCHEDULER WAS FINISH");
     }

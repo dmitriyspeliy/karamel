@@ -39,13 +39,14 @@ public class ChangeEventInBitrix {
         event.setAdultCapacity(event.getAdultCapacity() - adultTickets);
         event.setCapacity(event.getCapacity() - adultTickets - kidTickets);
 
+        int sum = kidTickets + adultTickets;
         if (event.getKidCapacity() < 0
                 || event.getAdultCapacity() < 0
                 || event.getCapacity() < 0) {
             throw new BadRequestException("Нельзя забронировать так как всего мест меньше, чем нужно." +
                     "\nМест для детей " + event.getKidCapacity() + ", а нужно " + kidTickets
                     + "\nМест для взрослых " + event.getAdultCapacity() + ", а нужно " + adultTickets
-                    + "\nМест общее кол-во " + event.getAdultCapacity() + ", а нужно " + kidTickets + adultTickets
+                    + "\nМест общее кол-во " + event.getAdultCapacity() + ", а нужно " + sum
             );
         }
 

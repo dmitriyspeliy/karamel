@@ -220,7 +220,7 @@ spring:
         robokassa-pass2: ${PASS2:nCOOnrZIb0n3C0gw5x5y}
         robokassa-pass1-test: ${PASS1-TEST:j8Y6N9F3C8tWfHMVAkVF}
         robokassa-pass2-test: ${PASS1-TEST:Csad6E6Y4yU9gUVue6Bn}
-        login: ${LOGIN}
+        login: ${LOGIN:Karamel_Samara2}
         sno: osn
         tax: none
     volgograd:

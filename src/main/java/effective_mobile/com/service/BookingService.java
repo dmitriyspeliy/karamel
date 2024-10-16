@@ -91,7 +91,12 @@ public class BookingService {
         //делаем сброс в кэше, чтобы след запрос был уже с актуальными местами
         if (cacheManager.getCache("json-nodes") != null) {
             try {
-                Objects.requireNonNull(cacheManager.getCache("json-nodes")).evictIfPresent(event.getCity() + event.getType());
+                boolean res = Objects.requireNonNull(cacheManager.getCache("json-nodes")).evictIfPresent(event.getCity() + event.getType());
+                if(!res) {
+                    log.warn("Cashed wasn't refreshed for city " + event.getCity() + " and type " + event.getType());
+                }else {
+                    log.info("Cashed was refreshed for city " + event.getCity() + " and type " + event.getType());
+                }
             } catch (NullPointerException e) {
                 log.error(e.getMessage());
             }

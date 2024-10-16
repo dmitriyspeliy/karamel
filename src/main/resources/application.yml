@@ -122,10 +122,10 @@ spring:
       maxCapacity: 36
       minCapacity: 20
       payment-info:
-        robokassa-pass1: ${PASS1:zQNzj3U3B0b2gxG8XoHM}
-        robokassa-pass2: ${PASS2:xmu8QSj3mSPE8wa1gYG9}
-        robokassa-pass1-test: ${PASS1-TEST:QXLWXup2K6f2qNzNV36R}
-        robokassa-pass2-test: ${PASS1-TEST:h0einWUjX0O9hKva5Y4W}
+        robokassa-pass1: ${PASS1:vrf0QXG65mM2ZA4WeiNm}
+        robokassa-pass2: ${PASS2:itfI5djfH33sEVe1gn3V}
+        robokassa-pass1-test: ${PASS1-TEST:Gn4aTHZ3qYVOfR40LXb7}
+        robokassa-pass2-test: ${PASS1-TEST:nbZM43H0VPqqPsg84FpV}
         login: ${LOGIN:Karamel_Tumen2}
         sno: osn
         tax: none

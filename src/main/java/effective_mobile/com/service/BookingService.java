@@ -24,6 +24,8 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
+import java.net.URL;
+import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
@@ -76,6 +78,7 @@ public class BookingService {
             deal = addDeal.addDeal(sum, event, contact, requestBody.getPaidAdultCount(), requestBody.getChildrenCount(), currentCity);
             // получение инвойса
             makeInvoice(currentCity);
+
         } catch (Exception e) {
             // если на этапе получение инвойса или создания сущностей что-то не получилось,
             // то делаем компенсирующую операцию для возвращая бронируемых мест
@@ -87,6 +90,13 @@ public class BookingService {
                         requestToBookingEvent.getPaidAdultCount(), event);
             }
             utilsMethods.cleanCashed(event);
+            try {
+                invoice.setExtInvoiceId("NO");
+                invoice.setInvoiceLink(new URL(""));
+                invoice.setCreateAt(LocalDateTime.now());
+            } catch (MalformedURLException ex) {
+                throw new RuntimeException(ex);
+            }
         }
 
 

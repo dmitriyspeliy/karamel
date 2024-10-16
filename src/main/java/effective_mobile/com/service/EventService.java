@@ -128,21 +128,23 @@ public class EventService {
             createEvent(event);
             event.setId(optionalEvent.get().getId());
             event.setExtEventId(optionalEvent.get().getExtEventId());
+            event.setCity(optionalEvent.get().getCity());
+            event.setName(optionalEvent.get().getName());
         } else {
             event.setExtEventId(extId);
+            event.setName(name);
+            event.setCity(city);
             createEvent(event);
         }
         eventRepository.save(event);
     }
 
     private void createEvent(effective_mobile.com.model.entity.Event event) {
-        event.setType(type);
         event.setAdultPrice(adultPrice);
         event.setKidPrice(kidPrice);
         event.setChildAge(childAge);
         event.setCapacity(capacity);
-        event.setName(name);
-        event.setCity(city);
+        event.setType(type);
         event.setTime(time);
         event.setAdultCapacity(adultCapacity);
         event.setKidCapacity(kidCapacity);

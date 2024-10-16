@@ -97,6 +97,14 @@ public class UtilsMethods {
         }
     }
 
+    public static String defineType(String type) {
+        if (type.contains("Сборные")) {
+            return "СБОРНЫЕ ГРУППЫ";
+        }else {
+            return "ШКОЛЬНЫЕ ГРУППЫ";
+        }
+    }
+
     public static String getAge(String age) {
         return switch (age) {
             case "9,9" -> "8-11";

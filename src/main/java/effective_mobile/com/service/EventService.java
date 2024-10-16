@@ -46,11 +46,11 @@ public class EventService {
     private final CacheManager cacheManager;
 
     public synchronized ResponseEntity<GetEventsResponse> getUpcomingEvents(String city, String type) {
-        this.type = type;
+        this.type = defineType(type);
         this.city = city;
         var slots = new ArrayList<Event>();
-        if (Objects.requireNonNull(cacheManager.getCache("json-nodes")).get(city + type) != null) {
-            ArrayList<JsonNode> jsonNodeArrayList = cashedEvent.cashedEvent(city, type);
+        if (Objects.requireNonNull(cacheManager.getCache("json-nodes")).get(city + this.type) != null) {
+            ArrayList<JsonNode> jsonNodeArrayList = cashedEvent.cashedEvent(city, this.type);
             for (JsonNode jsonNode : jsonNodeArrayList) {
                 var elements = jsonNode.path("result");
                 for (var element : elements) {
@@ -61,7 +61,7 @@ public class EventService {
                 }
             }
         } else {
-            ArrayList<JsonNode> jsonNodeArrayList = cashedEvent.cashedEvent(city, type);
+            ArrayList<JsonNode> jsonNodeArrayList = cashedEvent.cashedEvent(city, this.type);
             for (JsonNode jsonNode : jsonNodeArrayList) {
                 var elements = jsonNode.path("result");
                 for (var element : elements) {

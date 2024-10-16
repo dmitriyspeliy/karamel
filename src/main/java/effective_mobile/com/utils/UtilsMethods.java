@@ -150,14 +150,15 @@ public class UtilsMethods {
 
 
     public void cleanCashed(Event event) {
+        String type = defineType(event.getType());
         //делаем сброс в кэше, чтобы след запрос был уже с актуальными местами
         if (cacheManager.getCache("json-nodes") != null) {
             try {
-                boolean res = Objects.requireNonNull(cacheManager.getCache("json-nodes")).evictIfPresent(event.getCity() + event.getType());
+                boolean res = Objects.requireNonNull(cacheManager.getCache("json-nodes")).evictIfPresent(event.getCity() + type);
                 if (!res) {
-                    log.warn("Cashed wasn't refreshed for city " + event.getCity() + " and type " + event.getType());
+                    log.warn("Cashed wasn't refreshed for city " + event.getCity() + " and type " + type);
                 } else {
-                    log.info("Cashed was refreshed for city " + event.getCity() + " and type " + event.getType());
+                    log.info("Cashed was refreshed for city " + event.getCity() + " and type " + type);
                 }
             } catch (NullPointerException e) {
                 log.error(e.getMessage());

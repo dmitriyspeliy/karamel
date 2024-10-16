@@ -27,10 +27,7 @@ public class CityInfoController {
                 info.getFinishEndpoint(),
                 info.getAddress(),
                 info.getManagerContactNumbers().get(0),
-                info.getOfferLink(),
-                info.getMaxCapacity(),
-                info.getMinCapacity(),
-                info.getRefundPeriod());
+                info.getOfferLink());
     }
 
 }

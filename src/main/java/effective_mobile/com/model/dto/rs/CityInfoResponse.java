@@ -17,7 +17,4 @@ public class CityInfoResponse implements Serializable {
     private String address;
     private String managerContactNumber;
     private String offerLink;
-    private Integer maxCapacity;
-    private Integer minCapacity;
-    private Integer refundPeriod;
 }

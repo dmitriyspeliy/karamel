@@ -4,9 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-import java.math.BigDecimal;
 import java.time.Instant;
-import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,9 +20,7 @@ public class CityProperties {
     @Setter
     public static class Info {
 
-        private Integer timezone;
         private String bitrixFieldNum;
-        private Long invoiceLifetimeMinutes;
         private String cityName;
         private Instant startEndpoint;
         private Instant finishEndpoint;
@@ -32,10 +28,6 @@ public class CityProperties {
         private List<String> managerContactNumbers;
         private String vkLink;
         private String offerLink;
-        private BigDecimal reservationPaymentAmount;
-        private Integer maxCapacity;
-        private Integer minCapacity;
-        private Integer refundPeriod;
 
         private PaymentInfo paymentInfo;
 
@@ -49,10 +41,6 @@ public class CityProperties {
             private String login;
             private String sno;
             private String tax;
-        }
-
-        public ZoneOffset getTimezone() {
-            return ZoneOffset.ofHours(timezone);
         }
     }
 }

@@ -31,25 +31,17 @@ spring:
     hibernate:
       ddl-auto: validate
     open-in-view: true
-
-
   city-info:
     msk:
       city-name: МОСКВА
-      timezone: 0
       bitrix-field-num: 87
-      invoice-lifetime-minutes: 15
       start-endpoint: 2024-11-29T00:00:00+00:00
-      finish-endpoint: 2025-01-08T00:00:00+00:00
+      finish-endpoint: 2024-12-29T00:00:00+00:00
       address: Московская область, Мытищи, мкр. Олимпийский, ул. Щорса, 34
       manager-contact-numbers:
         - +79587569849
       vk-link: https://vk.com/public222553186
       offer-link: https://карамельнаяфабрика.рф/oferta_chel
-      reservation-payment-amount: 5000
-      maxCapacity: 36
-      minCapacity: 20
-      refundPeriod: 14
       payment-info:
         robokassa-pass1: ${PASS1:InSao1bBOvL7j0v9P9sI}
         robokassa-pass2: ${PASS2:uN1BeWTT9aMT9o5US7ZB}
@@ -60,20 +52,14 @@ spring:
         tax: none
     chel:
       city-name: ЧЕЛЯБИНСК
-      timezone: 3
       bitrix-field-num: 89
-      invoice-lifetime-minutes: 15
-      start-endpoint: 2024-11-29T00:00:00+00:00
-      finish-endpoint: 2025-01-08T00:00:00+00:00
+      start-endpoint: 2024-11-28T00:00:00+00:00
+      finish-endpoint: 2025-01-07T00:00:00+00:00
       address: Челябинск, ул. Рощинская, дом 2
       manager-contact-numbers:
         - +79587569849
       vk-link: https://vk.com/public222553186
       offer-link: https://карамельнаяфабрика.рф/oferta_chel
-      reservation-payment-amount: 5000
-      maxCapacity: 36
-      minCapacity: 20
-      refundPeriod: 14
       payment-info:
         robokassa-pass1: ${PASS1:RKUWpV99v0u5uz9PHDgu}
         robokassa-pass2: ${PASS2:Q9tPg8uPf14x9TAKmWxM}
@@ -82,45 +68,16 @@ spring:
         login: ${LOGIN:KaramelSamara}
         sno: osn
         tax: none
-    ekb:
-      city-name: ЕКАТЕРИНБУРГ
-      timezone: 3
-      bitrix-field-num: 85
-      invoice-lifetime-minutes: 15
-      start-endpoint: 2023-11-30T00:00:00+00:00
-      finish-endpoint: 2024-01-10T00:00:00+00:00
-      address: Свердловская область, г. Верхняя Пышма, ул. Восточная, д.15 (дом 400 м.кв.)
-      manager-contact-numbers:
-        - +73432264525
-        - +79952228767
-      vk-link: https://vk.com/public222552916
-      offer-link: https://карамельнаяфабрика.рф/oferta_ekat
-      reservation-payment-amount: 5000
-      maxCapacity: 36
-      minCapacity: 20
-      payment-info:
-        robokassa-pass1: ${PASS1}
-        robokassa-pass2: ${PASS2}
-        robokassa-pass1-test: ${PASS1-TEST}
-        robokassa-pass2-test: ${PASS1-TEST}
-        login: ${LOGIN}
-        sno: osn
-        tax: none
     tyumen:
       city-name: ТЮМЕНЬ
-      timezone: 3
-      invoice-lifetime-minutes: 15
       bitrix-field-num: 91
-      start-endpoint: 2024-11-30T00:00:00+00:00
-      finish-endpoint: 2025-01-10T00:00:00+00:00
+      start-endpoint: 2024-11-29T00:00:00+00:00
+      finish-endpoint: 2024-12-29T00:00:00+00:00
       address: Тюменская область, Тюменский район, посёлок Боровский, ул. Трактовая, д. 50/1 (дом 300 м.кв.)
       manager-contact-numbers:
         - +73452518032
       vk-link: https://vk.com/public222553329
       offer-link: https://карамельнаяфабрика.рф/oferta_tumen
-      reservation-payment-amount: 5000
-      maxCapacity: 36
-      minCapacity: 20
       payment-info:
         robokassa-pass1: ${PASS1:vrf0QXG65mM2ZA4WeiNm}
         robokassa-pass2: ${PASS2:itfI5djfH33sEVe1gn3V}
@@ -129,21 +86,51 @@ spring:
         login: ${LOGIN:Karamel_Tumen2}
         sno: osn
         tax: none
-    izh:
-      city-name: ИЖЕВСК
-      timezone: 4
-      invoice-lifetime-minutes: 15
+    samara:
+      city-name: САМАРА
+      bitrix-field-num: 217
+      start-endpoint: 2024-11-28T00:00:00+00:00
+      finish-endpoint: 2025-01-07T00:00:00+00:00
+      address: г. Самара, Красноглинский район, п. Красная Глинка, ул. Южная, д. 16
+      manager-contact-numbers:
+        - +79249148423
+      vk-link: https://vk.com/public222553152?ysclid=lo2v8ic1nb537889983
+      offer-link: https://карамельнаяфабрика.рф/oferta_samara
+      payment-info:
+        robokassa-pass1: ${PASS1:X2zJxbAB5VYmb0u9vG3F}
+        robokassa-pass2: ${PASS2:nCOOnrZIb0n3C0gw5x5y}
+        robokassa-pass1-test: ${PASS1-TEST:j8Y6N9F3C8tWfHMVAkVF}
+        robokassa-pass2-test: ${PASS1-TEST:Csad6E6Y4yU9gUVue6Bn}
+        login: ${LOGIN:Karamel_Samara2}
+        sno: osn
+        tax: none
+    spb:
+      city-name: САНКТ-ПЕТЕРБУРГ
       start-endpoint: 2023-11-30T00:00:00+00:00
       finish-endpoint: 2024-01-10T00:00:00+00:00
-      address: г. Ижевск, Удмуртская республика, Новоцентральная улица, 4
+      address: г. Санкт-Петербург, Ленинградская область, Ломоносовский район, деревня Малые Горки дом 30в.
       manager-contact-numbers:
-        - +73412650630
-        - +79952229680
-      vk-link: https://vk.com/public222343940
-      offer-link: https://карамельнаяфабрика.рф/oferta_izhevsk
-      reservation-payment-amount: 5000
-      maxCapacity: 36
-      minCapacity: 18
+        - +79699669259
+      vk-link: https://vk.com/public222337083
+      offer-link: https://карамельнаяфабрика.рф/oferta_spb
+      payment-info:
+        robokassa-pass1: ${PASS1}
+        robokassa-pass2: ${PASS2}
+        robokassa-pass1-test: ${PASS1-TEST}
+        robokassa-pass2-test: ${PASS1-TEST}
+        login: ${LOGIN}
+        sno: osn
+        tax: none
+    ekb:
+      city-name: ЕКАТЕРИНБУРГ
+      bitrix-field-num: 85
+      start-endpoint: 2024-11-29T00:00:00+00:00
+      finish-endpoint: 2025-01-08T00:00:00+00:00
+      address: Свердловская область, г. Верхняя Пышма, ул. Восточная, д.15 (дом 400 м.кв.)
+      manager-contact-numbers:
+        - +73432264525
+      vk-link: https://vk.com/public222552916
+      offer-link: https://карамельнаяфабрика.рф/oferta_ekat
       payment-info:
         robokassa-pass1: ${PASS1}
         robokassa-pass2: ${PASS2}
@@ -154,183 +141,14 @@ spring:
         tax: none
     kras:
       city-name: КРАСНОЯРСК
-      timezone: 7
       bitrix-field-num: 389
-      invoice-lifetime-minutes: 15
-      start-endpoint: 2023-11-30T00:00:00+00:00
-      finish-endpoint: 2024-01-10T00:00:00+00:00
-      address: г. Красноярск, ул. Караульная, д. 24
+      start-endpoint: 2024-11-29T00:00:00+00:00
+      finish-endpoint: 2024-12-29T00:00:00+00:00
+      address: г. Красноярск, Пойменный пер. д. 1
       manager-contact-numbers:
         - +73919897947
-        - +79952226742
       vk-link: https://vk.com/fabrikadmkrsn
-      reservation-payment-amount: 5000
       offer-link: https://карамельнаяфабрика.рф/oferta_kras
-      maxCapacity: 36
-      minCapacity: 18
-      payment-info:
-        robokassa-pass1: ${PASS1}
-        robokassa-pass2: ${PASS2}
-        robokassa-pass1-test: ${PASS1-TEST}
-        robokassa-pass2-test: ${PASS1-TEST}
-        login: ${LOGIN}
-        sno: osn
-        tax: none
-    nsk:
-      city-name: НОВОСИБИРСК
-      timezone: 7
-      invoice-lifetime-minutes: 15
-      start-endpoint: 2023-11-30T00:00:00+00:00
-      finish-endpoint: 2024-01-10T00:00:00+00:00
-      address: г. Обь, ул. Дорожников, д. 27
-      manager-contact-numbers:
-        - +79952229459
-        - +73832427074
-      vk-link: https://vk.com/karameldmnovosib
-      reservation-payment-amount: 5000
-      offer-link: https://карамельнаяфабрика.рф/oferta_nov
-      maxCapacity: 36
-      minCapacity: 18
-      payment-info:
-        robokassa-pass1: ${PASS1}
-        robokassa-pass2: ${PASS2}
-        robokassa-pass1-test: ${PASS1-TEST}
-        robokassa-pass2-test: ${PASS1-TEST}
-        login: ${LOGIN}
-        sno: osn
-        tax: none
-    samara:
-      city-name: САМАРА
-      timezone: 3
-      bitrix-field-num: 217
-      invoice-lifetime-minutes: 15
-      start-endpoint: 2024-11-30T00:00:00+00:00
-      finish-endpoint: 2025-01-10T00:00:00+00:00
-      address: г. Самара, Красноглинский район, п. Красная Глинка, ул. Южная, д. 16
-      manager-contact-numbers:
-        - +79249148423
-      vk-link: https://vk.com/public222553152?ysclid=lo2v8ic1nb537889983
-      offer-link: https://карамельнаяфабрика.рф/oferta_samara
-      reservation-payment-amount: 5000
-      maxCapacity: 36
-      minCapacity: 20
-      refundPeriod: 14
-      payment-info:
-        robokassa-pass1: ${PASS1:X2zJxbAB5VYmb0u9vG3F}
-        robokassa-pass2: ${PASS2:nCOOnrZIb0n3C0gw5x5y}
-        robokassa-pass1-test: ${PASS1-TEST:j8Y6N9F3C8tWfHMVAkVF}
-        robokassa-pass2-test: ${PASS1-TEST:Csad6E6Y4yU9gUVue6Bn}
-        login: ${LOGIN:Karamel_Samara2}
-        sno: osn
-        tax: none
-    volgograd:
-      city-name: ВОЛГОГРАД
-      timezone: 3
-      invoice-lifetime-minutes: 15
-      start-endpoint: 2023-11-30T00:00:00+00:00
-      finish-endpoint: 2024-01-10T00:00:00+00:00
-      address: Волгоград, ул. Маргариты Агашиной, д.65
-      manager-contact-numbers:
-        - +79249145265
-      vk-link: https://vk.com/public222553352
-      offer-link: https://карамельнаяфабрика.рф/oferta_volga
-      reservation-payment-amount: 5000
-      maxCapacity: 36
-      minCapacity: 20
-      refundPeriod: 14
-      payment-info:
-        robokassa-pass1: ${PASS1}
-        robokassa-pass2: ${PASS2}
-        robokassa-pass1-test: ${PASS1-TEST}
-        robokassa-pass2-test: ${PASS1-TEST}
-        login: ${LOGIN}
-        sno: osn
-        tax: none
-    lipetsk:
-      city-name: ЛИПЕЦК
-      timezone: 3
-      invoice-lifetime-minutes: 15
-      start-endpoint: 2023-11-30T00:00:00+00:00
-      finish-endpoint: 2024-01-10T00:00:00+00:00
-      address: Липецкая область, Липецкий район, село Ленино, ул. Закатная, 6
-      manager-contact-numbers:
-        - +79249141709
-      vk-link: https://vk.com/public222554035
-      offer-link: https://карамельнаяфабрика.рф/oferta_lipetsk
-      reservation-payment-amount: 5000
-      maxCapacity: 36
-      minCapacity: 20
-      refundPeriod: 14
-      payment-info:
-        robokassa-pass1: ${PASS1}
-        robokassa-pass2: ${PASS2}
-        robokassa-pass1-test: ${PASS1-TEST}
-        robokassa-pass2-test: ${PASS1-TEST}
-        login: ${LOGIN}
-        sno: osn
-        tax: none
-    perm:
-      city-name: ПЕРМЬ
-      timezone: 3
-      invoice-lifetime-minutes: 15
-      start-endpoint: 2023-11-30T00:00:00+00:00
-      finish-endpoint: 2024-01-10T00:00:00+00:00
-      address: г. Пермь, ул. Невская, д. 3а
-      manager-contact-numbers:
-        - +79249141709
-      vk-link: https://vk.com/public222554023
-      offer-link: https://карамельнаяфабрика.рф/oferta_perm
-      reservation-payment-amount: 5000
-      maxCapacity: 36
-      minCapacity: 20
-      refundPeriod: 14
-      payment-info:
-        robokassa-pass1: ${PASS1}
-        robokassa-pass2: ${PASS2}
-        robokassa-pass1-test: ${PASS1-TEST}
-        robokassa-pass2-test: ${PASS1-TEST}
-        login: ${LOGIN}
-        sno: osn
-        tax: none
-    spb:
-      city-name: САНКТ-ПЕТЕРБУРГ
-      timezone: 3
-      invoice-lifetime-minutes: 15
-      start-endpoint: 2023-11-30T00:00:00+00:00
-      finish-endpoint: 2024-01-10T00:00:00+00:00
-      address: г. Санкт-Петербург, тер. Сергиево, ул. Пролетарская, д. 17, литер А
-      manager-contact-numbers:
-        - +78125092995
-        - +79699669259
-      vk-link: https://vk.com/public222337083
-      offer-link: https://карамельнаяфабрика.рф/oferta_spb
-      reservation-payment-amount: 5000
-      maxCapacity: 36
-      minCapacity: 18
-      refundPeriod: 7
-      payment-info:
-        robokassa-pass1: ${PASS1}
-        robokassa-pass2: ${PASS2}
-        robokassa-pass1-test: ${PASS1-TEST}
-        robokassa-pass2-test: ${PASS1-TEST}
-        login: ${LOGIN}
-        sno: osn
-        tax: none
-    yar:
-      city-name: ЯРОСЛАВЛЬ
-      timezone: 3
-      invoice-lifetime-minutes: 15
-      start-endpoint: 2023-11-30T00:00:00+00:00
-      finish-endpoint: 2024-01-10T00:00:00+00:00
-      address: г. Ярославль, посёлок Пятовское, 4-я Пятовская улица, 16
-      manager-contact-numbers:
-        - +74852607104
-        - +79675559726
-      vk-link: https://vk.com/public222343606
-      offer-link: https://карамельнаяфабрика.рф/oferta_yarosl
-      reservation-payment-amount: 5000
-      maxCapacity: 36
-      minCapacity: 18
       payment-info:
         robokassa-pass1: ${PASS1}
         robokassa-pass2: ${PASS2}

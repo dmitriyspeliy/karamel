@@ -91,6 +91,7 @@ public class BookingService {
             }
             utilsMethods.cleanCashed(event);
             try {
+                invoice = new Invoice();
                 invoice.setExtInvoiceId("NO");
                 invoice.setInvoiceLink(new URL(""));
                 invoice.setCreateAt(LocalDateTime.now());

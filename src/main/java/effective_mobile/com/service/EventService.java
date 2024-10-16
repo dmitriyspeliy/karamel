@@ -128,14 +128,8 @@ public class EventService {
             createEvent(event);
             event.setId(optionalEvent.get().getId());
             event.setExtEventId(optionalEvent.get().getExtEventId());
-            event.setName(optionalEvent.get().getName());
-            event.setCity(optionalEvent.get().getCity());
-            event.setTime(optionalEvent.get().getTime());
         } else {
             event.setExtEventId(extId);
-            event.setName(name);
-            event.setCity(city);
-            event.setTime(time);
             createEvent(event);
         }
         eventRepository.save(event);
@@ -147,6 +141,9 @@ public class EventService {
         event.setKidPrice(kidPrice);
         event.setChildAge(childAge);
         event.setCapacity(capacity);
+        event.setName(name);
+        event.setCity(city);
+        event.setTime(time);
         event.setAdultCapacity(adultCapacity);
         event.setKidCapacity(kidCapacity);
         event.setGatheringType(type);

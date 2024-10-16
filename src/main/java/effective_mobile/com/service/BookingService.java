@@ -65,7 +65,8 @@ public class BookingService {
 
         // бронируем места
         bookSeats();
-
+        //делаем сброс в кэше, чтобы след запрос был уже с актуальными местами
+        utilsMethods.cleanCashed(event);
         // считаем сумму
         makeSum();
 
@@ -91,10 +92,6 @@ public class BookingService {
 
         // сохранили все сущности в бд
         saveEntitiesInDb();
-
-
-        //делаем сброс в кэше, чтобы след запрос был уже с актуальными местами
-        utilsMethods.cleanCashed(event);
 
 
         // отдаем ссылку

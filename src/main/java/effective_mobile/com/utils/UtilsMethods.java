@@ -151,7 +151,6 @@ public class UtilsMethods {
 
     public void cleanCashed(Event event) {
         String type = defineType(event.getType());
-        //делаем сброс в кэше, чтобы след запрос был уже с актуальными местами
         if (cacheManager.getCache("json-nodes") != null) {
             try {
                 boolean res = Objects.requireNonNull(cacheManager.getCache("json-nodes")).evictIfPresent(event.getCity() + type);

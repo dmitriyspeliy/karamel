@@ -98,10 +98,10 @@ public class UtilsMethods {
     }
 
     public static String defineType(String type) {
-        if (type.contains("Сборные")) {
-            return "СБОРНЫЕ ГРУППЫ";
+        if (type.contains("СБОРНЫЕ ГРУППЫ")) {
+            return "Сборные";
         }else {
-            return "ШКОЛЬНЫЕ ГРУППЫ";
+            return "Школьные";
         }
     }
 

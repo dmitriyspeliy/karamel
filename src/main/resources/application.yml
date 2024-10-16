@@ -204,8 +204,8 @@ spring:
       timezone: 3
       bitrix-field-num: 217
       invoice-lifetime-minutes: 15
-      start-endpoint: 2023-11-30T00:00:00+00:00
-      finish-endpoint: 2024-01-10T00:00:00+00:00
+      start-endpoint: 2024-11-30T00:00:00+00:00
+      finish-endpoint: 2025-01-10T00:00:00+00:00
       address: г. Самара, Красноглинский район, п. Красная Глинка, ул. Южная, д. 16
       manager-contact-numbers:
         - +79249148423
@@ -216,10 +216,10 @@ spring:
       minCapacity: 20
       refundPeriod: 14
       payment-info:
-        robokassa-pass1: ${PASS1}
-        robokassa-pass2: ${PASS2}
-        robokassa-pass1-test: ${PASS1-TEST}
-        robokassa-pass2-test: ${PASS1-TEST}
+        robokassa-pass1: ${PASS1:X2zJxbAB5VYmb0u9vG3F}
+        robokassa-pass2: ${PASS2:nCOOnrZIb0n3C0gw5x5y}
+        robokassa-pass1-test: ${PASS1-TEST:j8Y6N9F3C8tWfHMVAkVF}
+        robokassa-pass2-test: ${PASS1-TEST:Csad6E6Y4yU9gUVue6Bn}
         login: ${LOGIN}
         sno: osn
         tax: none

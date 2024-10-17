@@ -12,15 +12,6 @@ public enum SlotType {
         this.description = description;
     }
 
-    public static String typeFromValue(int value) {
-        for (var slotType : SlotType.values()) {
-            if (slotType.code == value) {
-                return slotType.description;
-            }
-        }
-        return null;
-    }
-
     public static Integer getCodeOfType(String type) {
         for (var slotType : SlotType.values()) {
             if (slotType.description.equalsIgnoreCase(type)) {

@@ -23,7 +23,7 @@ public class FetchAllSlot {
     public ArrayList<JsonNode> fetchAllSlotByCityAndType(String city, String type) {
         log.info("Sending request to Bitrix API for city: {} and type: {}", city, type);
 
-        var codeOfCity = CityInfo.valueOf(city).getSlotCityNum();
+        var codeOfCity = CityInfo.getCityCode(city);
         var codeOfType = SlotType.getCodeOfType(type);
         var now = LocalDateTime.now();
 

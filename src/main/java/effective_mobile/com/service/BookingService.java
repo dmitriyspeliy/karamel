@@ -120,22 +120,41 @@ public class BookingService {
             Deal deal = invoice.getDeal();
             Contact contact = invoice.getDeal().getContact();
             Event event = invoice.getDeal().getEvent();
-            return Cart.builder()
-                    .leadId(event.getId())
-                    .contactId(Long.valueOf(contact.getExtContactId()))
-                    .name("Карамельная фабрика Деда Мороза")
-                    .managerContactNumber(info.getManagerContactNumbers().get(0))
-                    .paymentLink(invoice.getInvoiceLink())
-                    .kidCount(deal.getKidCount())
-                    .kidPrice(deal.getKidPrice())
-                    .adultCount(deal.getAdultCount())
-                    .adultPrice(deal.getAdultPrice())
-                    .totalPrice(invoice.getTotalSum())
-                    .kidAge(getAge(deal.getKidAge()))
-                    .address(info.getAddress())
-                    .time(event.getTime().toInstant(ZoneOffset.of("+00:00")))
-                    .createdAt(invoice.getCreateAt().toInstant(ZoneOffset.of("+00:00")))
-                    .build();
+            if (event.getType().contains("ШКОЛЬНЫЕ")) {
+                return Cart.builder()
+                        .leadId(event.getId())
+                        .contactId(Long.valueOf(contact.getExtContactId()))
+                        .name("Карамельная фабрика Деда Мороза")
+                        .managerContactNumber(info.getManagerContactNumbers().get(0))
+                        .paymentLink(invoice.getInvoiceLink())
+                        .kidCount(deal.getKidCount())
+                        .kidPrice(invoice.getTotalSum())
+                        .adultCount(deal.getAdultCount())
+                        .adultPrice(BigDecimal.ZERO)
+                        .totalPrice(invoice.getTotalSum())
+                        .kidAge(getAge(deal.getKidAge()))
+                        .address(info.getAddress())
+                        .time(event.getTime().toInstant(ZoneOffset.of("+00:00")))
+                        .createdAt(invoice.getCreateAt().toInstant(ZoneOffset.of("+00:00")))
+                        .build();
+            } else {
+                return Cart.builder()
+                        .leadId(event.getId())
+                        .contactId(Long.valueOf(contact.getExtContactId()))
+                        .name("Карамельная фабрика Деда Мороза")
+                        .managerContactNumber(info.getManagerContactNumbers().get(0))
+                        .paymentLink(invoice.getInvoiceLink())
+                        .kidCount(deal.getKidCount())
+                        .kidPrice(deal.getKidPrice())
+                        .adultCount(deal.getAdultCount())
+                        .adultPrice(deal.getAdultPrice())
+                        .totalPrice(invoice.getTotalSum())
+                        .kidAge(getAge(deal.getKidAge()))
+                        .address(info.getAddress())
+                        .time(event.getTime().toInstant(ZoneOffset.of("+00:00")))
+                        .createdAt(invoice.getCreateAt().toInstant(ZoneOffset.of("+00:00")))
+                        .build();
+            }
         } else {
             throw new BadRequestException("No invoice by hash " + invoiceId);
         }

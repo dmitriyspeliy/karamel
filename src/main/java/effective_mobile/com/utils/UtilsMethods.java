@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import effective_mobile.com.model.dto.Receipt;
 import effective_mobile.com.model.entity.Event;
-import effective_mobile.com.utils.enums.NameOfCity;
+import effective_mobile.com.utils.enums.CityInfo;
 import effective_mobile.com.utils.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -139,8 +139,8 @@ public class UtilsMethods {
     }
 
     public static String getShortCityName(String name) throws BadRequestException {
-        NameOfCity[] values = NameOfCity.values();
-        for (NameOfCity value : values) {
+        CityInfo[] values = CityInfo.values();
+        for (CityInfo value : values) {
             if (value.getName().contains(name)) {
                 return value.name().toLowerCase();
             }

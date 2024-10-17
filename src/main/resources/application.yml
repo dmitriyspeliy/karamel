@@ -32,16 +32,34 @@ spring:
       ddl-auto: validate
     open-in-view: true
   city-info:
-    msk:
+    msko:
+      city-name: МОСКВА
+      bitrix-field-num: 87
+      start-endpoint: 2024-11-29T00:00:00+00:00
+      finish-endpoint: 2024-12-29T00:00:00+00:00
+      address: Московская область, Красногорск, Причальная 82,
+      manager-contact-numbers:
+        - +7 (499) 113-05-59
+      vk-link: https://vk.com/carameldm
+      offer-link: https://карамельнаяфабрика.рф/oferta_msk
+      payment-info:
+        robokassa-pass1: ${PASS1:InSao1bBOvL7j0v9P9sI}
+        robokassa-pass2: ${PASS2:uN1BeWTT9aMT9o5US7ZB}
+        robokassa-pass1-test: ${PASS1-TEST:By8iawkcPI48B1QveQw3}
+        robokassa-pass2-test: ${PASS1-TEST:n1Dojs8v45dearGwXa5h}
+        login: ${LOGIN:Karamel_Msk}
+        sno: osn
+        tax: none
+    mskm:
       city-name: МОСКВА
       bitrix-field-num: 87
       start-endpoint: 2024-11-29T00:00:00+00:00
       finish-endpoint: 2024-12-29T00:00:00+00:00
       address: Московская область, Мытищи, мкр. Олимпийский, ул. Щорса, 34
       manager-contact-numbers:
-        - +79587569849
-      vk-link: https://vk.com/public222553186
-      offer-link: https://карамельнаяфабрика.рф/oferta_chel
+        - +7 (499) 113-05-59
+      vk-link: https://vk.com/carameldm
+      offer-link: https://карамельнаяфабрика.рф/oferta_msk
       payment-info:
         robokassa-pass1: ${PASS1:InSao1bBOvL7j0v9P9sI}
         robokassa-pass2: ${PASS2:uN1BeWTT9aMT9o5US7ZB}
@@ -55,9 +73,9 @@ spring:
       bitrix-field-num: 89
       start-endpoint: 2024-11-28T00:00:00+00:00
       finish-endpoint: 2025-01-07T00:00:00+00:00
-      address: Челябинск, ул. Рощинская, дом 2
+      address: г. Челябинск, ул. Рощинская, дом 2
       manager-contact-numbers:
-        - +79587569849
+        - +7 (958) 756-98-49
       vk-link: https://vk.com/public222553186
       offer-link: https://карамельнаяфабрика.рф/oferta_chel
       payment-info:
@@ -75,7 +93,7 @@ spring:
       finish-endpoint: 2024-12-29T00:00:00+00:00
       address: Тюменская область, Тюменский район, посёлок Боровский, ул. Трактовая, д. 50/1 (дом 300 м.кв.)
       manager-contact-numbers:
-        - +73452518032
+        - +7 (958) 756-98-49
       vk-link: https://vk.com/public222553329
       offer-link: https://карамельнаяфабрика.рф/oferta_tumen
       payment-info:
@@ -93,7 +111,7 @@ spring:
       finish-endpoint: 2025-01-07T00:00:00+00:00
       address: г. Самара, Красноглинский район, п. Красная Глинка, ул. Южная, д. 16
       manager-contact-numbers:
-        - +79249148423
+        - +7 (924) 914-84-23
       vk-link: https://vk.com/public222553152?ysclid=lo2v8ic1nb537889983
       offer-link: https://карамельнаяфабрика.рф/oferta_samara
       payment-info:
@@ -102,58 +120,5 @@ spring:
         robokassa-pass1-test: ${PASS1-TEST:j8Y6N9F3C8tWfHMVAkVF}
         robokassa-pass2-test: ${PASS1-TEST:Csad6E6Y4yU9gUVue6Bn}
         login: ${LOGIN:Karamel_Samara2}
-        sno: osn
-        tax: none
-    spb:
-      city-name: САНКТ-ПЕТЕРБУРГ
-      start-endpoint: 2023-11-30T00:00:00+00:00
-      finish-endpoint: 2024-01-10T00:00:00+00:00
-      address: г. Санкт-Петербург, Ленинградская область, Ломоносовский район, деревня Малые Горки дом 30в.
-      manager-contact-numbers:
-        - +79699669259
-      vk-link: https://vk.com/public222337083
-      offer-link: https://карамельнаяфабрика.рф/oferta_spb
-      payment-info:
-        robokassa-pass1: ${PASS1}
-        robokassa-pass2: ${PASS2}
-        robokassa-pass1-test: ${PASS1-TEST}
-        robokassa-pass2-test: ${PASS1-TEST}
-        login: ${LOGIN}
-        sno: osn
-        tax: none
-    ekb:
-      city-name: ЕКАТЕРИНБУРГ
-      bitrix-field-num: 85
-      start-endpoint: 2024-11-29T00:00:00+00:00
-      finish-endpoint: 2025-01-08T00:00:00+00:00
-      address: Свердловская область, г. Верхняя Пышма, ул. Восточная, д.15 (дом 400 м.кв.)
-      manager-contact-numbers:
-        - +73432264525
-      vk-link: https://vk.com/public222552916
-      offer-link: https://карамельнаяфабрика.рф/oferta_ekat
-      payment-info:
-        robokassa-pass1: ${PASS1}
-        robokassa-pass2: ${PASS2}
-        robokassa-pass1-test: ${PASS1-TEST}
-        robokassa-pass2-test: ${PASS1-TEST}
-        login: ${LOGIN}
-        sno: osn
-        tax: none
-    kras:
-      city-name: КРАСНОЯРСК
-      bitrix-field-num: 389
-      start-endpoint: 2024-11-29T00:00:00+00:00
-      finish-endpoint: 2024-12-29T00:00:00+00:00
-      address: г. Красноярск, Пойменный пер. д. 1
-      manager-contact-numbers:
-        - +73919897947
-      vk-link: https://vk.com/fabrikadmkrsn
-      offer-link: https://карамельнаяфабрика.рф/oferta_kras
-      payment-info:
-        robokassa-pass1: ${PASS1}
-        robokassa-pass2: ${PASS2}
-        robokassa-pass1-test: ${PASS1-TEST}
-        robokassa-pass2-test: ${PASS1-TEST}
-        login: ${LOGIN}
         sno: osn
         tax: none

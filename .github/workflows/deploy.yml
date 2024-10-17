@@ -1,7 +1,7 @@
 on:
     push:
         branches:
-            - test-chel
+            - main
 jobs:
     deploy-to-remote:
         runs-on: ubuntu-latest
@@ -21,6 +21,6 @@ jobs:
             -   name: Adding Known Hosts
                 run: ssh-keyscan -H ${{ secrets.REMOTE_IP }} >> ~/.ssh/known_hosts
             -   name: Uploading this version of repository
-                run: rsync -vr ./target/ admin@${{ secrets.REMOTE_IP }}:/home/admin/excursionapi-dev/build-bitrix/
+                run: rsync -vr ./target/ admin@${{ secrets.REMOTE_IP }}:/home/admin/actual-version/files/
             -   name: Launch server
-                run: ssh admin@${{ secrets.REMOTE_IP }} '/home/admin/start-bitrix.sh'
+                run: ssh admin@${{ secrets.REMOTE_IP }} '/home/admin/actual-version/start-app.sh'

@@ -34,4 +34,6 @@ build/
 
 ### VS Code ###
 .vscode/
+/token.json
 /src/main/java/effective_mobile/com/controller/TESTCONTROLLER.java
+/.mvn/

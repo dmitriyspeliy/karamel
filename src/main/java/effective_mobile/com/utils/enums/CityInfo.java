@@ -22,5 +22,13 @@ public enum CityInfo {
         this.slotCityNum = slotCityNum;
     }
 
+    public static Integer getCityCode(String name) {
+        for (var city : CityInfo.values()) {
+            if (city.name.equals(name)) {
+                return city.slotCityNum;
+            }
+        }
+        return null;
+    }
 
 }

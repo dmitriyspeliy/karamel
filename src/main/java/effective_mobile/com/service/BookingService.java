@@ -152,11 +152,15 @@ public class BookingService {
     }
 
     private void makeSum() {
-        BigDecimal adultPrice = event.getAdultPrice();
-        BigDecimal kidPrice = event.getKidPrice();
-        sum = adultPrice.multiply(BigDecimal.valueOf(requestToBookingEvent.getPaidAdultCount()))
-                .add(
-                        kidPrice.multiply(BigDecimal.valueOf(requestToBookingEvent.getChildrenCount())));
+        if (event.getType().contains("ШКОЛЬНЫЕ")) {
+            sum = BigDecimal.valueOf(5000L);
+        } else if (event.getType().contains("СБОРНЫЕ")) {
+            BigDecimal adultPrice = event.getAdultPrice();
+            BigDecimal kidPrice = event.getKidPrice();
+            sum = adultPrice.multiply(BigDecimal.valueOf(requestToBookingEvent.getPaidAdultCount()))
+                    .add(
+                            kidPrice.multiply(BigDecimal.valueOf(requestToBookingEvent.getChildrenCount())));
+        }
     }
 
     private void makeInvoice(String currentCity) throws BadRequestException, MalformedURLException {

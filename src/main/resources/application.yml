@@ -3,7 +3,6 @@ robokassa:
   invoice-url: https://auth.robokassa.ru/Merchant/Index/
   invoice-status: https://auth.robokassa.ru/Merchant/WebService/Service.asmx/OpStateExt?
 
-
 spring:
   mail:
     host: smtp.yandex.ru

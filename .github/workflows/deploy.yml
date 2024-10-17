@@ -22,12 +22,5 @@ jobs:
                 run: ssh-keyscan -H ${{ secrets.REMOTE_IP }} >> ~/.ssh/known_hosts
             -   name: Uploading this version of repository
                 run: rsync -vr ./target/ admin@${{ secrets.REMOTE_IP }}:/home/admin/actual-version/files/
-            -   name: Stop container in Docker
-                run: docker stop $(sudo docker ps --filter name=karamel -q)
-            -   name: Remove image karamel
-                run: sudo docker image rm karamel:latest
-            -   name: Build new image
-                run: sudo docker build -t karamel:latest /home/admin/actual-version/
-            -   name: Run container
-                run: sudo docker run --rm -d --name karamel -p 8080:8080 --network="host" karamel:latest
-
+            -   name: Start app
+                run: ssh admin@${{ secrets.REMOTE_IP }} '/home/admin/actual-version/start-app.sh'

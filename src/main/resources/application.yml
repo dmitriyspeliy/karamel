@@ -1,6 +1,3 @@
-server:
-  port: ${APP_PORT}
-
 robokassa:
   id-url: https://auth.robokassa.ru/Merchant/Indexjson.aspx
   invoice-url: https://auth.robokassa.ru/Merchant/Index/

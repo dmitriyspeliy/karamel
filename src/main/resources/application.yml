@@ -22,7 +22,7 @@ spring:
     location: banner.txt
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/karamel
+    url: jdbc:postgresql://127.0.0.1:5432/karamel
     username: postgres
     password: postgres
   jpa:

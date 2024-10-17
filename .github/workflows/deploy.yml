@@ -23,7 +23,7 @@ jobs:
             -   name: Uploading this version of repository
                 run: rsync -vr ./target/ admin@${{ secrets.REMOTE_IP }}:/home/admin/actual-version/files/
             -   name: Stop container in Docker
-                run: sudo docker stop $(sudo docker ps --filter name=karamel -q)
+                run: docker stop $(sudo docker ps --filter name=karamel -q)
             -   name: Remove image karamel
                 run: sudo docker image rm karamel:latest
             -   name: Build new image

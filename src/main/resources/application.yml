@@ -34,7 +34,7 @@ spring:
       bitrix-field-num: 87
       start-endpoint: 2024-11-29T00:00:00+00:00
       finish-endpoint: 2024-12-29T00:00:00+00:00
-      address: Московская область, Красногорск, Причальная 82,
+      address: Московская область, Мытищи, мкр. Олимпийский, ул. Щорса, 34
       manager-contact-numbers:
         - +7 (499) 113-05-59
       vk-link: https://vk.com/carameldm

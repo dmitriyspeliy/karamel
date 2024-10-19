@@ -14,6 +14,7 @@ import effective_mobile.com.repository.EventRepository;
 import effective_mobile.com.repository.InvoiceRepository;
 import effective_mobile.com.service.api.contact.AddContact;
 import effective_mobile.com.service.api.deal.AddDeal;
+import effective_mobile.com.service.api.deal.UpdateDealCity;
 import effective_mobile.com.service.api.event.ChangeEventInBitrix;
 import effective_mobile.com.service.api.payment.InvoiceRobokassa;
 import effective_mobile.com.utils.UtilsMethods;
@@ -50,6 +51,7 @@ public class BookingService {
     private final ContactRepository contactRepository;
     private final ChangeEventInBitrix changeEvent;
     private final UtilsMethods utilsMethods;
+    private final UpdateDealCity updateDealCity;
 
     private Event event;
     private RequestToBookingEvent requestToBookingEvent;
@@ -76,6 +78,7 @@ public class BookingService {
             // регистрация сущностей в битриксе
             contact = addContact.addContact(requestBody);
             deal = addDeal.addDeal(sum, event, contact, requestBody.getPaidAdultCount(), requestBody.getChildrenCount(), currentCity);
+            updateDealCity.refreshDealCity(deal.getExtDealId(), cityProperties.getCityInfo().get(currentCity).getBitrixFieldNum());
             // получение инвойса
             makeInvoice(currentCity);
 

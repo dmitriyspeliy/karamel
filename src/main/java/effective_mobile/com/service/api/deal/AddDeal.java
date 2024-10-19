@@ -40,7 +40,7 @@ public class AddDeal {
     private String currentCity;
 
     public Deal addDeal(BigDecimal sum, Event event, Contact contact, Integer adultCount, Integer kidCount, String city) throws BadRequestException {
-        log.info("Запрос на добавление cделки");
+        log.info("Запрос на добавление cделки для города " + city);
         this.kidCount = kidCount;
         this.adultCount = adultCount;
         this.sum = sum;
@@ -55,6 +55,7 @@ public class AddDeal {
 
     private void makeRequest() throws BadRequestException {
         CityProperties.Info cityInfo = cityProperties.getCityInfo().get(currentCity);
+        log.info(cityInfo.getBitrixFieldNum());
         try {
             siteHostName = CityInfo.valueOf(currentCity.toUpperCase()).getHostName();
             contactResponse

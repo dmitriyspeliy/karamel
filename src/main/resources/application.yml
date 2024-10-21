@@ -32,6 +32,7 @@ spring:
     msko:
       city-name: МОСКВА
       bitrix-field-num: 87
+      bitrix-field-category-id: 0
       start-endpoint: 2024-11-29T00:00:00+00:00
       finish-endpoint: 2024-12-29T00:00:00+00:00
       address: Московская область, Мытищи, мкр. Олимпийский, ул. Щорса, 34
@@ -50,6 +51,7 @@ spring:
     mskm:
       city-name: МОСКВА
       bitrix-field-num: 87
+      bitrix-field-category-id: 0
       start-endpoint: 2024-11-29T00:00:00+00:00
       finish-endpoint: 2024-12-29T00:00:00+00:00
       address: Московская область, Мытищи, мкр. Олимпийский, ул. Щорса, 34
@@ -68,6 +70,7 @@ spring:
     chel:
       city-name: ЧЕЛЯБИНСК
       bitrix-field-num: 89
+      bitrix-field-category-id: 3
       start-endpoint: 2024-11-28T00:00:00+00:00
       finish-endpoint: 2025-01-07T00:00:00+00:00
       address: г. Челябинск, ул. Рощинская, дом 2
@@ -86,6 +89,7 @@ spring:
     tyumen:
       city-name: ТЮМЕНЬ
       bitrix-field-num: 91
+      bitrix-field-category-id: 9
       start-endpoint: 2024-11-29T00:00:00+00:00
       finish-endpoint: 2024-12-29T00:00:00+00:00
       address: Тюменская область, Тюменский район, посёлок Боровский, ул. Трактовая, д. 50/1 (дом 300 м.кв.)
@@ -104,6 +108,7 @@ spring:
     samara:
       city-name: САМАРА
       bitrix-field-num: 217
+      bitrix-field-category-id: 1
       start-endpoint: 2024-11-28T00:00:00+00:00
       finish-endpoint: 2025-01-07T00:00:00+00:00
       address: г. Самара, Красноглинский район, п. Красная Глинка, ул. Южная, д. 16

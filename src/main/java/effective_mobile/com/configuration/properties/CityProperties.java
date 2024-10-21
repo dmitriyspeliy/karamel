@@ -21,6 +21,7 @@ public class CityProperties {
     public static class Info {
 
         private String bitrixFieldNum;
+        private String bitrixFieldCategoryId;
         private String cityName;
         private Instant startEndpoint;
         private Instant finishEndpoint;

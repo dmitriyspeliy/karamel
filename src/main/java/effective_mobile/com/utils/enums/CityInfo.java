@@ -8,9 +8,12 @@ public enum CityInfo {
 
     CHEL("ЧЕЛЯБИНСК", "https://chelyabinsk.exkursiacaramel.ru", 101),
     TYUMEN("ТЮМЕНЬ", "https://tyumen.exkursiacaramel.ru", 113),
-    MSKO("МОСКВА", "https://exkursiacaramel.ru", 97),
+    //MSKO("МОСКВА КРАСНОГОРСК ПАВШИНО", "https://exkursiacaramel.ru", 203),
     MSKM("МОСКВА", "https://msk.exkursiacaramel.ru", 97),
-    SAMARA("САМАРА", "https://samara.exkursiacaramel.ru", 99);
+    MSKO("МОСКВА", "https://exkursiacaramel.ru", 97),
+    SAMARA("САМАРА", "https://samara.exkursiacaramel.ru", 99),
+    KSR("КРАСНОЯРСК", "https://ksr.exkursiacaramel.ru", 109);
+    //SPB("CАНКТ-ПЕТЕРБУРГ", "https://spb.exkursiacaramel.ru", 201);
 
     final String name;
     final String hostName;

@@ -29,7 +29,26 @@ spring:
       ddl-auto: validate
     open-in-view: true
   city-info:
-    msko:
+#    msko:
+#      city-name: МОСКВА КРАСНОГОРСК ПАВШИНО
+#      bitrix-field-num: 87
+#      bitrix-field-category-id: 23
+#      start-endpoint: 2024-11-29T00:00:00+00:00
+#      finish-endpoint: 2024-12-29T00:00:00+00:00
+#      address: Причальная 82, Красногорск
+#      manager-contact-numbers:
+#        - +7 (499) 113-05-59
+#      vk-link: https://vk.com/carameldm
+#      offer-link: https://карамельнаяфабрика.рф/oferta_msk
+#      payment-info:
+#        robokassa-pass1: ${PASS1:InSao1bBOvL7j0v9P9sI}
+#        robokassa-pass2: ${PASS2:uN1BeWTT9aMT9o5US7ZB}
+#        robokassa-pass1-test: ${PASS1-TEST:By8iawkcPI48B1QveQw3}
+#        robokassa-pass2-test: ${PASS1-TEST:n1Dojs8v45dearGwXa5h}
+#        login: ${LOGIN:Karamel_Msk}
+#        sno: osn
+#        tax: none
+    mskm:
       city-name: МОСКВА
       bitrix-field-num: 87
       bitrix-field-category-id: 0
@@ -48,7 +67,7 @@ spring:
         login: ${LOGIN:Karamel_Msk}
         sno: osn
         tax: none
-    mskm:
+    msko:
       city-name: МОСКВА
       bitrix-field-num: 87
       bitrix-field-category-id: 0
@@ -124,3 +143,41 @@ spring:
         login: ${LOGIN:Karamel_Samara2}
         sno: osn
         tax: none
+    ksr:
+      city-name: КРАСНОЯРСК
+      bitrix-field-num: 389
+      bitrix-field-category-id: 13
+      start-endpoint: 2024-11-29T00:00:00+00:00
+      finish-endpoint: 2024-12-29T00:00:00+00:00
+      address: Пойменный пер. д. 1
+      manager-contact-numbers:
+        - +7 (958) 756-98-49
+      vk-link: https://vk.com/fabrikadmkrsn
+      offer-link: https://карамельнаяфабрика.рф/oferta_kras
+      payment-info:
+        robokassa-pass1: ${PASS1:qqmzajWDfHmS6aY4J058}
+        robokassa-pass2: ${PASS2:PU5Ql0pO1DHyhqEh1S5i}
+        robokassa-pass1-test: ${PASS1-TEST:F93sNBYll2z2kPwV2VOV}
+        robokassa-pass2-test: ${PASS1-TEST:tI8b9nl84qRra9kQBkCk}
+        login: ${LOGIN:Karamel_Krs}
+        sno: osn
+        tax: none
+#    spb:
+#      city-name: CАНКТ-ПЕТЕРБУРГ
+#      bitrix-field-num: 419
+#      bitrix-field-category-id: 25
+#      start-endpoint: 2024-11-29T00:00:00+00:00
+#      finish-endpoint: 2024-12-29T00:00:00+00:00
+#      address: Ленинградская область Ломоносовский район деревня Малые Горки дом 30в.
+#      manager-contact-numbers:
+#        - +7 (812) 409-34-05
+#      vk-link: https://vk.com/public222337083
+#      offer-link: https://карамельнаяфабрика.рф/oferta_spb
+#      payment-info:
+#        robokassa-pass1: ${PASS1:X2zJxbAB5VYmb0u9vG3F}
+#        robokassa-pass2: ${PASS2:nCOOnrZIb0n3C0gw5x5y}
+#        robokassa-pass1-test: ${PASS1-TEST:j8Y6N9F3C8tWfHMVAkVF}
+#        robokassa-pass2-test: ${PASS1-TEST:Csad6E6Y4yU9gUVue6Bn}
+#        login: ${LOGIN:Karamel_Samara2}
+#        sno: osn
+#        tax: none

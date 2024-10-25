@@ -29,25 +29,6 @@ spring:
       ddl-auto: validate
     open-in-view: true
   city-info:
-#    msko:
-#      city-name: МОСКВА КРАСНОГОРСК ПАВШИНО
-#      bitrix-field-num: 87
-#      bitrix-field-category-id: 23
-#      start-endpoint: 2024-11-29T00:00:00+00:00
-#      finish-endpoint: 2024-12-29T00:00:00+00:00
-#      address: Причальная 82, Красногорск
-#      manager-contact-numbers:
-#        - +7 (499) 113-05-59
-#      vk-link: https://vk.com/carameldm
-#      offer-link: https://карамельнаяфабрика.рф/oferta_msk
-#      payment-info:
-#        robokassa-pass1: ${PASS1:InSao1bBOvL7j0v9P9sI}
-#        robokassa-pass2: ${PASS2:uN1BeWTT9aMT9o5US7ZB}
-#        robokassa-pass1-test: ${PASS1-TEST:By8iawkcPI48B1QveQw3}
-#        robokassa-pass2-test: ${PASS1-TEST:n1Dojs8v45dearGwXa5h}
-#        login: ${LOGIN:Karamel_Msk}
-#        sno: osn
-#        tax: none
     mskm:
       city-name: МОСКВА
       bitrix-field-num: 87
@@ -179,5 +160,24 @@ spring:
 #        robokassa-pass1-test: ${PASS1-TEST:j8Y6N9F3C8tWfHMVAkVF}
 #        robokassa-pass2-test: ${PASS1-TEST:Csad6E6Y4yU9gUVue6Bn}
 #        login: ${LOGIN:Karamel_Samara2}
+#        sno: osn
+#        tax: none
+#    msko:
+#      city-name: МОСКВА КРАСНОГОРСК ПАВШИНО
+#      bitrix-field-num: 87
+#      bitrix-field-category-id: 23
+#      start-endpoint: 2024-11-29T00:00:00+00:00
+#      finish-endpoint: 2024-12-29T00:00:00+00:00
+#      address: Причальная 82, Красногорск
+#      manager-contact-numbers:
+#        - +7 (499) 113-05-59
+#      vk-link: https://vk.com/carameldm
+#      offer-link: https://карамельнаяфабрика.рф/oferta_msk
+#      payment-info:
+#        robokassa-pass1: ${PASS1:InSao1bBOvL7j0v9P9sI}
+#        robokassa-pass2: ${PASS2:uN1BeWTT9aMT9o5US7ZB}
+#        robokassa-pass1-test: ${PASS1-TEST:By8iawkcPI48B1QveQw3}
+#        robokassa-pass2-test: ${PASS1-TEST:n1Dojs8v45dearGwXa5h}
+#        login: ${LOGIN:Karamel_Msk}
 #        sno: osn
 #        tax: none

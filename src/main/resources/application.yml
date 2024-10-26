@@ -3,6 +3,20 @@ robokassa:
   invoice-url: https://auth.robokassa.ru/Merchant/Index/
   invoice-status: https://auth.robokassa.ru/Merchant/WebService/Service.asmx/OpStateExt?
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,prometheus
+  metrics:
+    distribution:
+      percentiles-histogram:
+        "[http.server.requests]": true
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+
 spring:
   mail:
     host: smtp.yandex.ru

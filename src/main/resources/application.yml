@@ -157,6 +157,44 @@ spring:
         login: ${LOGIN:Karamel_Krs}
         sno: osn
         tax: none
+    kzn:
+      city-name: КАЗАНЬ
+      bitrix-field-num: 449
+      bitrix-field-category-id: 7
+      start-endpoint: 2024-11-28T00:00:00+00:00
+      finish-endpoint: 2025-01-08T00:00:00+00:00
+      address: г. Казань, ул. Ахтямова, 32А
+      manager-contact-numbers:
+        - +7 (903) 016-25-79
+      vk-link: https://vk.com/karamelkzn
+      offer-link: https://карамельнаяфабрика.рф/kazan
+      payment-info:
+        robokassa-pass1: ${PASS1:C4YS55JuKJe1Hkq2tUfO}
+        robokassa-pass2: ${PASS2:IUjDy0S3Ex0b9hx7RBNM}
+        robokassa-pass1-test: ${PASS1-TEST:Rl4Ipye6Ka27XdeiqVT5}
+        robokassa-pass2-test: ${PASS1-TEST:Lsq2HCMa7Du8GSwW95OA}
+        login: ${LOGIN:karamel_kazan}
+        sno: osn
+        tax: none
+    yar:
+      city-name: ЯРОСЛАВЛЬ
+      bitrix-field-num: 395
+      bitrix-field-category-id: 5
+      start-endpoint: 2024-12-01T00:00:00+00:00
+      finish-endpoint: 2025-01-08T00:00:00+00:00
+      address: г. Ярославль, ул. Салтыкова-Щедрина 9А
+      manager-contact-numbers:
+        - +7 (958) 756-98-49
+      vk-link: https://vk.com/karamelyar
+      offer-link: https://карамельнаяфабрика.рф/yarosl
+      payment-info:
+        robokassa-pass1: ${PASS1:rSNJ86Vbu65TBdh7QGdG}
+        robokassa-pass2: ${PASS2:sc23W1AHKsYw1qeh4NdS}
+        robokassa-pass1-test: ${PASS1-TEST:j2N5XQWFj2tvOUD2Hsm7}
+        robokassa-pass2-test: ${PASS1-TEST:iOQ0GdKK9zR0d24gPgxG}
+        login: ${LOGIN:Karamel_Yar_site}
+        sno: osn
+        tax: none
 #    spb:
 #      city-name: CАНКТ-ПЕТЕРБУРГ
 #      bitrix-field-num: 419

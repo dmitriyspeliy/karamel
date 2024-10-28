@@ -12,7 +12,9 @@ public enum CityInfo {
     MSKM("МОСКВА", "https://msk.exkursiacaramel.ru", 97),
     MSKO("МОСКВА", "https://exkursiacaramel.ru", 97),
     SAMARA("САМАРА", "https://samara.exkursiacaramel.ru", 99),
-    KSR("КРАСНОЯРСК", "https://ksr.exkursiacaramel.ru", 109);
+    KSR("КРАСНОЯРСК", "https://ksr.exkursiacaramel.ru", 109),
+    YAR("ЯРОСЛАВЛЬ", "https://yar.exkursiacaramel.ru", 103),
+    KZN("КАЗАНЬ", "https://kzn.exkursiacaramel.ru", 105);
     //SPB("CАНКТ-ПЕТЕРБУРГ", "https://spb.exkursiacaramel.ru", 201);
 
     final String name;

@@ -38,7 +38,7 @@ public class UpdateDealStatus {
                         = Unirest.post(CommonVar.BITRIX_WEBHOOK + "crm.deal.update.json")
                         .queryString("id", extId)
                         .queryString("params[REGISTER_SONET_EVENT]", "Y")
-                        .queryString("fields[STAGE_ID]", "FINAL_INVOICE") // NEW FINAL_INVOICE
+                        .queryString("fields[STAGE_ID]", "C3:EXECUTING") // NEW FINAL_INVOICE
                         .queryString("fields[UF_CRM_66A35EF7675A3]", "121") // оплата мест 121 yes 123 no
                         .asJson();
             } catch (Exception e) {
@@ -50,7 +50,7 @@ public class UpdateDealStatus {
                         = Unirest.post(CommonVar.BITRIX_WEBHOOK + "crm.deal.update.json")
                         .queryString("id", extId)
                         .queryString("params[REGISTER_SONET_EVENT]", "Y")
-                        .queryString("fields[STAGE_ID]", "FINAL_INVOICE") // NEW FINAL_INVOICE
+                        .queryString("fields[STAGE_ID]", "C3:EXECUTING") // NEW FINAL_INVOICE
                         .queryString("fields[UF_CRM_66A35EF7571B0]", "117") // оплата бронь 117 yes 119 no
                         .asJson();
             } catch (Exception e) {

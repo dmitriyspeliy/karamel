@@ -42,9 +42,9 @@ public class CheckStatusPayment {
     @Scheduled(cron = " 0 0/2 * * * ?")
     public void check() throws BadRequestException {
         log.info("CHECK SUCCESS PAYMENT");
-        // выгружаем все счета со статусом PENDING, которые меньше 15 минут находятся в этом статусе
+        // выгружаем все счета со статусом PENDING, которые меньше 30 минут находятся в этом статусе
         List<Invoice> invoiceByStatus = invoiceRepository
-                .getDealAndEventAndContactByStatusAndCreateTimeMoreThan(Status.PENDING, LocalDateTime.now().minusMinutes(15));
+                .getDealAndEventAndContactByStatusAndCreateTimeMoreThan(Status.PENDING, LocalDateTime.now().minusMinutes(30));
         for (Invoice byStatus : invoiceByStatus) {
             // делаем запрос по каждому инвойсу в робокассу и проверяем изменился ли статус
             Deal deal = byStatus.getDeal();
@@ -70,15 +70,15 @@ public class CheckStatusPayment {
 
 
     /**
-     * Все платежи, со статусом PENDING, которые уже 15 минут находятся в этом статусе, будут отменены и места будут откатаны
+     * Все платежи, со статусом PENDING, которые уже 30 минут находятся в этом статусе, будут отменены и места будут откатаны
      */
     @Async("jobExecutor")
     @Scheduled(cron = " 0 0/5 * * * ?")
     public void checkInvoiceStatusAndTime() {
         log.info("SET STATUS FAILURE AND CANSEL BOOKING");
-        // выгружаем все счета со статусом PENDING и дата создания которых больше 15 минут
+        // выгружаем все счета со статусом PENDING и дата создания которых больше 30 минут
         List<Invoice> invoiceByStatus = invoiceRepository
-                .getDealAndEventAndContactByStatusAndCreateTimeLessThan(Status.PENDING, LocalDateTime.now().minusMinutes(15));
+                .getDealAndEventAndContactByStatusAndCreateTimeLessThan(Status.PENDING, LocalDateTime.now().minusMinutes(30));
         for (Invoice byStatus : invoiceByStatus) {
             Deal deal = byStatus.getDeal();
             Event event = byStatus.getDeal().getEvent();

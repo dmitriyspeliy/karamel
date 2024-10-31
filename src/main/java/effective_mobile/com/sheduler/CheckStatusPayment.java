@@ -58,7 +58,7 @@ public class CheckStatusPayment {
                 deal.setPaid(true);
                 invoiceRepository.save(byStatus);
                 dealRepository.save(deal);
-                updateDealStatus.refreshStatusDeal(deal.getExtDealId(), deal.getType());
+                updateDealStatus.refreshStatusDeal(deal.getExtDealId(), deal.getType(), event.getCity());
             } else if (status == Status.FAILURE) {
                 byStatus.setStatus(status);
                 byStatus.setState(state);

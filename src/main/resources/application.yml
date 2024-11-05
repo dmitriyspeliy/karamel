@@ -4,10 +4,13 @@ robokassa:
   invoice-status: https://auth.robokassa.ru/Merchant/WebService/Service.asmx/OpStateExt?
 
 management:
+  endpoint:
+    health:
+      show-details: always
   endpoints:
     web:
       exposure:
-        include: health,prometheus
+        include: *
 
 spring:
   mail:

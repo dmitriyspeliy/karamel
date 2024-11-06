@@ -36,12 +36,13 @@ public class SendEmail {
             Contact contact = byStatus.getDeal().getContact();
             Deal deal = byStatus.getDeal();
             // отправляем билеты
+            String msg = emailService.createMessage(deal);
             emailService.sendEmail(contact.getEmail(),
                     "Письмо с Карамельной Фабрики Деда Мороза и ваш билет",
-                    emailService.createMessage(deal));
+                    msg);
             byStatus.setCountOfSendTicket(byStatus.getCountOfSendTicket() == null ? 1 : byStatus.getCountOfSendTicket() + 1);
             invoiceRepository.save(byStatus);
-            updateDealComment.refreshCommentDeal(deal.getExtDealId(), "Билеты были отправлены на почту " + contact.getEmail());
+            updateDealComment.refreshCommentDeal(deal.getExtDealId(), "Билеты были отправлены на почту " + contact.getEmail() + "\n\n" + msg);
             log.info("Билеты были отправлены на почту " + contact.getEmail());
         }
         log.info("SCHEDULER WAS FINISH");

@@ -3,6 +3,7 @@ robokassa:
   invoice-url: https://auth.robokassa.ru/Merchant/Index/
   invoice-status: https://auth.robokassa.ru/Merchant/WebService/Service.asmx/OpStateExt?
 
+
 management:
   endpoint:
     health:

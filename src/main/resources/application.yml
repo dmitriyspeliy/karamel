@@ -191,22 +191,22 @@ spring:
         login: ${LOGIN:Karamel_Yar_site}
         sno: osn
         tax: none
-#    spb:
-#      city-name: CАНКТ-ПЕТЕРБУРГ
-#      bitrix-field-num: 419
-#      bitrix-field-category-id: 25
-#      start-endpoint: 2024-11-29T00:00:00+00:00
-#      finish-endpoint: 2024-12-29T00:00:00+00:00
-#      address: Ленинградская область Ломоносовский район деревня Малые Горки дом 30в.
-#      manager-contact-numbers:
-#        - +7 (812) 409-34-05
-#      vk-link: https://vk.com/public222337083
-#      offer-link: https://карамельнаяфабрика.рф/oferta_spb
-#      payment-info:
-#        robokassa-pass1: ${PASS1:X2zJxbAB5VYmb0u9vG3F}
-#        robokassa-pass2: ${PASS2:nCOOnrZIb0n3C0gw5x5y}
-#        robokassa-pass1-test: ${PASS1-TEST:j8Y6N9F3C8tWfHMVAkVF}
-#        robokassa-pass2-test: ${PASS1-TEST:Csad6E6Y4yU9gUVue6Bn}
-#        login: ${LOGIN:Karamel_Samara2}
-#        sno: osn
-#        tax: none
+    spb:
+      city-name: CАНКТ-ПЕТЕРБУРГ
+      bitrix-field-num: 419
+      bitrix-field-category-id: 25
+      start-endpoint: 2024-11-29T00:00:00+00:00
+      finish-endpoint: 2024-12-29T00:00:00+00:00
+      address: Ленинградская область Ломоносовский район деревня Малые Горки дом 30в.
+      manager-contact-numbers:
+        - +7 (812) 409-34-05
+      vk-link: https://vk.com/public222337083
+      offer-link: https://карамельнаяфабрика.рф/oferta_spb
+      payment-info:
+        robokassa-pass1: ${PASS1:LFPcY8v4kfH2cgPV5xR9}
+        robokassa-pass2: ${PASS2:wKDqf8ZDCVMp40I7Ey3U}
+        robokassa-pass1-test: ${PASS1-TEST:RDRWs76wpbcs32uA0Ywh}
+        robokassa-pass2-test: ${PASS1-TEST:SrUOS3s445Rfhxhstg9r}
+        login: ${LOGIN:Karamel_Samara2}
+        sno: osn
+        tax: none

@@ -207,6 +207,6 @@ spring:
         robokassa-pass2: ${PASS2:wKDqf8ZDCVMp40I7Ey3U}
         robokassa-pass1-test: ${PASS1-TEST:RDRWs76wpbcs32uA0Ywh}
         robokassa-pass2-test: ${PASS1-TEST:SrUOS3s445Rfhxhstg9r}
-        login: ${LOGIN:Karamel_Samara2}
+        login: ${LOGIN:SPB_Karamel_site}
         sno: osn
         tax: none

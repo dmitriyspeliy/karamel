@@ -17,7 +17,6 @@ import java.util.Map;
 public class CityInfoController {
 
     private final CityProperties cityProperties;
-    private final SmsService sms;
 
     /**
      * Возвращает информацию про конкретный город
@@ -33,12 +32,6 @@ public class CityInfoController {
                 info.getAddress(),
                 info.getManagerContactNumbers().get(0),
                 info.getOfferLink());
-    }
-
-    @PostMapping(consumes = {"multipart/form-data"})
-    public String getHook(@RequestParam Map<String, String> parameters) {
-        sms.hookProcessing(new ArrayList<>(parameters.values()));
-        return "100";
     }
 
 }

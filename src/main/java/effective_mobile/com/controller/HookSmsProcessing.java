@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/sms")
 @RequiredArgsConstructor
 public class HookSmsProcessing {
 

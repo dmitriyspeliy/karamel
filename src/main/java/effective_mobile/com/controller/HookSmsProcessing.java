@@ -1,9 +1,11 @@
 package effective_mobile.com.controller;
 
 import effective_mobile.com.service.SmsService;
-import effective_mobile.com.utils.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -21,9 +23,4 @@ public class HookSmsProcessing {
         return "100";
     }
 
-    @GetMapping("/test")
-    public String get() throws BadRequestException {
-        sms.sendSms("123123", "79526817361", "test");
-        return "GET /v1/test";
-    }
 }

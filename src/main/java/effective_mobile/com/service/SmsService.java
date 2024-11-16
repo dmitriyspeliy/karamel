@@ -68,7 +68,7 @@ public class SmsService {
                 Optional<SmsInfo> optionalSmsInfo = smsInfoRepository.findByExtSmsId(extId);
                 if (optionalSmsInfo.isPresent()) {
                     optionalSmsInfo.get().setStatusCode(code);
-                    optionalSmsInfo.get().setSendTime(localDateTime);
+                    optionalSmsInfo.get().setStatusTime(localDateTime);
                     smsInfoRepository.save(optionalSmsInfo.get());
                     log.info("Sms обновлена с айди " + extId);
                 } else {

@@ -2,12 +2,13 @@ package effective_mobile.com.controller;
 
 import effective_mobile.com.configuration.properties.CityProperties;
 import effective_mobile.com.model.dto.rs.CityInfoResponse;
+import effective_mobile.com.service.SmsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.Map;
 
 @RestController
 @RequestMapping
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class CityInfoController {
 
     private final CityProperties cityProperties;
+    private final SmsService sms;
 
     /**
      * Возвращает информацию про конкретный город
@@ -31,6 +33,12 @@ public class CityInfoController {
                 info.getAddress(),
                 info.getManagerContactNumbers().get(0),
                 info.getOfferLink());
+    }
+
+    @PostMapping(consumes = {"multipart/form-data"})
+    public String getHook(@RequestParam Map<String, String> parameters) {
+        sms.hookProcessing(new ArrayList<>(parameters.values()));
+        return "100";
     }
 
 }

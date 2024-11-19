@@ -31,7 +31,7 @@ public class UpdateDealStatus {
         RESPONSIBLE_PEOPLE.add("2769");
         RESPONSIBLE_PEOPLE.add("1417");
         RESPONSIBLE_PEOPLE.add("1041");
-        RESPONSIBLE_PEOPLE.add("1251");
+        RESPONSIBLE_PEOPLE.add("14967");
     }
 
     public void refreshStatusDeal(String extId, String type, String city) throws BadRequestException {

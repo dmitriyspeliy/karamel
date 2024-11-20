@@ -57,6 +57,7 @@ public class UpdateDealStatus {
                         .queryString("fields[STAGE_ID]", typeOfSection)
                         .queryString("fields[UF_CRM_1729084457]", RESPONSIBLE_PEOPLE.get(COUNT_RESP++))
                         .queryString("fields[UF_CRM_66A35EF7675A3]", "121") // оплата мест 121 yes 123 no
+                        .queryString("fields[UF_CRM_1732019233]", "457")
                         .asJson();
             } catch (Exception e) {
                 throw new BadRequestException("Не удалось отправить запрос на обновление статуса платежа. Текст боди : " + e.getMessage());
@@ -70,6 +71,7 @@ public class UpdateDealStatus {
                         .queryString("fields[STAGE_ID]", typeOfSection)
                         .queryString("fields[UF_CRM_1729084457]", RESPONSIBLE_PEOPLE.get(COUNT_RESP++))
                         .queryString("fields[UF_CRM_66A35EF7571B0]", "117") // оплата бронь 117 yes 119 no
+                        .queryString("fields[UF_CRM_1732019233]", "457")
                         .asJson();
             } catch (Exception e) {
                 throw new BadRequestException("Не удалось отправить запрос на обновление статуса платежа. Текст боди : " + e.getMessage());

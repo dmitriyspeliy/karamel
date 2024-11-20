@@ -48,4 +48,14 @@ public class SendEmail {
         log.info("SCHEDULER WAS FINISH");
     }
 
+//    @Async("jobExecutor")
+//    @Scheduled(cron = "0 0 12 * * *")
+//    public void sendNotifyToEvent() {
+//        log.info("START SCHEDULER NOTIFY");
+//        // выгружаем все контакты, чьи евенты буду через три дня
+//
+//
+//
+//        log.info("SCHEDULER WAS FINISH");
+//    }
 }

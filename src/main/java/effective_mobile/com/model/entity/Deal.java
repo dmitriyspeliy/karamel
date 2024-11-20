@@ -11,12 +11,21 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Table(name = "deal")
-@NamedEntityGraph(
-        name = "deal_contact",
+@NamedEntityGraphs({
+        @NamedEntityGraph(
+                name = "deal_contact",
+                attributeNodes = {
+                        @NamedAttributeNode(value = "contact")
+                }
+        ),
+        @NamedEntityGraph(
+        name = "deal_contact_event_invoice",
         attributeNodes = {
                 @NamedAttributeNode(value = "contact"),
+                @NamedAttributeNode(value = "event"),
+                @NamedAttributeNode(value = "invoice")
         }
-)
+)})
 public class Deal {
 
     @Id

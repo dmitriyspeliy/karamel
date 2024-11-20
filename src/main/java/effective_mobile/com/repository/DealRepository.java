@@ -3,6 +3,7 @@ package effective_mobile.com.repository;
 import effective_mobile.com.model.entity.Deal;
 import effective_mobile.com.model.entity.Invoice;
 import effective_mobile.com.utils.enums.Status;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -20,5 +21,9 @@ public interface DealRepository extends CrudRepository<Deal, Long> {
     @EntityGraph(value = "deal_contact")
     @Query("select del from Deal del where del.extDealId = ?1")
     Optional<Deal> getDealAndContact(String extId);
+
+    @EntityGraph(value = "deal_contact_event_invoice")
+    @Query("select del from Deal del where del.id = ?1")
+    Optional<Deal> findByIdDealWithEventContact(Long id);
 
 }

@@ -88,4 +88,35 @@ public class EmailService {
         }
     }
 
+    public String createMessageFroNotify(Deal deal) throws BadRequestException {
+        Event event = deal.getEvent();
+        Resource resource = new ClassPathResource("ticket-email-notify.html");
+        String emailContent;
+
+        try {
+            emailContent = new String(FileCopyUtils.copyToByteArray(resource.getInputStream()));
+        } catch (IOException e) {
+            throw new BadRequestException(e.getMessage());
+        }
+
+        try {
+
+            CityProperties.Info info = cityProperties.getCityInfo().get(getShortCityName(event.getCity()));
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMMM yyyy", Locale.forLanguageTag("ru"));
+
+            return emailContent
+                    .replace("{type}", deal.getType())
+                    .replace("{date}", event.getTime().format(formatter))
+                    .replace("{time}", event.getTime().toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm:ss")))
+                    .replace("{price}", deal.getInvoice().getTotalSum().toString())
+                    .replace("{address}", info.getAddress())
+                    .replace("{adultCount}", deal.getAdultCount().toString())
+                    .replace("{kidCount}", deal.getKidCount().toString());
+        } catch (Exception e) {
+            throw new BadRequestException("Failed prepare email template", e.getMessage());
+        }
+    }
+
+
 }

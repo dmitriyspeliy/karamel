@@ -28,10 +28,10 @@ public class SmsService {
     private final SmsInfoRepository smsInfoRepository;
 
     public void sendSms(String extDealId, String phone, String text) {
+        SmsInfo smsInfo = new SmsInfo();
         try {
             log.info("Запрос на отправку смс по телефону " + phone + " по сделке " + extDealId);
             SmsAnswer smsAnswer = sendSmsApi.sendSms(phone, text);
-            SmsInfo smsInfo = new SmsInfo();
             SmsAnswer.Sms.Info info = smsAnswer.getSms().getInfo();
             String status = info.getStatus();
             if (status.equals("OK")) {
@@ -49,13 +49,17 @@ public class SmsService {
             smsInfo.setSendTime(LocalDateTime.now());
             smsInfo.setBalance(smsAnswer.getBalance());
             smsInfo.setDealExtId(extDealId);
-            smsInfoRepository.save(smsInfo);
-            log.info("Сохраняем в бд информацию о смс по айди " + smsInfo.getExtSmsId());
         } catch (BadRequestException e) {
             log.error(e.getMessage());
+            smsInfo.setStatusCode("400");
+            smsInfo.setStatusText(e.getTextException());
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+            log.error(e.getMessage());
+            smsInfo.setStatusCode("400");
+            smsInfo.setStatusText(e.getMessage());
         }
+        smsInfoRepository.save(smsInfo);
+        log.info("Сохраняем в бд информацию о смс по айди " + smsInfo.getExtSmsId());
     }
 
     public void hookProcessing(List<String> stringList) {

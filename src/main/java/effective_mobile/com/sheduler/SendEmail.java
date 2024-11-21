@@ -91,6 +91,6 @@ public class SendEmail {
                 }
             }
         }
-        log.info("SCHEDULER WAS FINISH");
+        log.info("SCHEDULER NOTIFY WAS FINISH");
     }
 }

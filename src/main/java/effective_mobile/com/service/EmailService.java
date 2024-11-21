@@ -106,7 +106,7 @@ public class EmailService {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMMM yyyy", Locale.forLanguageTag("ru"));
 
             return emailContent
-                    .replace("{type}", deal.getType())
+                    .replace("{type}", "СБОРНЫЕ ГРУППЫ")
                     .replace("{date}", event.getTime().format(formatter))
                     .replace("{time}", event.getTime().toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm:ss")))
                     .replace("{price}", deal.getInvoice().getTotalSum().toString())

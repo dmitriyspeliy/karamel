@@ -27,7 +27,7 @@ public class SmsService {
     private final SendSmsApi sendSmsApi;
     private final SmsInfoRepository smsInfoRepository;
 
-    public void sendSms(String extDealId, String phone, String text) {
+    public SmsInfo sendSms(String extDealId, String phone, String text) {
         SmsInfo smsInfo = new SmsInfo();
         try {
             log.info("Запрос на отправку смс по телефону " + phone + " по сделке " + extDealId);
@@ -58,8 +58,8 @@ public class SmsService {
             smsInfo.setStatusCode("400");
             smsInfo.setStatusText(e.getMessage());
         }
-        smsInfoRepository.save(smsInfo);
         log.info("Сохраняем в бд информацию о смс по айди " + smsInfo.getExtSmsId());
+        return smsInfoRepository.save(smsInfo);
     }
 
     public void hookProcessing(List<String> stringList) {

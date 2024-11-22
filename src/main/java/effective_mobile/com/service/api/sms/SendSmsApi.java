@@ -42,7 +42,7 @@ public class SendSmsApi {
                             "?api_id=" + CommonVar.SMS_RU_API_ID +
                             "&to=" + phone +
                             "&msg=" + text +
-                            "&from=" + "Usadba_DM" +
+                            "&from=" + "exkcaramel" +
                             "&" + SMS_FORMAT +
                             "&" + TTL)
                     .asString();

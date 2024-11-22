@@ -30,7 +30,7 @@ public interface InvoiceRepository extends CrudRepository<Invoice, Long> {
     List<Invoice> getDealAndEventAndContactByStatus(Status status);
 
     @EntityGraph(value = "invoice_deal_event")
-    @Query("select inv from Invoice inv where inv.status = ?1 and inv.countOfSendSms = 0")
-    List<Invoice> getDealAndEventAndContactByStatusSms(Status status);
+    @Query("select inv from Invoice inv where inv.status = ?1 and inv.createAt > ?2 and inv.countOfSendSms = 0")
+    List<Invoice> getDealAndEventAndContactByStatusSms(Status status, LocalDateTime localDateTime);
 
 }

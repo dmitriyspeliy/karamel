@@ -27,7 +27,7 @@ public class SendEmail {
     private final UpdateDealComment updateDealComment;
 
     @Async("jobExecutor")
-    @Scheduled(cron = " 0 0/2 * * * ?")
+    @Scheduled(cron = " 0 0/3 * * * ?")
     public void sendTicket() throws BadRequestException {
         log.info("SEND EMAIL");
         // выгружаем все счета со статусом SUCCESS и счетчиком отправки 0
@@ -40,9 +40,8 @@ public class SendEmail {
             emailService.sendEmail(contact.getEmail(),
                     "Письмо с Карамельной Фабрики Деда Мороза и ваш билет",
                     msg);
-            byStatus.setCountOfSendTicket(byStatus.getCountOfSendTicket() == null ? 1 : byStatus.getCountOfSendTicket() + 1);
-            invoiceRepository.save(byStatus);
             updateDealComment.refreshCommentDeal(deal.getExtDealId(), "Билеты были отправлены на почту " + contact.getEmail() + "\n\n" + msg);
+            invoiceRepository.updateCountOfEmailByDealId(deal.getId());
             log.info("Билеты были отправлены на почту " + contact.getEmail());
         }
         log.info("SCHEDULER WAS FINISH");

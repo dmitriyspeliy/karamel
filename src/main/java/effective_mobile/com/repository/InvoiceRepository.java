@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
@@ -34,5 +35,15 @@ public interface InvoiceRepository extends CrudRepository<Invoice, Long> {
     @EntityGraph(value = "invoice_deal_event")
     @Query("select inv from Invoice inv where inv.status = ?1 and inv.createAt > ?2 and inv.countOfSendSms = 0")
     List<Invoice> getDealAndEventAndContactByStatusSms(Status status, LocalDateTime localDateTime);
+
+    @Modifying
+    @Transactional
+    @Query("update Invoice inv set inv.countOfSendSms = 1 where inv.dealId = ?1")
+    void updateCountOfSmsByDealId(Long dealId);
+
+    @Modifying
+    @Transactional
+    @Query("update Invoice inv set inv.countOfSendTicket = 1 where inv.dealId = ?1")
+    void updateCountOfEmailByDealId(Long dealId);
 
 }

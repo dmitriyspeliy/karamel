@@ -133,6 +133,7 @@ public class InvoiceRobokassa {
         invoice.setInvoiceLink(new URL(robokassaProperties.getInvoiceUrl() + hashId));
         invoice.setStatus(Status.PENDING);
         invoice.setCountOfSendTicket(0);
+        invoice.setCountOfSendSms(0);
         invoice = invoiceRepository.save(invoice);
         log.info("Счет сохранен в бд");
     }

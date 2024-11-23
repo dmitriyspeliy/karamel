@@ -38,7 +38,7 @@ public class SmsSender {
             String sms = "Предоплата за экскурсию получена. Дальнейшие действия тут " + linkToSmsAction;
             // отправляем sms
             smsService.sendSms(deal.getExtDealId(), contact.getPhone(), sms);
-            byStatus.setCountOfSendSms(byStatus.getCountOfSendSms() == null ? 1 : byStatus.getCountOfSendSms() + 1);
+            byStatus.setCountOfSendSms(1);
             invoiceRepository.save(byStatus);
         }
         log.info("SCHEDULER WAS FINISH");

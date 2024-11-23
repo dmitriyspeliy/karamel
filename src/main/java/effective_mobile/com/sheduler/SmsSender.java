@@ -3,6 +3,7 @@ package effective_mobile.com.sheduler;
 import effective_mobile.com.model.entity.Contact;
 import effective_mobile.com.model.entity.Deal;
 import effective_mobile.com.model.entity.Invoice;
+import effective_mobile.com.model.entity.SmsInfo;
 import effective_mobile.com.repository.InvoiceRepository;
 import effective_mobile.com.service.SmsService;
 import effective_mobile.com.utils.enums.CityInfo;
@@ -38,8 +39,12 @@ public class SmsSender {
             String sms = "Предоплата за экскурсию получена. Дальнейшие действия тут " + linkToSmsAction;
             // отправляем sms
             smsService.sendSms(deal.getExtDealId(), contact.getPhone(), sms);
-            byStatus.setCountOfSendSms(1);
-            invoiceRepository.save(byStatus);
+            int i = invoiceRepository.updateCountOfSmsByDealId(byStatus.getDealId());
+            if(i == 1) {
+                log.info("Update invoice and set count of sms = 1");
+            }else {
+                log.info("Update was rejected");
+            }
         }
         log.info("SCHEDULER WAS FINISH");
     }

@@ -27,7 +27,7 @@ public class SendEmail {
     private final UpdateDealComment updateDealComment;
 
     @Async("jobExecutor")
-    @Scheduled(cron = " 0 0/3 * * * ?")
+    @Scheduled(cron = " 0 0/2 * * * ?")
     public void sendTicket() throws BadRequestException {
         log.info("SEND EMAIL");
         // выгружаем все счета со статусом SUCCESS и счетчиком отправки 0

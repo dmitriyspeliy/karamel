@@ -35,9 +35,4 @@ public interface InvoiceRepository extends CrudRepository<Invoice, Long> {
     @Query("select inv from Invoice inv where inv.status = ?1 and inv.createAt > ?2 and inv.countOfSendSms = 0")
     List<Invoice> getDealAndEventAndContactByStatusSms(Status status, LocalDateTime localDateTime);
 
-    @Modifying
-    @Transactional
-    @Query("update Invoice inv set inv.countOfSendSms = 1 where inv.dealId = ?1")
-    int updateCountOfSmsByDealId(Long dealId);
-
 }

@@ -28,10 +28,9 @@ public class UpdateDealStatus {
     private static int COUNT_RESP = 0;
 
     static {
-        RESPONSIBLE_PEOPLE.add("2769");
-        RESPONSIBLE_PEOPLE.add("1417");
-        RESPONSIBLE_PEOPLE.add("1041");
-        RESPONSIBLE_PEOPLE.add("1251");
+        RESPONSIBLE_PEOPLE.add("2769"); // Олеся Ткаченко
+        RESPONSIBLE_PEOPLE.add("1417"); // Татьяна Зражевская
+        RESPONSIBLE_PEOPLE.add("1041"); // Елена Емельянова
     }
 
     public void refreshStatusDeal(String extId, String type, String city) throws BadRequestException {
@@ -47,7 +46,7 @@ public class UpdateDealStatus {
     private void makeRequest() throws BadRequestException {
         String typeOfSection = CityInfo.getCitySection(city);
         log.info("Город: " + city);
-        if(COUNT_RESP == 3) COUNT_RESP = 0;
+        if(COUNT_RESP == 2) COUNT_RESP = 0;
         if (type.equals("СБОРНЫЕ ГРУППЫ")) {
             try {
                 contactResponse

@@ -35,7 +35,7 @@ public class SmsSender {
             Contact contact = byStatus.getDeal().getContact();
             Deal deal = byStatus.getDeal();
             String linkToSmsAction = CityInfo.getLinkToSmsAction(byStatus.getDeal().getEvent().getCity());
-            String sms = "Предоплата за экскурсию получена. Дальнейшие действия тут " + linkToSmsAction;
+            String sms = "Предоплата получена. Информация тут " + linkToSmsAction;
             // отправляем sms
             smsService.sendSms(deal.getExtDealId(), contact.getPhone(), sms);
             invoiceRepository.updateCountOfSmsByDealId(deal.getId());

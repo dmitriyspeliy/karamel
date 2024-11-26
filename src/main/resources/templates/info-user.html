@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+
+    <title>Дед Мороз и Карамельная Фабрика</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.3;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+
+        p {
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Информация про мероприятие: </h2>
+<p></p>
+<ul th:object="${info}">
+    <li>Время экскурсии: <span th:text="*{time}"></span></li>
+    <li>Цена экскурсии: <span th:text="*{price}"> руб.</span></li>
+    <li>Адрес: <span th:text="*{address}"></span></li>
+    <p>На экскурсию записано:</p>
+    <li>Взрослых: <span th:text="*{adultCount}"></span></li>
+    <li>Детей: <span th:text="*{kidCount}"></span></li>
+    <p>Доп. информация про бронь:</p>
+    <span th:text="*{link}"></span>
+</ul>
+
+
+<p>С наилучшими пожеланиями,<br>
+    Дед Мороз и его команда Карамельной Фабрики</p>
+
+</body>
+</html>

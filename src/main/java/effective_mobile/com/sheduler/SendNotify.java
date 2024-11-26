@@ -15,12 +15,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
-
-import static effective_mobile.com.utils.UtilsMethods.getShortCityName;
 
 
 @Component
@@ -33,7 +29,6 @@ public class SendNotify {
     private final DealRepository dealRepository;
     private final NotificationRepository notificationRepository;
     private final SmsService smsService;
-    private final CityProperties cityProperties;
 
     @Async("jobExecutor")
     @Scheduled(cron = "0 0 3 * * *")
@@ -49,7 +44,6 @@ public class SendNotify {
                 if (optional.isPresent()) {
                     // отправляем билеты
                     Contact contact = optional.get().getContact();
-                    Event event = optional.get().getEvent();
                     Deal deal = optional.get();
                     String email = contact.getEmail();
                     Notification notification = new Notification();
@@ -65,12 +59,14 @@ public class SendNotify {
                                 "Письмо с Карамельной Фабрики Деда Мороза и ваш билет",
                                 msg);
                         // send sms
-                        String smsText = textSmsCreator(event, contact);
-                        SmsInfo smsInfo = smsService.sendSms(deal.getExtDealId(), contact.getPhone(), smsText);
-                        notification.setExtSmsId(smsInfo.getExtSmsId());
-                        notification.setTextSms(smsText);
-                        notification.setSendTimeSms(smsInfo.getSendTime());
-                        notification.setPhone(contact.getPhone());
+//                        String text = "Добрый день! Информация про мероприятие "
+//                                + "https://info.exkursiacaramel.ru/" + deal.getId();
+//                        SmsInfo smsInfo = smsService.sendSms(deal.getExtDealId(), contact.getPhone(),
+//                                text);
+//                        notification.setExtSmsId(smsInfo.getExtSmsId());
+//                        notification.setTextSms(text);
+//                        notification.setSendTimeSms(smsInfo.getSendTime());
+//                        notification.setPhone(contact.getPhone());
                     } catch (BadRequestException e) {
                         notification.setTextError(e.getTextException());
                         notification.setStatus("ERROR");
@@ -82,11 +78,4 @@ public class SendNotify {
         log.info("SCHEDULER NOTIFY WAS FINISH");
     }
 
-    private String textSmsCreator(Event event, Contact contact) throws BadRequestException {
-        CityProperties.Info info = cityProperties.getCityInfo().get(getShortCityName(event.getCity()));
-        return "Ждём Вас на Карамельную Фабрику по адресу: " + info.getAddress()
-                + "\nДата: " + event.getTime().format(DateTimeFormatter.ofPattern("d MMMM yyyy", Locale.forLanguageTag("ru")))
-                + "\nВремя: " + event.getTime().toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm:ss"))
-                + "\nБилеты были отправлены на почту " + contact.getEmail();
-    }
 }

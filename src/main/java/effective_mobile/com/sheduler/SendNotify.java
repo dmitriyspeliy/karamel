@@ -31,7 +31,7 @@ public class SendNotify {
     private final SmsService smsService;
 
     @Async("jobExecutor")
-    @Scheduled(cron = "0 0 3 * * *")
+    @Scheduled(cron = "0 0 8 * * *")
     public void sendNotifyToEvent() {
         log.info("START SCHEDULER NOTIFY");
         // выгружаем все контакты, чьи ивенты буду через три дня
@@ -59,14 +59,14 @@ public class SendNotify {
                                 "Письмо с Карамельной Фабрики Деда Мороза и ваш билет",
                                 msg);
                         // send sms
-//                        String text = "Добрый день! Информация про мероприятие "
-//                                + "https://info.exkursiacaramel.ru/" + deal.getId();
-//                        SmsInfo smsInfo = smsService.sendSms(deal.getExtDealId(), contact.getPhone(),
-//                                text);
-//                        notification.setExtSmsId(smsInfo.getExtSmsId());
-//                        notification.setTextSms(text);
-//                        notification.setSendTimeSms(smsInfo.getSendTime());
-//                        notification.setPhone(contact.getPhone());
+                        String text = "Добрый день! Информация про мероприятие "
+                                + "https://info-user.exkursiacaramel.ru/" + deal.getId();
+                        SmsInfo smsInfo = smsService.sendSms(deal.getExtDealId(), contact.getPhone(),
+                                text);
+                        notification.setExtSmsId(smsInfo.getExtSmsId());
+                        notification.setTextSms(text);
+                        notification.setSendTimeSms(smsInfo.getSendTime());
+                        notification.setPhone(contact.getPhone());
                     } catch (BadRequestException e) {
                         notification.setTextError(e.getTextException());
                         notification.setStatus("ERROR");

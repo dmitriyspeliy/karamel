@@ -42,7 +42,6 @@ public class SendEmail {
                     msg);
             updateDealComment.refreshCommentDeal(deal.getExtDealId(), "Билеты были отправлены на почту " + contact.getEmail() + "\n\n" + msg);
             invoiceRepository.updateCountOfEmailByDealId(deal.getId());
-            log.info("Билеты были отправлены на почту " + contact.getEmail());
         }
         log.info("SCHEDULER WAS FINISH");
     }

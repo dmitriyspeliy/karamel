@@ -7,6 +7,7 @@ import effective_mobile.com.utils.exception.BadRequestException;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -24,6 +25,7 @@ import static effective_mobile.com.utils.UtilsMethods.getShortCityName;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class EmailService {
 
     private final JavaMailSender javaMailSender;
@@ -36,6 +38,7 @@ public class EmailService {
     public void sendEmail(String email, String messageHeader, String message) throws BadRequestException {
 
         try {
+            log.info("Отправка на почту " + email);
             MimeMessage mimeMessage = emailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(
                     mimeMessage,

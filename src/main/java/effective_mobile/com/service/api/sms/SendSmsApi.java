@@ -12,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
@@ -41,7 +43,7 @@ public class SendSmsApi {
             response = Unirest.get(CommonVar.SMS_RU_URL +
                             "?api_id=" + CommonVar.SMS_RU_API_ID +
                             "&to=" + phone +
-                            "&msg=" + text +
+                            "&msg=" + URLEncoder.encode(text, StandardCharsets.UTF_8) +
                             "&from=" + "exkcaramel" +
                             "&" + SMS_FORMAT +
                             "&" + TTL)

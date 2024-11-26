@@ -37,7 +37,7 @@
     <li>Взрослых: <span th:text="*{adultCount}"></span></li>
     <li>Детей: <span th:text="*{kidCount}"></span></li>
     <p>Доп. информация про бронь:</p>
-    <span th:text="*{link}"></span>
+    <a th:href="@{*{link}}" th:text="*{link}"></a>
 </ul>
 
 

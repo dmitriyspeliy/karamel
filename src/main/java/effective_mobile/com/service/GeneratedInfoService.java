@@ -3,7 +3,8 @@ package effective_mobile.com.service;
 import effective_mobile.com.configuration.properties.CityProperties;
 import effective_mobile.com.model.dto.DealInfo;
 import effective_mobile.com.model.entity.Deal;
-import effective_mobile.com.repository.DealRepository;
+import effective_mobile.com.model.entity.Event;
+import effective_mobile.com.model.entity.Invoice;
 import effective_mobile.com.utils.enums.CityInfo;
 import effective_mobile.com.utils.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.format.DateTimeFormatter;
-import java.util.Optional;
 
 import static effective_mobile.com.utils.UtilsMethods.getShortCityName;
 
@@ -20,30 +20,47 @@ import static effective_mobile.com.utils.UtilsMethods.getShortCityName;
 @RequiredArgsConstructor
 public class GeneratedInfoService {
 
-    private final DealRepository dealRepository;
+    private final CashedUserInfo cashedUserInfo;
     private final CityProperties cityProperties;
 
     public DealInfo getInfoByDealId(String dealId) throws BadRequestException {
-        if(dealId != null && !dealId.equals("")) {
-            Optional<Deal> optional = dealRepository.findByIdDealWithEventContact(Long.valueOf(dealId));
-            if(optional.isPresent()) {
+        if (checkNum(dealId)) {
+            Deal deal = cashedUserInfo.cashedUserInfo(Long.valueOf(dealId));
+            if (deal != null) {
+                Event event = deal.getEvent();
+                Invoice invoice = deal.getInvoice();
                 CityProperties.Info info =
-                        cityProperties.getCityInfo().get(getShortCityName(optional.get().getEvent().getCity()));
-                String linkToSmsAction = CityInfo.getLinkToSmsAction(optional.get().getEvent().getCity());
+                        cityProperties.getCityInfo().get(getShortCityName(event.getCity()));
+                String linkToSmsAction = CityInfo.getLinkToSmsAction(event.getCity());
                 DealInfo dealInfo = new DealInfo();
-                dealInfo.setTime(optional.get().getEvent().getTime().toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
+                dealInfo.setTime(event.getTime().toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
                 dealInfo.setAddress(info.getAddress());
-                dealInfo.setPrice(optional.get().getInvoice().getTotalSum().toString());
+                dealInfo.setPrice(invoice.getTotalSum().toString());
                 dealInfo.setLink(linkToSmsAction);
-                dealInfo.setKidCount(optional.get().getKidCount());
-                dealInfo.setAdultCount(optional.get().getAdultCount());
+                dealInfo.setKidCount(deal.getKidCount());
+                dealInfo.setAdultCount(deal.getAdultCount());
                 return dealInfo;
-            }else {
+            } else {
                 return new DealInfo();
             }
-        }else {
-          return new DealInfo();
+        } else {
+            return new DealInfo();
         }
+    }
+
+    public static boolean checkNum(String strNum) {
+        if (strNum == null || strNum.equals("")) {
+            return false;
+        }
+        try {
+            double d = Double.parseDouble(strNum);
+            if (d <= 0 || d > 10_000) {
+                return false;
+            }
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+        return true;
     }
 
 }

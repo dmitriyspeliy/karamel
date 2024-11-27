@@ -1,7 +1,9 @@
 package effective_mobile.com.sheduler;
 
-import effective_mobile.com.configuration.properties.CityProperties;
-import effective_mobile.com.model.entity.*;
+import effective_mobile.com.model.entity.Contact;
+import effective_mobile.com.model.entity.Deal;
+import effective_mobile.com.model.entity.Notification;
+import effective_mobile.com.model.entity.SmsInfo;
 import effective_mobile.com.repository.ContactRepository;
 import effective_mobile.com.repository.DealRepository;
 import effective_mobile.com.repository.NotificationRepository;
@@ -31,7 +33,7 @@ public class SendNotify {
     private final SmsService smsService;
 
     @Async("jobExecutor")
-    @Scheduled(cron = "0 0 8 * * *")
+    @Scheduled(cron = "0 0 3 * * *")
     public void sendNotifyToEvent() {
         log.info("START SCHEDULER NOTIFY");
         // выгружаем все контакты, чьи ивенты буду через три дня

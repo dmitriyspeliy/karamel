@@ -23,7 +23,7 @@ public class GeneratedInfoService {
     private final DealRepository dealRepository;
     private final CityProperties cityProperties;
 
-    public synchronized DealInfo getInfoByDealId(String dealId) throws BadRequestException {
+    public DealInfo getInfoByDealId(String dealId) throws BadRequestException {
         if(dealId != null && !dealId.equals("")) {
             Optional<Deal> optional = dealRepository.findByIdDealWithEventContact(Long.valueOf(dealId));
             if(optional.isPresent()) {

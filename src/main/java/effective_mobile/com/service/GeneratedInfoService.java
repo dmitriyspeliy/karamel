@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 import static effective_mobile.com.utils.UtilsMethods.getShortCityName;
 
@@ -33,6 +34,8 @@ public class GeneratedInfoService {
                         cityProperties.getCityInfo().get(getShortCityName(event.getCity()));
                 String linkToSmsAction = CityInfo.getLinkToSmsAction(event.getCity());
                 DealInfo dealInfo = new DealInfo();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMMM yyyy", Locale.forLanguageTag("ru"));
+                dealInfo.setDate(event.getTime().format(formatter));
                 dealInfo.setTime(event.getTime().toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
                 dealInfo.setAddress(info.getAddress());
                 dealInfo.setPrice(invoice.getTotalSum().toString());

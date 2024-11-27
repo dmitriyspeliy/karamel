@@ -8,6 +8,7 @@ import lombok.Setter;
 public class DealInfo {
     private String time;
     private String price;
+    private String date;
     private String address;
     private Integer adultCount;
     private Integer kidCount;

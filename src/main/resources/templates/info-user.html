@@ -30,6 +30,7 @@
 <h2>Информация про мероприятие: </h2>
 <p></p>
 <ul th:object="${info}">
+    <li>Дата экскурсии: <span th:text="*{date}"></span></li>
     <li>Время экскурсии: <span th:text="*{time}"></span></li>
     <li>Цена экскурсии: <span th:text="*{price}"> руб.</span></li>
     <li>Адрес: <span th:text="*{address}"></span></li>

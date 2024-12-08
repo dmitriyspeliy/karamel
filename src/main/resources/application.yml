@@ -199,7 +199,7 @@ spring:
       bitrix-field-category-id: 25
       start-endpoint: 2024-11-29T00:00:00+00:00
       finish-endpoint: 2024-12-29T00:00:00+00:00
-      address: Ленинградская область Ломоносовский район деревня Малые Горки дом 30в.
+      address: Ленинградская область, Ломоносовский район, деревня Малые Горки, дом 30г
       manager-contact-numbers:
         - +7 (812) 409-34-05
       vk-link: https://vk.com/public222337083
